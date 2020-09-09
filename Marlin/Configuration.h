@@ -89,11 +89,11 @@
 #define SHOW_BOOTSCREEN
 
 // Show the bitmap in Marlin/_Bootscreen.h on startup.
-//#define SHOW_CUSTOM_BOOTSCREEN
+// #define SHOW_CUSTOM_BOOTSCREEN
 
 // Show the bitmap in Marlin/_Statusscreen.h on the status screen.
 // per marlin config example for Ender3 v2: example config has _Statusscreen.h so use it:
-#define CUSTOM_STATUS_SCREEN_IMAGE
+// #define CUSTOM_STATUS_SCREEN_IMAGE
 
 // @section machine
 
@@ -1563,7 +1563,7 @@
 // #define PREHEAT_2_FAN_SPEED     0 // Value from 0 to 255
 
 // per marlin config example for Ender3 v2
-define PREHEAT_1_LABEL       "PLA"
+#define PREHEAT_1_LABEL       "PLA"
 #define PREHEAT_1_TEMP_HOTEND 185
 #define PREHEAT_1_TEMP_BED     45
 #define PREHEAT_1_FAN_SPEED   255 // Value from 0 to 255
@@ -2314,7 +2314,7 @@ define PREHEAT_1_LABEL       "PLA"
 // Ender-3 v2 OEM display. A DWIN display with Rotary Encoder.
 //
 // per marlin config example for Ender3 v2
-#define DWIN_CREALITY_LCD
+// #define DWIN_CREALITY_LCD
 
 //
 // ADS7843/XPT2046 ADC Touchscreen such as ILI9341 2.8
@@ -2334,15 +2334,15 @@ define PREHEAT_1_LABEL       "PLA"
 
 // BigTreeTech example has:
 //#define TOUCH_BUTTONS
-#if ENABLED(TOUCH_BUTTONS)
-  #define BUTTON_DELAY_EDIT  50 // (ms) Button repeat delay for edit screens
-  #define BUTTON_DELAY_MENU 250 // (ms) Button repeat delay for menus
+// #if ENABLED(TOUCH_BUTTONS)
+//   #define BUTTON_DELAY_EDIT  50 // (ms) Button repeat delay for edit screens
+//   #define BUTTON_DELAY_MENU 250 // (ms) Button repeat delay for menus
 
-  #define XPT2046_X_CALIBRATION   12316
-  #define XPT2046_Y_CALIBRATION  -8981
-  #define XPT2046_X_OFFSET       -43
-  #define XPT2046_Y_OFFSET        257
-#endif
+//   #define XPT2046_X_CALIBRATION   12316
+//   #define XPT2046_Y_CALIBRATION  -8981
+//   #define XPT2046_X_OFFSET       -43
+//   #define XPT2046_Y_OFFSET        257
+// #endif
 
 //
 // RepRapWorld REPRAPWORLD_KEYPAD v1.1
