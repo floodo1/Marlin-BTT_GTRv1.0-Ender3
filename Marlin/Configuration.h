@@ -92,7 +92,8 @@
 //#define SHOW_CUSTOM_BOOTSCREEN
 
 // Show the bitmap in Marlin/_Statusscreen.h on the status screen.
-//#define CUSTOM_STATUS_SCREEN_IMAGE
+// per marlin config example for Ender3 v2: example config has _Statusscreen.h so use it:
+#define CUSTOM_STATUS_SCREEN_IMAGE
 
 // @section machine
 
