@@ -21,7 +21,8 @@
  */
 #pragma once
 
-#define CONFIG_EXAMPLES_DIR "Creality/Ender-3 V2"
+#define CONFIG_EXAMPLES_DIR "Creality/Ender-3/CrealityV1"
+// #define CONFIG_EXAMPLES_DIR "Creality/Ender-3 V2"
 
 /**
  * Configuration_adv.h

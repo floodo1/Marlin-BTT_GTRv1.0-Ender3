@@ -89,11 +89,11 @@
 #define SHOW_BOOTSCREEN
 
 // Show the bitmap in Marlin/_Bootscreen.h on startup.
-// #define SHOW_CUSTOM_BOOTSCREEN
+#define SHOW_CUSTOM_BOOTSCREEN
 
 // Show the bitmap in Marlin/_Statusscreen.h on the status screen.
 // per marlin config example for Ender3 v2: example config has _Statusscreen.h so use it:
-// #define CUSTOM_STATUS_SCREEN_IMAGE
+#define CUSTOM_STATUS_SCREEN_IMAGE
 
 // @section machine
 
@@ -492,11 +492,17 @@
 
   // If you are using a pre-configured hotend then you can use one of the value sets by uncommenting it
 
+  // per marlin config example for Ender3
+  // Creality Ender-3
+  #define DEFAULT_Kp 21.73
+  #define DEFAULT_Ki 1.54
+  #define DEFAULT_Kd 76.55
+
   // per marlin config example for Ender3 v2
   // Ender 3 v2
-  #define DEFAULT_Kp 28.72
-  #define DEFAULT_Ki 2.62
-  #define DEFAULT_Kd 78.81
+  // #define DEFAULT_Kp 28.72
+  // #define DEFAULT_Ki 2.62
+  // #define DEFAULT_Kd 78.81
 
   // Ultimaker
   // #define DEFAULT_Kp 22.2
@@ -532,7 +538,8 @@
  * heater. If your configuration is significantly different than this and you don't understand
  * the issues involved, don't use bed PID until someone else verifies that your hardware works.
  */
-#define PIDTEMPBED  // per marlin config example for Ender3 v2
+// per marlin config example for Ender3: comment this
+// #define PIDTEMPBED  // per marlin config example for Ender3 v2
 
 //#define BED_LIMIT_SWITCHING
 
@@ -549,9 +556,9 @@
   //#define PID_BED_DEBUG // Sends debug data to the serial port.
 
   // per marlin config example for Ender3 v2
-  #define DEFAULT_bedKp 462.10
-  #define DEFAULT_bedKi 85.47
-  #define DEFAULT_bedKd 624.59
+  // #define DEFAULT_bedKp 462.10
+  // #define DEFAULT_bedKi 85.47
+  // #define DEFAULT_bedKd 624.59
 
   //120V 250W silicone heater into 4mm borosilicate (MendelMax 1.5+)
   //from FOPDT model - kp=.39 Tp=405 Tdead=66, Tc set to 79.2, aggressive factor of .15 (vs .1, 1, 10)
@@ -585,8 +592,10 @@
  *
  * *** IT IS HIGHLY RECOMMENDED TO LEAVE THIS OPTION ENABLED! ***
  */
+// per marlin config example for Ender3 and Ender3 v2: enable PREVENT_COLD_EXTRUSION
 #define PREVENT_COLD_EXTRUSION  // per marlin config example for Ender3 v2
-#define EXTRUDE_MINTEMP 180 // per marlin config example for Ender3 v2
+#define EXTRUDE_MINTEMP 170 // per marlin config example for Ender3
+// #define EXTRUDE_MINTEMP 180 // per marlin config example for Ender3 v2
 
 /**
  * Prevent a single extrusion longer than EXTRUDE_MAXLENGTH.
@@ -767,7 +776,7 @@
 // BigTreeTech example has:
 // #define DEFAULT_AXIS_STEPS_PER_UNIT   { 80, 80, 400, 96 }
 // https://www.youtube.com/watch?v=eBUYLZ2TODw
-// per marlin config example for Ender3 v2:
+// per marlin config example for Ender3 and Ender3 v2:
 #define DEFAULT_AXIS_STEPS_PER_UNIT   { 80, 80, 400, 93 }
 
 /**
@@ -776,7 +785,7 @@
  *                                      X, Y, Z, E0 [, E1[, E2...]]
  */
 // #define DEFAULT_MAX_FEEDRATE          { 300, 300, 5, 25 }
-// per marlin config example for Ender3 v2:
+// per marlin config example for Ender3 and Ender3 v2:
 #define DEFAULT_MAX_FEEDRATE          { 500, 500, 5, 25 }
 
 //#define LIMITED_MAX_FR_EDITING        // Limit edit via M203 or LCD to DEFAULT_MAX_FEEDRATE * 2
@@ -791,7 +800,7 @@
  *                                      X, Y, Z, E0 [, E1[, E2...]]
  */
 // #define DEFAULT_MAX_ACCELERATION      { 3000, 3000, 100, 10000 }
-// per marlin config example for Ender3 v2:
+// per marlin config example for Ender3 and Ender3 v2:
 #define DEFAULT_MAX_ACCELERATION      { 500, 500, 100, 1000 }
 
 //#define LIMITED_MAX_ACCEL_EDITING     // Limit edit via M201 or LCD to DEFAULT_MAX_ACCELERATION * 2
@@ -812,7 +821,8 @@
 // #define DEFAULT_TRAVEL_ACCELERATION   3000    // X, Y, Z acceleration for travel (non printing) moves
 #define DEFAULT_ACCELERATION          500    // X, Y, Z and E acceleration for printing moves
 #define DEFAULT_RETRACT_ACCELERATION  500    // E acceleration for retracts
-#define DEFAULT_TRAVEL_ACCELERATION   1000    // X, Y, Z acceleration for travel (non printing) moves
+// per marlin config example for Ender3: change default 1000 to 500
+#define DEFAULT_TRAVEL_ACCELERATION   500    // X, Y, Z acceleration for travel (non printing) moves
 
 /**
  * Default Jerk limits (mm/s)
@@ -822,8 +832,8 @@
  * When changing speed and direction, if the difference is less than the
  * value set here, it may happen instantaneously.
  */
-// per marlin config example for Ender3 v2:
-#define CLASSIC_JERK
+// per marlin config example for Ender3: comment this
+// #define CLASSIC_JERK  // per marlin config example for Ender3 v2
 #if ENABLED(CLASSIC_JERK)
   #define DEFAULT_XJERK 10.0
   #define DEFAULT_YJERK 10.0
@@ -876,8 +886,8 @@
  * The probe replaces the Z-MIN endstop and is used for Z homing.
  * (Automatically enables USE_PROBE_FOR_Z_HOMING.)
  */
-// per marlin config example for Ender3 v2:
-#define Z_MIN_PROBE_USES_Z_MIN_ENDSTOP_PIN
+// per marlin config example for Ender3 and Ender3 v2: uncomment this
+// #define Z_MIN_PROBE_USES_Z_MIN_ENDSTOP_PIN
 
 // Force the use of the probe for Z-axis homing
 //#define USE_PROBE_FOR_Z_HOMING
@@ -1034,8 +1044,10 @@
 // #define XY_PROBE_SPEED (133*60)  // 133*60=7980
 // BigTreeTech example has:
 // #define XY_PROBE_SPEED 8000
+// per marlin config example for Ender3:
+#define XY_PROBE_SPEED (133*60)
 // per marlin config example for Ender3 v2:
-#define XY_PROBE_SPEED (50*60)
+// #define XY_PROBE_SPEED (50*60)
 
 // Feedrate (mm/min) for the first approach when double-probing (MULTIPLE_PROBING == 2)
 #define Z_PROBE_SPEED_FAST HOMING_FEEDRATE_Z
@@ -1077,11 +1089,12 @@
 #define Z_PROBE_LOW_POINT          -2 // Farthest distance below the trigger-point to go before stopping
 
 // For M851 give a range for adjusting the Z probe offset
-// #define Z_PROBE_OFFSET_RANGE_MIN -20
-// #define Z_PROBE_OFFSET_RANGE_MAX 20
+// per marlin config example for Ender3:
+#define Z_PROBE_OFFSET_RANGE_MIN -20
+#define Z_PROBE_OFFSET_RANGE_MAX 20
 // per marlin config example for Ender3 v2:
-#define Z_PROBE_OFFSET_RANGE_MIN -10
-#define Z_PROBE_OFFSET_RANGE_MAX 10
+// #define Z_PROBE_OFFSET_RANGE_MIN -10
+// #define Z_PROBE_OFFSET_RANGE_MAX 10
 
 // Enable the M48 repeatability test to test probe accuracy
 //#define Z_MIN_PROBE_REPEATABILITY_TEST
@@ -1131,14 +1144,19 @@
 // @section machine
 
 // Invert the stepper direction. Change (or reverse the motor connector) if an axis goes the wrong way.
-#define INVERT_X_DIR false
-#define INVERT_Y_DIR false  // per marlin config example for Ender3 v2:
-#define INVERT_Z_DIR true // per marlin config example for Ender3 v2:
+// per marlin config example for Ender3:
+#define INVERT_X_DIR true
+#define INVERT_Y_DIR true  // per marlin config example for Ender3 v2:
+#define INVERT_Z_DIR false // per marlin config example for Ender3 v2:
+// per marlin config example for Ender3 v2:
+// #define INVERT_X_DIR false
+// #define INVERT_Y_DIR false
+// #define INVERT_Z_DIR true
 
 // @section extruder
 
 // For direct drive extruder v9 set to true, for geared extruder set to false.
-#define INVERT_E0_DIR false
+#define INVERT_E0_DIR true // per marlin config example for Ender3
 #define INVERT_E1_DIR false
 #define INVERT_E2_DIR false
 #define INVERT_E3_DIR false
@@ -1563,7 +1581,7 @@
 // #define PREHEAT_2_TEMP_BED    110
 // #define PREHEAT_2_FAN_SPEED     0 // Value from 0 to 255
 
-// per marlin config example for Ender3 v2
+// per marlin config example for Ender3 and Ender3 v2
 #define PREHEAT_1_LABEL       "PLA"
 #define PREHEAT_1_TEMP_HOTEND 185
 #define PREHEAT_1_TEMP_BED     45
@@ -1823,15 +1841,15 @@
 // This option overrides the default number of encoder pulses needed to
 // produce one step. Should be increased for high-resolution encoders.
 //
-// per marlin config example for Ender3 v2
-#define ENCODER_PULSES_PER_STEP 4
+// per marlin config example for Ender3: disabled
+// #define ENCODER_PULSES_PER_STEP 4 // per marlin config example for Ender3 v2
 
 //
 // Use this option to override the number of step signals required to
 // move between next/prev menu items.
 //
-// per marlin config example for Ender3 v2
-#define ENCODER_STEPS_PER_MENU_ITEM 1
+// per marlin config example for Ender3: disabled
+// #define ENCODER_STEPS_PER_MENU_ITEM 1 // per marlin config example for Ender3 v2
 
 /**
  * Encoder Direction Options
@@ -1879,7 +1897,8 @@
 // If you have a speaker that can produce tones, enable it here.
 // By default Marlin assumes you have a buzzer with a fixed frequency.
 //
-//#define SPEAKER
+// per marlin config example for Ender3: enabled
+#define SPEAKER
 
 //
 // The duration and frequency for the UI feedback sound.
@@ -1888,9 +1907,10 @@
 // Note: Test audio output with the G-Code:
 //  M300 S<frequency Hz> P<duration ms>
 //
-// per marlin config example for Ender3 v2
-#define LCD_FEEDBACK_FREQUENCY_DURATION_MS 2
-#define LCD_FEEDBACK_FREQUENCY_HZ 5000
+// per marlin config example for Ender3: disabled
+// per marlin config example for Ender3 enabled: 2/5000
+// #define LCD_FEEDBACK_FREQUENCY_DURATION_MS 2
+// #define LCD_FEEDBACK_FREQUENCY_HZ 5000
 
 //=============================================================================
 //======================== LCD / Controller Selection =========================
@@ -2132,7 +2152,7 @@
 // This is RAMPS-compatible using a single 10-pin connector.
 // (For CR-10 owners who want to replace the Melzi Creality board but retain the display)
 //
-//#define CR10_STOCKDISPLAY
+#define CR10_STOCKDISPLAY
 
 //
 // Ender-2 OEM display, a variant of the MKS_MINI_12864
