@@ -54,6 +54,8 @@
  * https://www.thingiverse.com/thing:298812
  */
 
+// Ender3 stock firmware github: https://github.com/Creality3DPrinting/Ender-3/tree/master/Ender-3%20Firmware%20(Marlin)/Ender-3%20(includes%20power%20failure%20resume-%20English)/Marlin
+
 //===========================================================================
 //============================= DELTA Printer ===============================
 //===========================================================================
@@ -450,7 +452,10 @@
 
 // Below this temperature the heater will be switched off
 // because it probably indicates a broken thermistor wire.
-#define HEATER_0_MINTEMP   0  // per marlin config example for Ender3 v2
+// per marlin config example for Ender3 v2:
+// #define HEATER_0_MINTEMP   0
+// per ender3 stock firmware github
+#define HEATER_0_MINTEMP   5
 #define HEATER_1_MINTEMP   5
 #define HEATER_2_MINTEMP   5
 #define HEATER_3_MINTEMP   5
@@ -486,17 +491,29 @@
 
 #if ENABLED(PIDTEMP)
   //#define PID_EDIT_MENU         // Add PID editing to the "Advanced Settings" menu. (~700 bytes of PROGMEM)
-  //#define PID_AUTOTUNE_MENU     // Add PID auto-tuning to the "Advanced Settings" menu. (~250 bytes of PROGMEM)
+  // myconfig
+  #define PID_AUTOTUNE_MENU     // Add PID auto-tuning to the "Advanced Settings" menu. (~250 bytes of PROGMEM)
   //#define PID_PARAMS_PER_HOTEND // Uses separate PID parameters for each extruder (useful for mismatched extruders)
                                   // Set/get with gcode: M301 E[extruder number, 0-2]
 
   // If you are using a pre-configured hotend then you can use one of the value sets by uncommenting it
 
+  // per stock ender3 firmware (confirmed with M503):
+  #define DEFAULT_Kp 23.81
+  #define DEFAULT_Ki 1.93
+  #define DEFAULT_Kd 73.64
+
+  // per stock ender3 firmware github
+  // Stock CR-10S Hotend fan 100%
+  // #define  DEFAULT_Kp 20.84
+  // #define  DEFAULT_Ki 1.96
+  // #define  DEFAULT_Kd 55.47
+
   // per marlin config example for Ender3
   // Creality Ender-3
-  #define DEFAULT_Kp 21.73
-  #define DEFAULT_Ki 1.54
-  #define DEFAULT_Kd 76.55
+  // #define DEFAULT_Kp 21.73
+  // #define DEFAULT_Ki 1.54
+  // #define DEFAULT_Kd 76.55
 
   // per marlin config example for Ender3 v2
   // Ender 3 v2
@@ -695,6 +712,7 @@
 #define Y_MAX_ENDSTOP_INVERTING false // Set to true to invert the logic of the endstop.
 #define Z_MAX_ENDSTOP_INVERTING false // Set to true to invert the logic of the endstop.
 // NOTE: true per https://github.com/talldonkey/Marlin-2.0-Ender-3-SKR-1.3/blob/2.0.x-Ender-3-SKR-1.3/Marlin/Configuration.h
+// per ender3 stock firmware github: false
 #define Z_MIN_PROBE_ENDSTOP_INVERTING false // Set to true to invert the logic of the probe.
 
 /**
@@ -781,6 +799,7 @@
 // #define DEFAULT_AXIS_STEPS_PER_UNIT   { 80, 80, 400, 96 }
 // https://www.youtube.com/watch?v=eBUYLZ2TODw
 // per marlin config example for Ender3 and Ender3 v2:
+// per stock ender3 firmware (confirmed with M503):
 #define DEFAULT_AXIS_STEPS_PER_UNIT   { 80, 80, 400, 93 }
 
 /**
@@ -790,6 +809,7 @@
  */
 // #define DEFAULT_MAX_FEEDRATE          { 300, 300, 5, 25 }
 // per marlin config example for Ender3 and Ender3 v2:
+// per stock ender3 firmware (confirmed with M503):
 #define DEFAULT_MAX_FEEDRATE          { 500, 500, 5, 25 }
 
 //#define LIMITED_MAX_FR_EDITING        // Limit edit via M203 or LCD to DEFAULT_MAX_FEEDRATE * 2
@@ -805,6 +825,7 @@
  */
 // #define DEFAULT_MAX_ACCELERATION      { 3000, 3000, 100, 10000 }
 // per marlin config example for Ender3 and Ender3 v2:
+// per stock ender3 firmware (confirmed with M503):
 #define DEFAULT_MAX_ACCELERATION      { 500, 500, 100, 1000 }
 
 //#define LIMITED_MAX_ACCEL_EDITING     // Limit edit via M201 or LCD to DEFAULT_MAX_ACCELERATION * 2
@@ -824,7 +845,10 @@
 // #define DEFAULT_RETRACT_ACCELERATION  3000    // E acceleration for retracts
 // #define DEFAULT_TRAVEL_ACCELERATION   3000    // X, Y, Z acceleration for travel (non printing) moves
 // can go as high as 1250 per https://github.com/talldonkey/Marlin-2.0-Ender-3-SKR-1.3/blob/2.0.x-Ender-3-SKR-1.3/Marlin/Configuration.h
+// per stock ender3 github firmware github:
 #define DEFAULT_ACCELERATION          500    // X, Y, Z and E acceleration for printing moves
+// per stock ender3 firmware (confirmed with M503):
+//#define DEFAULT_ACCELERATION          250    // X, Y, Z and E acceleration for printing moves
 #define DEFAULT_RETRACT_ACCELERATION  500    // E acceleration for retracts
 // per marlin config example for Ender3: change default 1000 to 500
 #define DEFAULT_TRAVEL_ACCELERATION   500    // X, Y, Z acceleration for travel (non printing) moves
@@ -843,6 +867,10 @@
   #define DEFAULT_XJERK 10.0
   #define DEFAULT_YJERK 10.0
   #define DEFAULT_ZJERK  0.3
+  // per stock ender3 firmware (confirmed with M503):
+  // #define DEFAULT_XJERK 5.0
+  // #define DEFAULT_YJERK 5.0
+  // #define DEFAULT_ZJERK  0.4
 
   //#define TRAVEL_EXTRA_XYJERK 0.0     // Additional jerk allowance for all travel moves
 
@@ -852,6 +880,7 @@
   #endif
 #endif
 
+// per stock ender3 firmware (confirmed with M503):
 #define DEFAULT_EJERK    5.0  // May be used by Linear Advance
 
 /**
@@ -1152,6 +1181,7 @@
 
 // Invert the stepper direction. Change (or reverse the motor connector) if an axis goes the wrong way.
 // per marlin config example for Ender3:
+// per ender3 stock firmware github
 #define INVERT_X_DIR true
 #define INVERT_Y_DIR true
 #define INVERT_Z_DIR false
@@ -1163,6 +1193,7 @@
 // @section extruder
 
 // For direct drive extruder v9 set to true, for geared extruder set to false.
+// per ender3 stock firmware github
 #define INVERT_E0_DIR true // per marlin config example for Ender3
 #define INVERT_E1_DIR false
 #define INVERT_E2_DIR false
@@ -1454,6 +1485,10 @@
 //#define MANUAL_X_HOME_POS 0
 //#define MANUAL_Y_HOME_POS 0
 //#define MANUAL_Z_HOME_POS 0
+// per stock ender3 firmware (confirmed with M503):
+#define MANUAL_X_HOME_POS -5.0
+#define MANUAL_Y_HOME_POS -15.0
+//#define MANUAL_Z_HOME_POS 0
 
 // Use "Z Safe Homing" to avoid homing with a Z probe outside the bed area.
 //
@@ -1593,11 +1628,18 @@
 // #define PREHEAT_2_FAN_SPEED     0 // Value from 0 to 255
 
 // per marlin config example for Ender3 and Ender3 v2
-#define PREHEAT_1_LABEL       "PLA"
-#define PREHEAT_1_TEMP_HOTEND 185
-#define PREHEAT_1_TEMP_BED     45
-#define PREHEAT_1_FAN_SPEED   255 // Value from 0 to 255
+// #define PREHEAT_1_LABEL       "PLA"
+// #define PREHEAT_1_TEMP_HOTEND 185
+// #define PREHEAT_1_TEMP_BED     45
+// #define PREHEAT_1_FAN_SPEED   255 // Value from 0 to 255
 
+// per stock ender3 firmware (confirmed with M503):
+#define PREHEAT_1_LABEL       "SPLA"
+#define PREHEAT_1_TEMP_HOTEND 200
+#define PREHEAT_1_TEMP_BED     80
+#define PREHEAT_1_FAN_SPEED   128 // Value from 0 to 255
+
+// per stock ender3 firmware (confirmed with M503):
 #define PREHEAT_2_LABEL       "ABS"
 #define PREHEAT_2_TEMP_HOTEND 240
 #define PREHEAT_2_TEMP_BED     70
@@ -1910,7 +1952,8 @@
 // By default Marlin assumes you have a buzzer with a fixed frequency.
 //
 // per marlin config example for Ender3: enabled
-#define SPEAKER
+// per ender3 stock firmware github: commented
+// #define SPEAKER
 
 //
 // The duration and frequency for the UI feedback sound.
