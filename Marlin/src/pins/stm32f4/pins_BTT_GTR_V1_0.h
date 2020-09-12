@@ -114,40 +114,41 @@
   #define E2_CS_PIN                         PC12
 #endif
 
-#define E3_STEP_PIN                         PF3
-#define E3_DIR_PIN                          PG3
-#define E3_ENABLE_PIN                       PF8
-#ifndef E3_CS_PIN
-  #define E3_CS_PIN                         PG4
-#endif
+// myconfig: disable extruders on M5 board
+// #define E3_STEP_PIN                         PF3
+// #define E3_DIR_PIN                          PG3
+// #define E3_ENABLE_PIN                       PF8
+// #ifndef E3_CS_PIN
+//   #define E3_CS_PIN                         PG4
+// #endif
 
-#define E4_STEP_PIN                         PD14
-#define E4_DIR_PIN                          PD11
-#define E4_ENABLE_PIN                       PG2
-#ifndef E4_CS_PIN
-  #define E4_CS_PIN                         PE15
-#endif
+// #define E4_STEP_PIN                         PD14
+// #define E4_DIR_PIN                          PD11
+// #define E4_ENABLE_PIN                       PG2
+// #ifndef E4_CS_PIN
+//   #define E4_CS_PIN                         PE15
+// #endif
 
-#define E5_STEP_PIN                         PE12
-#define E5_DIR_PIN                          PE10
-#define E5_ENABLE_PIN                       PF14
-#ifndef E5_CS_PIN
-  #define E5_CS_PIN                         PE7
-#endif
+// #define E5_STEP_PIN                         PE12
+// #define E5_DIR_PIN                          PE10
+// #define E5_ENABLE_PIN                       PF14
+// #ifndef E5_CS_PIN
+//   #define E5_CS_PIN                         PE7
+// #endif
 
-#define E6_STEP_PIN                         PG0
-#define E6_DIR_PIN                          PG1
-#define E6_ENABLE_PIN                       PE8
-#ifndef E6_CS_PIN
-  #define E6_CS_PIN                         PF15
-#endif
+// #define E6_STEP_PIN                         PG0
+// #define E6_DIR_PIN                          PG1
+// #define E6_ENABLE_PIN                       PE8
+// #ifndef E6_CS_PIN
+//   #define E6_CS_PIN                         PF15
+// #endif
 
-#define E7_STEP_PIN                         PH12
-#define E7_DIR_PIN                          PH15
-#define E7_ENABLE_PIN                       PI0
-#ifndef E7_CS_PIN
-  #define E7_CS_PIN                         PH14
-#endif
+// #define E7_STEP_PIN                         PH12
+// #define E7_DIR_PIN                          PH15
+// #define E7_ENABLE_PIN                       PI0
+// #ifndef E7_CS_PIN
+//   #define E7_CS_PIN                         PH14
+// #endif
 
 //
 // Software SPI pins for TMC2130 stepper drivers
@@ -233,11 +234,12 @@
 #define TEMP_1_PIN                          PC2   // T2 <-> E1
 #define TEMP_2_PIN                          PC3   // T3 <-> E2
 
-#define TEMP_3_PIN                          PA3   // T4 <-> E3
-#define TEMP_4_PIN                          PF9   // T5 <-> E4
-#define TEMP_5_PIN                          PF10  // T6 <-> E5
-#define TEMP_6_PIN                          PF7   // T7 <-> E6
-#define TEMP_7_PIN                          PF5   // T8 <-> E7
+// myconfig: disable temp sensors on M5 board
+// #define TEMP_3_PIN                          PA3   // T4 <-> E3
+// #define TEMP_4_PIN                          PF9   // T5 <-> E4
+// #define TEMP_5_PIN                          PF10  // T6 <-> E5
+// #define TEMP_6_PIN                          PF7   // T7 <-> E6
+// #define TEMP_7_PIN                          PF5   // T8 <-> E7
 
 #define TEMP_BED_PIN                        PC0   // T0 <-> Bed
 
@@ -262,11 +264,12 @@
 #define HEATER_1_PIN                        PA1   // Heater1
 #define HEATER_2_PIN                        PB0   // Heater2
 
-#define HEATER_3_PIN                        PD15  // Heater3
-#define HEATER_4_PIN                        PD13  // Heater4
-#define HEATER_5_PIN                        PD12  // Heater5
-#define HEATER_6_PIN                        PE13  // Heater6
-#define HEATER_7_PIN                        PI6   // Heater7
+// myconfig: disable heaters on M5 board
+// #define HEATER_3_PIN                        PD15  // Heater3
+// #define HEATER_4_PIN                        PD13  // Heater4
+// #define HEATER_5_PIN                        PD12  // Heater5
+// #define HEATER_6_PIN                        PE13  // Heater6
+// #define HEATER_7_PIN                        PI6   // Heater7
 
 #define HEATER_BED_PIN                      PA2   // Hotbed
 
@@ -274,9 +277,10 @@
 #define FAN1_PIN                            PE6   // Fan1
 #define FAN2_PIN                            PC8   // Fan2
 
-#define FAN3_PIN                            PI5   // Fan3
-#define FAN4_PIN                            PE9   // Fan4
-#define FAN5_PIN                            PE11  // Fan5
+// myconfig: disable fans on M5 board
+//#define FAN3_PIN                            PI5   // Fan3
+//#define FAN4_PIN                            PE9   // Fan4
+//#define FAN5_PIN                            PE11  // Fan5
 //#define FAN6_PIN                          PC9   // Fan6
 //#define FAN7_PIN                          PE14  // Fan7
 
