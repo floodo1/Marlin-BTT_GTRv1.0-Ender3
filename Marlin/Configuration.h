@@ -602,7 +602,10 @@
  * Note: For Bowden Extruders make this large enough to allow load/unload.
  */
 #define PREVENT_LENGTHY_EXTRUDE
-#define EXTRUDE_MAXLENGTH 1000 // per marlin config example for Ender3 v2
+// per marlin config example for Ender3 v2:
+// #define EXTRUDE_MAXLENGTH 1000
+// per marlin config example skr e3 mini v2 Ender3
+#define EXTRUDE_MAXLENGTH 600
 
 //===========================================================================
 //======================== Thermal Runaway Protection =======================
@@ -623,7 +626,7 @@
 
 #define THERMAL_PROTECTION_HOTENDS // Enable thermal protection for all extruders
 #define THERMAL_PROTECTION_BED     // Enable thermal protection for the heated bed
-// per marlin config example for Ender3 v2:
+// per marlin config example for Ender3 v2: commented
 // #define THERMAL_PROTECTION_CHAMBER // Enable thermal protection for the heated chamber
 
 //===========================================================================
@@ -691,6 +694,7 @@
 #define X_MAX_ENDSTOP_INVERTING false // Set to true to invert the logic of the endstop.
 #define Y_MAX_ENDSTOP_INVERTING false // Set to true to invert the logic of the endstop.
 #define Z_MAX_ENDSTOP_INVERTING false // Set to true to invert the logic of the endstop.
+// NOTE: true per https://github.com/talldonkey/Marlin-2.0-Ender-3-SKR-1.3/blob/2.0.x-Ender-3-SKR-1.3/Marlin/Configuration.h
 #define Z_MIN_PROBE_ENDSTOP_INVERTING false // Set to true to invert the logic of the probe.
 
 /**
@@ -819,6 +823,7 @@
 // #define DEFAULT_ACCELERATION          3000    // X, Y, Z and E acceleration for printing moves
 // #define DEFAULT_RETRACT_ACCELERATION  3000    // E acceleration for retracts
 // #define DEFAULT_TRAVEL_ACCELERATION   3000    // X, Y, Z acceleration for travel (non printing) moves
+// can go as high as 1250 per https://github.com/talldonkey/Marlin-2.0-Ender-3-SKR-1.3/blob/2.0.x-Ender-3-SKR-1.3/Marlin/Configuration.h
 #define DEFAULT_ACCELERATION          500    // X, Y, Z and E acceleration for printing moves
 #define DEFAULT_RETRACT_ACCELERATION  500    // E acceleration for retracts
 // per marlin config example for Ender3: change default 1000 to 500
@@ -1038,7 +1043,9 @@
 
 // Most probes should stay away from the edges of the bed, but
 // with NOZZLE_AS_PROBE this can be negative for a wider probing area.
-#define PROBING_MARGIN 10
+// #define PROBING_MARGIN 10
+// myconfig: extra margin
+#define PROBING_MARGIN 20
 
 // X and Y axis travel speed (mm/min) between probes
 // #define XY_PROBE_SPEED (133*60)  // 133*60=7980
@@ -1146,8 +1153,8 @@
 // Invert the stepper direction. Change (or reverse the motor connector) if an axis goes the wrong way.
 // per marlin config example for Ender3:
 #define INVERT_X_DIR true
-#define INVERT_Y_DIR true  // per marlin config example for Ender3 v2:
-#define INVERT_Z_DIR false // per marlin config example for Ender3 v2:
+#define INVERT_Y_DIR true
+#define INVERT_Z_DIR false
 // per marlin config example for Ender3 v2:
 // #define INVERT_X_DIR false
 // #define INVERT_Y_DIR false
@@ -1189,6 +1196,8 @@
 #define Y_BED_SIZE 220  // per marlin config example for Ender3 v2:
 
 // Travel limits (mm) after homing, corresponding to endstop positions.
+// can be negative, per https://github.com/talldonkey/Marlin-2.0-Ender-3-SKR-1.3/blob/2.0.x-Ender-3-SKR-1.3/Marlin/Configuration.h
+// myconfig TODO set these to correct negative values for end stops
 #define X_MIN_POS 0
 #define Y_MIN_POS 0
 #define Z_MIN_POS 0
@@ -1222,7 +1231,8 @@
 #endif
 
 #if EITHER(MIN_SOFTWARE_ENDSTOPS, MAX_SOFTWARE_ENDSTOPS)
-  //#define SOFT_ENDSTOPS_MENU_ITEM  // Enable/Disable software endstops from the LCD
+  // myconfig
+  #define SOFT_ENDSTOPS_MENU_ITEM  // Enable/Disable software endstops from the LCD
 #endif
 
 /**
@@ -1418,7 +1428,8 @@
 #endif
 
 // Add a menu item to move between bed corners for manual bed adjustment
-//#define LEVEL_BED_CORNERS
+// per https://blog.gruby.com/2020/01/05/installing-a-bltouch-on-an-ender-3-pro/
+#define LEVEL_BED_CORNERS
 
 #if ENABLED(LEVEL_BED_CORNERS)
   #define LEVEL_CORNERS_INSET_LFRB { 30, 30, 30, 30 } // (mm) Left, Front, Right, Back insets
@@ -1607,6 +1618,7 @@
 
 #if ENABLED(NOZZLE_PARK_FEATURE)
   // Specify a park position as { X, Y, Z_raise }
+  // default here is "back left" per https://github.com/talldonkey/Marlin-2.0-Ender-3-SKR-1.3/blob/2.0.x-Ender-3-SKR-1.3/Marlin/Configuration.h
   #define NOZZLE_PARK_POINT { (X_MIN_POS + 10), (Y_MAX_POS - 10), 20 }
   //#define NOZZLE_PARK_X_ONLY          // X move only is required to park
   //#define NOZZLE_PARK_Y_ONLY          // Y move only is required to park
