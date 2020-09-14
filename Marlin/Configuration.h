@@ -252,6 +252,7 @@
 #define ENDSTOPPULLUPS
 
 // Mechanical endstop with COM to ground and NC to Signal uses "false" here (most common setup).
+// myconfig: confirmed false for X,Y,Z endstop via M119
 #define X_MIN_ENDSTOP_INVERTING false // Set to true to invert the logic of the endstop.
 #define Y_MIN_ENDSTOP_INVERTING false // Set to true to invert the logic of the endstop.
 #define Z_MIN_ENDSTOP_INVERTING false // Set to true to invert the logic of the endstop.
@@ -260,7 +261,8 @@
 #define Z_MAX_ENDSTOP_INVERTING false // Set to true to invert the logic of the endstop.
 // NOTE: true per https://github.com/talldonkey/Marlin-2.0-Ender-3-SKR-1.3/blob/2.0.x-Ender-3-SKR-1.3/Marlin/Configuration.h
 // per ender3 stock firmware github: false
-#define Z_MIN_PROBE_ENDSTOP_INVERTING false // Set to true to invert the logic of the probe.
+// true per https://github.com/MarlinFirmware/Marlin/issues/13345
+#define Z_MIN_PROBE_ENDSTOP_INVERTING true // Set to true to invert the logic of the probe.
 
 #define X_DRIVER_TYPE  TMC2208
 #define Y_DRIVER_TYPE  TMC2208
@@ -268,6 +270,20 @@
 #define E0_DRIVER_TYPE TMC2208
 //#define E1_DRIVER_TYPE TMC2208
 //#define E2_DRIVER_TYPE TMC2208
+
+/**
+ * Endstop Noise Threshold
+ *
+ * Enable if your probe or endstops falsely trigger due to noise.
+ *
+ * - Higher values may affect repeatability or accuracy of some bed probes.
+ * - To fix noise install a 100nF ceramic capacitor in parallel with the switch.
+ * - This feature is not required for common micro-switches mounted on PCBs
+ *   based on the Makerbot design, which already have the 100nF capacitor.
+ *
+ * :[2,3,4,5,6,7]
+ */
+#define ENDSTOP_NOISE_THRESHOLD 2
 
 //=============================================================================
 //============================== Movement Settings ============================
@@ -354,7 +370,8 @@
 // @section probes
 // See https://marlinfw.org/docs/configuration/probes.html
 
-#define BLTOUCH
+// myconfig: temporarily disable bltouch
+// #define BLTOUCH
 
 /**
  * Nozzle-to-Probe offsets { X, Y, Z }
@@ -436,7 +453,8 @@
 #define Z_PROBE_OFFSET_RANGE_MIN -20
 #define Z_PROBE_OFFSET_RANGE_MAX 20
 
-#define Z_MIN_PROBE_REPEATABILITY_TEST  // enable M48
+// myconfig: enable
+// #define Z_MIN_PROBE_REPEATABILITY_TEST  // enable M48
 
 // Before deploy/stow pause for user confirmation
 //#define PAUSE_BEFORE_DEPLOY_STOW
@@ -524,8 +542,10 @@
 // for discussion about endstops off the bed see https://github.com/MarlinFirmware/Marlin/issues/17158
 // can be negative, per https://github.com/talldonkey/Marlin-2.0-Ender-3-SKR-1.3/blob/2.0.x-Ender-3-SKR-1.3/Marlin/Configuration.h
 // myconfig: compensate for endstops off the bed (-5,-15 per stored M206 values reported by M503 from our Ender3 with stock board)
-#define X_MIN_POS -5
-#define Y_MIN_POS -15
+// #define X_MIN_POS -5
+// #define Y_MIN_POS -15
+#define X_MIN_POS 0
+#define Y_MIN_POS 0
 #define Z_MIN_POS 0
 #define X_MAX_POS X_BED_SIZE
 #define Y_MAX_POS Y_BED_SIZE
@@ -636,7 +656,8 @@
 //#define AUTO_BED_LEVELING_3POINT
 //#define AUTO_BED_LEVELING_LINEAR
 //#define AUTO_BED_LEVELING_BILINEAR
-#define AUTO_BED_LEVELING_UBL
+// myconfig: temporarily disable bed levelling
+// #define AUTO_BED_LEVELING_UBL
 //#define MESH_BED_LEVELING
 
 /**
@@ -780,6 +801,8 @@
 // values can be changed with M206
 // better to use X_MIN_POS and Y_MIN_POS per https://github.com/MarlinFirmware/Marlin/issues/17158
 // compile error unless defined
+// #define MANUAL_X_HOME_POS -5.0
+// #define MANUAL_Y_HOME_POS -15.0
 #define MANUAL_X_HOME_POS 0
 #define MANUAL_Y_HOME_POS 0
 #define MANUAL_Z_HOME_POS 0
@@ -798,7 +821,7 @@
 // - Move the Z probe (or nozzle) to a defined XY point before Z Homing.
 // - Prevent Z homing when the Z probe is outside bed area.
 //
-#define Z_SAFE_HOMING
+// #define Z_SAFE_HOMING
 
 #if ENABLED(Z_SAFE_HOMING)
   // #define Z_SAFE_HOMING_X_POINT X_CENTER  // X point for Z homing

@@ -56,6 +56,7 @@
 #define Z_MIN_PIN                           PE0
 #define Z_MAX_PIN                           PD3
 
+
 //
 // Pins on the extender
 //
