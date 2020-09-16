@@ -49,12 +49,12 @@
 //
 // Limit Switches
 //
-#define X_MIN_PIN                           PF2
-#define X_MAX_PIN                           PG14
-#define Y_MIN_PIN                           PC13
-#define Y_MAX_PIN                           PG9
-#define Z_MIN_PIN                           PE0
-#define Z_MAX_PIN                           PD3
+#define X_MIN_PIN                           PD3 /* use zmax on board */  // PF2
+//#define X_MAX_PIN                           PG14 // PG14
+#define Y_MIN_PIN                           PC13 // PC13
+//#define Y_MAX_PIN                           PG9  // PG9
+#define Z_MIN_PIN                           PE0  // PE0
+//#define Z_MAX_PIN                           PD3  // PD3
 
 
 //
