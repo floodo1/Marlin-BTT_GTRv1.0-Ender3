@@ -127,10 +127,15 @@
   //#define PID_PARAMS_PER_HOTEND // Uses separate PID parameters for each extruder (useful for mismatched extruders)
                                   // Set/get with gcode: M301 E[extruder number, 0-2]
 
+  // calibrated "M303 C10 E0 S220 U1"
+  #define DEFAULT_Kp 32.69
+  #define DEFAULT_Ki 3.82
+  #define DEFAULT_Kd 69.96
+  
   // per stock ender3 firmware (confirmed with M503):
-  #define DEFAULT_Kp 23.81
-  #define DEFAULT_Ki 1.93
-  #define DEFAULT_Kd 73.64
+  // #define DEFAULT_Kp 23.81
+  // #define DEFAULT_Ki 1.93
+  // #define DEFAULT_Kd 73.64
 
   // per stock ender3 firmware github
   // Stock CR-10S Hotend fan 100%
@@ -169,7 +174,7 @@
  * the issues involved, don't use bed PID until someone else verifies that your hardware works.
  */
 // per marlin config example for Ender3: comment this
-// #define PIDTEMPBED  // per marlin config example for Ender3 v2
+#define PIDTEMPBED  // per marlin config example for Ender3 v2
 
 //#define BED_LIMIT_SWITCHING
 
@@ -182,8 +187,18 @@
 #define MAX_BED_POWER 255 // limits duty cycle to bed; 255=full current
 
 #if ENABLED(PIDTEMPBED)
-  //#define MIN_BED_POWER 0
+  #define MIN_BED_POWER 0
   //#define PID_BED_DEBUG // Sends debug data to the serial port.
+
+  // recalibrated with "M303 C12 E-1 S80 U1"
+  #define DEFAULT_bedKp 116.48
+  #define DEFAULT_bedKi 17.33
+  #define DEFAULT_bedKd 521.83
+
+  // calibrated with "M303 C10 E-1 S80 U1"
+  // #define DEFAULT_bedKp 138.16
+  // #define DEFAULT_bedKi 24.32
+  // #define DEFAULT_bedKd 523.15
 
   // per marlin config example for Ender3 v2
   // #define DEFAULT_bedKp 462.10
@@ -202,7 +217,10 @@
   //#define DEFAULT_bedKi 1.41
   //#define DEFAULT_bedKd 1675.16
 
-  // FIND YOUR OWN: "M303 E-1 C8 S90" to run autotune on the bed at 90 degreesC for 8 cycles.
+    // FIND YOUR OWN: "M303 E-1 C8 S90" to run autotune on the bed at 90 degreesC for 8 cycles.
+  // #define DEFAULT_bedKp 50.71
+  // #define DEFAULT_bedKi 9.88
+  // #define DEFAULT_bedKd 173.43
 #endif // PIDTEMPBED
 
 #if EITHER(PIDTEMP, PIDTEMPBED)
@@ -294,7 +312,7 @@
 //                                      X, Y, Z, E0 [, E1[, E2...]]
 // guide on calculating = https://www.youtube.com/watch?v=eBUYLZ2TODw
 // per stock ender3 firmware (confirmed with M503): also per Ender3 and Ender3 v2 config examples
-#define DEFAULT_AXIS_STEPS_PER_UNIT   { 80, 80, 400, 93 }
+#define DEFAULT_AXIS_STEPS_PER_UNIT   { 80, 80, 400, 102.7 }
 
 // per stock ender3 firmware (confirmed with M503): also per Ender3 and Ender3 v2 config examples
 //                                      X, Y, Z, E0 [, E1[, E2...]]
