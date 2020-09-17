@@ -30,7 +30,7 @@
 
 // @section info
 
-#define STRING_CONFIG_H_AUTHOR "Ender3 GTR config" // Who made the changes. printed to the host during boot and M115
+#define STRING_CONFIG_H_AUTHOR "(Ender3 GTR Marlin bugfix-advanced config)" // Who made the changes. printed to the host during boot and M115
 
 #define SHOW_CUSTOM_BOOTSCREEN  // on startup
 #define SHOW_BOOTSCREEN // marlin boot screen
@@ -39,7 +39,7 @@
 
 // @section machine
 
-#define CUSTOM_MACHINE_NAME "Ender3_GTR"  // Name displayed in the LCD "Ready" message and Info menu
+#define CUSTOM_MACHINE_NAME "Ender3 GTR AdvConf"  // Name displayed in the LCD "Ready" message and Info menu
 #define MACHINE_UUID "2f38eea3-4d29-44f3-9fac-517f905974e6"
 
 #ifndef MOTHERBOARD
@@ -283,7 +283,7 @@
  *
  * :[2,3,4,5,6,7]
  */
-#define ENDSTOP_NOISE_THRESHOLD 2
+//#define ENDSTOP_NOISE_THRESHOLD 2
 
 //=============================================================================
 //============================== Movement Settings ============================
@@ -371,7 +371,7 @@
 // See https://marlinfw.org/docs/configuration/probes.html
 
 // myconfig: temporarily disable bltouch
-// #define BLTOUCH
+#define BLTOUCH
 
 /**
  * Nozzle-to-Probe offsets { X, Y, Z }
@@ -454,7 +454,7 @@
 #define Z_PROBE_OFFSET_RANGE_MAX 20
 
 // myconfig: enable
-// #define Z_MIN_PROBE_REPEATABILITY_TEST  // enable M48
+#define Z_MIN_PROBE_REPEATABILITY_TEST  // enable M48
 
 // Before deploy/stow pause for user confirmation
 //#define PAUSE_BEFORE_DEPLOY_STOW
@@ -535,8 +535,8 @@
 
 // @section machine
 // The size of the print bed
-#define X_BED_SIZE 220
-#define Y_BED_SIZE 220
+#define X_BED_SIZE 235
+#define Y_BED_SIZE 235
 
 // Travel limits (mm) after homing, corresponding to endstop positions.
 // for discussion about endstops off the bed see https://github.com/MarlinFirmware/Marlin/issues/17158
@@ -544,8 +544,8 @@
 // myconfig: compensate for endstops off the bed (-5,-15 per stored M206 values reported by M503 from our Ender3 with stock board)
 // #define X_MIN_POS -5
 // #define Y_MIN_POS -15
-#define X_MIN_POS 0
-#define Y_MIN_POS 0
+#define X_MIN_POS -2
+#define Y_MIN_POS -8
 #define Z_MIN_POS 0
 #define X_MAX_POS X_BED_SIZE
 #define Y_MAX_POS Y_BED_SIZE
@@ -577,8 +577,7 @@
 #endif
 
 #if EITHER(MIN_SOFTWARE_ENDSTOPS, MAX_SOFTWARE_ENDSTOPS)
-  // myconfig
-  #define SOFT_ENDSTOPS_MENU_ITEM  // Enable/Disable software endstops from the LCD
+  // #define SOFT_ENDSTOPS_MENU_ITEM  // Enable/Disable software endstops from the LCD
 #endif
 
 /**
@@ -657,7 +656,7 @@
 //#define AUTO_BED_LEVELING_LINEAR
 //#define AUTO_BED_LEVELING_BILINEAR
 // myconfig: temporarily disable bed levelling
-// #define AUTO_BED_LEVELING_UBL
+#define AUTO_BED_LEVELING_UBL
 //#define MESH_BED_LEVELING
 
 /**
@@ -823,14 +822,16 @@
 // - Move the Z probe (or nozzle) to a defined XY point before Z Homing.
 // - Prevent Z homing when the Z probe is outside bed area.
 //
-// #define Z_SAFE_HOMING
+#define Z_SAFE_HOMING
 
 #if ENABLED(Z_SAFE_HOMING)
   // #define Z_SAFE_HOMING_X_POINT X_CENTER  // X point for Z homing
   // #define Z_SAFE_HOMING_Y_POINT Y_CENTER  // Y point for Z homing
   // myconfig: make sure to home z OFF the bed (near X/Y endstops)
-  #define Z_SAFE_HOMING_X_POINT (MANUAL_X_HOME_POS+1)  // X point for Z homing
-  #define Z_SAFE_HOMING_Y_POINT (MANUAL_Y_HOME_POS+1)  // Y point for Z homing
+  //#define Z_SAFE_HOMING_X_POINT (MANUAL_X_HOME_POS+0)  // X point for Z homing
+  //#define Z_SAFE_HOMING_Y_POINT (MANUAL_Y_HOME_POS+1)  // Y point for Z homing
+  #define Z_SAFE_HOMING_X_POINT X_MIN_POS
+  #define Z_SAFE_HOMING_Y_POINT Y_MIN_POS
 #endif
 
 // Homing speeds (mm/min)
@@ -983,7 +984,7 @@
  *    P1  Raise the nozzle always to Z-park height.
  *    P2  Raise the nozzle by Z-park amount, limited to Z_MAX_POS.
  */
-//#define NOZZLE_PARK_FEATURE
+#define NOZZLE_PARK_FEATURE
 
 #if ENABLED(NOZZLE_PARK_FEATURE)
   // Specify a park position as { X, Y, Z_raise }
@@ -1760,7 +1761,8 @@
 
 // Set number of user-controlled fans. Disable to use all board-defined fans.
 // :[1,2,3,4,5,6,7,8]
-//#define NUM_M106_FANS 1
+// myconfig
+#define NUM_M106_FANS 1
 
 // Increase the FAN PWM frequency. Removes the PWM noise but increases heating in the FET/Arduino
 //#define FAST_PWM_FAN

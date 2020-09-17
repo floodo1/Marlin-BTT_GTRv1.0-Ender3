@@ -274,9 +274,17 @@
 
 #define HEATER_BED_PIN                      PA2   // Hotbed
 
-#define FAN_PIN                             PE5   // Fan0
-#define FAN1_PIN                            PE6   // Fan1
-#define FAN2_PIN                            PC8   // Fan2
+// Use physical Fan0 pin for hotend1 fan
+// __see configuration_adv.h   #define E0_AUTO_FAN_PIN PE5  
+// Use physical Fan1 pin for Part Cooling Fan:
+#define FAN_PIN   PE6   // Fan1 port
+// Use physical Fan2 pin for controller fan (drivers)
+// __see configuration_adv.h   #define CONTROLLER_FAN_PIN PC8
+
+// Defaults:
+// #define FAN_PIN                             PE5   // Fan0
+// #define FAN1_PIN                            PE6   // Fan1
+// #define FAN2_PIN                            PC8   // Fan2
 
 // myconfig: disable fans on M5 board
 //#define FAN3_PIN                            PI5   // Fan3
