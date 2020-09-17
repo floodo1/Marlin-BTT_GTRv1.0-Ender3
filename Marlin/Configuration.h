@@ -39,7 +39,7 @@
 
 // @section machine
 
-#define CUSTOM_MACHINE_NAME "Ender3 GTR AdvConf"  // Name displayed in the LCD "Ready" message and Info menu
+#define CUSTOM_MACHINE_NAME "Ender3 GTR Adv"  // Name displayed in the LCD "Ready" message and Info menu
 #define MACHINE_UUID "2f38eea3-4d29-44f3-9fac-517f905974e6"
 
 #ifndef MOTHERBOARD
@@ -535,8 +535,8 @@
 
 // @section machine
 // The size of the print bed
-#define X_BED_SIZE 235
-#define Y_BED_SIZE 235
+#define X_BED_SIZE 228
+#define Y_BED_SIZE 231
 
 // Travel limits (mm) after homing, corresponding to endstop positions.
 // for discussion about endstops off the bed see https://github.com/MarlinFirmware/Marlin/issues/17158
