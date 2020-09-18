@@ -422,9 +422,16 @@
  *     |    [-]    |
  *     O-- FRONT --+
  */
-#define NOZZLE_TO_PROBE_OFFSET { -40, -12, -1.4 }  // for this BLTouch bracket https://www.thingiverse.com/thing:3584158
+// confirmed by homing to z endstop (z=0) then using G30 to probe and check z offset.
+#define MYCONFIG_PROBE_OFFSET_X -40
+#define MYCONFIG_PROBE_OFFSET_Y -12
+#define NOZZLE_TO_PROBE_OFFSET { MYCONFIG_PROBE_OFFSET_X, MYCONFIG_PROBE_OFFSET_Y, -1.4 }  // for this BLTouch bracket https://www.thingiverse.com/thing:3584158
 
-#define PROBING_MARGIN 20
+// see this discussion about UBL mesh generation https://github.com/MarlinFirmware/Marlin/issues/15933
+// myyconfig: when this is set too small (i.e. 14) then UBL can attempt to probe a mesh point near the edge which cause nozzle crash into clip!!!
+// myconfig: therefore, set to clip size + probe offset
+#define MYCONFIG_FRONTBACK_CLIP_MARGIN 14
+#define PROBING_MARGIN 25 // 10 for clips + 12 for probe offset + 3 buffer
 
 // X and Y axis travel speed (mm/min) between probes
 // per marlin config example for Ender3, v2 has (50*60)
@@ -443,7 +450,8 @@
  * A total of 2 does fast/slow probes with a weighted average.
  * A total of 3 or more adds more slow probes, taking the average.
  */
-#define MULTIPLE_PROBING 2
+// myconfig
+//#define MULTIPLE_PROBING 2
 //#define EXTRA_PROBING    1
 
 /**
@@ -460,6 +468,7 @@
  * Example: `M851 Z-5` with a CLEARANCE of 4  =>  9mm from bed to nozzle.
  *     But: `M851 Z+1` with a CLEARANCE of 2  =>  2mm from bed to nozzle.
  */
+// myconfig: DO NOT SET DEPLOY CLEARANCE <10 and BETWEEN/MULTI <5
 #define Z_CLEARANCE_DEPLOY_PROBE   10 // Z Clearance for Deploy/Stow
 #define Z_CLEARANCE_BETWEEN_PROBES  5 // Z Clearance between probe points
 #define Z_CLEARANCE_MULTI_PROBE     5 // Z Clearance between multiple probes
@@ -757,10 +766,12 @@
   //========================= Unified Bed Leveling ============================
   //===========================================================================
 
-  //#define MESH_EDIT_GFX_OVERLAY   // Display a graphics overlay while editing the mesh
+  #define MESH_EDIT_GFX_OVERLAY   // Display a graphics overlay while editing the mesh
 
-  #define MESH_INSET 1              // Set Mesh bounds as an inset region of the bed
-  #define GRID_MAX_POINTS_X 10      // Don't use more than 15 points per axis, implementation limited.
+  // myconfig: set this to be clip size (10mm) + buffer (5mm) ... if larger than PROBING_MARGIN then G29 shouldn't require manual steps
+  #define MESH_INSET 26              // Set Mesh bounds as an inset region of the bed
+  // myconfig: start with 7, up to 10 once UBL is known good
+  #define GRID_MAX_POINTS_X 5      // Don't use more than 15 points per axis, implementation limited.
   #define GRID_MAX_POINTS_Y GRID_MAX_POINTS_X
 
   #define UBL_MESH_EDIT_MOVES_Z     // Sophisticated users prefer no movement of nozzle
