@@ -277,10 +277,11 @@
 #define X_MAX_ENDSTOP_INVERTING false // Set to true to invert the logic of the endstop.
 #define Y_MAX_ENDSTOP_INVERTING false // Set to true to invert the logic of the endstop.
 #define Z_MAX_ENDSTOP_INVERTING false // Set to true to invert the logic of the endstop.
+// myconfig: use false which is what "M43 S" reports and yields succesful test.
 // NOTE: true per https://github.com/talldonkey/Marlin-2.0-Ender-3-SKR-1.3/blob/2.0.x-Ender-3-SKR-1.3/Marlin/Configuration.h
 // per ender3 stock firmware github: false
 // true per https://github.com/MarlinFirmware/Marlin/issues/13345
-#define Z_MIN_PROBE_ENDSTOP_INVERTING true // Set to true to invert the logic of the probe.
+#define Z_MIN_PROBE_ENDSTOP_INVERTING false // Set to true to invert the logic of the probe.
 
 #define X_DRIVER_TYPE  TMC2208
 #define Y_DRIVER_TYPE  TMC2208
@@ -421,7 +422,7 @@
  *     |    [-]    |
  *     O-- FRONT --+
  */
-#define NOZZLE_TO_PROBE_OFFSET { 10, 10, 0 }
+#define NOZZLE_TO_PROBE_OFFSET { -40, -12, -1.4 }  // for this BLTouch bracket https://www.thingiverse.com/thing:3584158
 
 #define PROBING_MARGIN 20
 
@@ -442,7 +443,7 @@
  * A total of 2 does fast/slow probes with a weighted average.
  * A total of 3 or more adds more slow probes, taking the average.
  */
-//#define MULTIPLE_PROBING 2
+#define MULTIPLE_PROBING 2
 //#define EXTRA_PROBING    1
 
 /**
@@ -464,12 +465,13 @@
 #define Z_CLEARANCE_MULTI_PROBE     5 // Z Clearance between multiple probes
 //#define Z_AFTER_PROBING           5 // Z position after probing is done
 
-#define Z_PROBE_LOW_POINT          -2 // Farthest distance below the trigger-point to go before stopping
+// myconfig: use 1mm, default -2
+#define Z_PROBE_LOW_POINT          -1 // Farthest distance below the trigger-point to go before stopping
 
 // For M851 give a range for adjusting the Z probe offset
 // per marlin config example for Ender3:  vs has -10 and 10
-#define Z_PROBE_OFFSET_RANGE_MIN -20
-#define Z_PROBE_OFFSET_RANGE_MAX 20
+#define Z_PROBE_OFFSET_RANGE_MIN -10
+#define Z_PROBE_OFFSET_RANGE_MAX 10
 
 // myconfig: enable
 #define Z_MIN_PROBE_REPEATABILITY_TEST  // enable M48

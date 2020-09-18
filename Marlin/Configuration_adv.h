@@ -1623,8 +1623,9 @@
   // #define BABYSTEP_MULTIPLICATOR_Z  1       // (steps or mm) Steps or millimeter distance for each Z babystep
   // #define BABYSTEP_MULTIPLICATOR_XY 1       // (steps or mm) Steps or millimeter distance for each XY babystep
   // per marlin stock firmware github: 40
-  #define BABYSTEP_MULTIPLICATOR_Z  40       // (steps or mm) Steps or millimeter distance for each Z babystep
-  #define BABYSTEP_MULTIPLICATOR_XY 40       // (steps or mm) Steps or millimeter distance for each XY babystep
+  // myconfig 
+  #define BABYSTEP_MULTIPLICATOR_Z  4       // (steps or mm) Steps or millimeter distance for each Z babystep
+  #define BABYSTEP_MULTIPLICATOR_XY 4       // (steps or mm) Steps or millimeter distance for each XY babystep
   // per marlin config example for Ender3: uncommented
   #define DOUBLECLICK_FOR_Z_BABYSTEPPING    // Double-click on the Status Screen for Z Babystepping.
   #if ENABLED(DOUBLECLICK_FOR_Z_BABYSTEPPING)
