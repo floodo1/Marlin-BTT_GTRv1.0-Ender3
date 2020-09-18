@@ -422,10 +422,10 @@
  *     |    [-]    |
  *     O-- FRONT --+
  */
-// confirmed by homing to z endstop (z=0) then using G30 to probe and check z offset.
+// confirmed by homing to z endstop (z=0), zeroing nozzle at x42 y42 then using G30 E X42 Y42 to probe and check z offset.
 #define MYCONFIG_PROBE_OFFSET_X -40
 #define MYCONFIG_PROBE_OFFSET_Y -12
-#define NOZZLE_TO_PROBE_OFFSET { MYCONFIG_PROBE_OFFSET_X, MYCONFIG_PROBE_OFFSET_Y, -1.4 }  // for this BLTouch bracket https://www.thingiverse.com/thing:3584158
+#define NOZZLE_TO_PROBE_OFFSET { MYCONFIG_PROBE_OFFSET_X, MYCONFIG_PROBE_OFFSET_Y, -1.8 }  // for this BLTouch bracket https://www.thingiverse.com/thing:3584158
 
 // see this discussion about UBL mesh generation https://github.com/MarlinFirmware/Marlin/issues/15933
 // myyconfig: when this is set too small (i.e. 14) then UBL can attempt to probe a mesh point near the edge which cause nozzle crash into clip!!!
