@@ -29,7 +29,6 @@
 
 
 // @section info
-
 #define STRING_CONFIG_H_AUTHOR "(Ender3 GTR Marlin bugfix-advanced config)" // Who made the changes. printed to the host during boot and M115
 
 #define SHOW_CUSTOM_BOOTSCREEN  // on startup
@@ -38,7 +37,6 @@
 
 
 // @section machine
-
 #define CUSTOM_MACHINE_NAME "Ender3 GTR Adv"  // Name displayed in the LCD "Ready" message and Info menu
 #define MACHINE_UUID "2f38eea3-4d29-44f3-9fac-517f905974e6"
 
@@ -52,7 +50,6 @@
 
 
 // @section extruder
-
 #define EXTRUDERS 1
 #define DEFAULT_NOMINAL_FILAMENT_DIA 1.75 // (1.75, 2.85, 3.0, ...). Used for Volumetric, Filament Width Sensor, etc.
 
@@ -60,7 +57,6 @@
 
 
 // @section temperature
-
 #define TEMP_SENSOR_0 1
 #define TEMP_SENSOR_1 0
 #define TEMP_SENSOR_2 0
@@ -115,45 +111,26 @@
 //============================= PID Settings ================================
 //===========================================================================
 // PID Tuning Guide here: https://reprap.org/wiki/PID_Tuning
-#define PIDTEMP // Comment to disable PID and enable bang-bang.
+#define PIDTEMP          // Comment to disable PID and enable bang-bang.
 #define BANG_MAX 255     // Limits current to nozzle while in bang-bang mode; 255=full current
 #define PID_MAX BANG_MAX // Limits current to nozzle while PID is active (see PID_FUNCTIONAL_RANGE below); 255=full current
 #define PID_K1 0.95      // Smoothing factor within any PID loop
 
 #if ENABLED(PIDTEMP)
-  //#define PID_EDIT_MENU         // Add PID editing to the "Advanced Settings" menu. (~700 bytes of PROGMEM)
-  // myconfig:
   #define PID_AUTOTUNE_MENU     // Add PID auto-tuning to the "Advanced Settings" menu. (~250 bytes of PROGMEM)
-  //#define PID_PARAMS_PER_HOTEND // Uses separate PID parameters for each extruder (useful for mismatched extruders)
-                                  // Set/get with gcode: M301 E[extruder number, 0-2]
 
   // calibrated "M303 C10 E0 S220 U1"
   #define DEFAULT_Kp 32.69
   #define DEFAULT_Ki 3.82
   #define DEFAULT_Kd 69.96
-  
-  // per stock ender3 firmware (confirmed with M503):
-  // #define DEFAULT_Kp 23.81
-  // #define DEFAULT_Ki 1.93
-  // #define DEFAULT_Kd 73.64
-
-  // per stock ender3 firmware github
-  // Stock CR-10S Hotend fan 100%
-  // #define  DEFAULT_Kp 20.84
-  // #define  DEFAULT_Ki 1.96
-  // #define  DEFAULT_Kd 55.47
-
-  // per marlin config example for Ender3
-  // Creality Ender-3
-  // #define DEFAULT_Kp 21.73
-  // #define DEFAULT_Ki 1.54
-  // #define DEFAULT_Kd 76.55
-
-  // per marlin config example for Ender3 v2
-  // Ender 3 v2
-  // #define DEFAULT_Kp 28.72
-  // #define DEFAULT_Ki 2.62
-  // #define DEFAULT_Kd 78.81
+  /*  Source                            Kp      Ki      Kd
+   *  -------------------------------   -----   ----    -----
+   *  calibrated "M303 C10 E0 S220 U1"  32.69   3.82    69.96   // 20200917
+   *  Stock ender3 firmware (M503)      23.81   1.93    73.64
+   *  Stock ender3 firwmare github      20.84   1.96    55.47   // "Stock CR-10S Hotend fan 100%"
+   *  Marlin ender3 config example      21.73   1.54    76.55
+   *  Marlin ender3 v2 config example   28.72   2.62    78.81
+   */
 #endif // PIDTEMP
 
 //===========================================================================
@@ -173,10 +150,8 @@
  * heater. If your configuration is significantly different than this and you don't understand
  * the issues involved, don't use bed PID until someone else verifies that your hardware works.
  */
-// per marlin config example for Ender3: comment this
-#define PIDTEMPBED  // per marlin config example for Ender3 v2
+#define PIDTEMPBED
 
-//#define BED_LIMIT_SWITCHING
 
 /**
  * Max Bed Power
@@ -195,32 +170,14 @@
   #define DEFAULT_bedKi 17.33
   #define DEFAULT_bedKd 521.83
 
-  // calibrated with "M303 C10 E-1 S80 U1"
-  // #define DEFAULT_bedKp 138.16
-  // #define DEFAULT_bedKi 24.32
-  // #define DEFAULT_bedKd 523.15
-
-  // per marlin config example for Ender3 v2
-  // #define DEFAULT_bedKp 462.10
-  // #define DEFAULT_bedKi 85.47
-  // #define DEFAULT_bedKd 624.59
-
-  //120V 250W silicone heater into 4mm borosilicate (MendelMax 1.5+)
-  //from FOPDT model - kp=.39 Tp=405 Tdead=66, Tc set to 79.2, aggressive factor of .15 (vs .1, 1, 10)
-  // #define DEFAULT_bedKp 10.00
-  // #define DEFAULT_bedKi .023
-  // #define DEFAULT_bedKd 305.4
-
-  //120V 250W silicone heater into 4mm borosilicate (MendelMax 1.5+)
-  //from pidautotune
-  //#define DEFAULT_bedKp 97.1
-  //#define DEFAULT_bedKi 1.41
-  //#define DEFAULT_bedKd 1675.16
-
-    // FIND YOUR OWN: "M303 E-1 C8 S90" to run autotune on the bed at 90 degreesC for 8 cycles.
-  // #define DEFAULT_bedKp 50.71
-  // #define DEFAULT_bedKi 9.88
-  // #define DEFAULT_bedKd 173.43
+  /*  Source                            Kp      Ki      Kd
+   *  -------------------------------   ------  -----   ------
+   *  calibrated "M303 C12 E-1 S80 U1"  116.48  17.33   521.83  // 20200917
+   *  calibrated "M303 C10 E-1 S80 U1"  138.16  24.32   523.15   // 20200917
+   *  Stock ender3 firmware (M503)      disabled
+   *  Marlin ender3 v2 config example   462.10  85.47   624.59
+   *  FIND YOUR OWN: "M303 E-1 C8 S90" to run autotune on the bed at 90 degreesC for 8 cycles.
+   */
 #endif // PIDTEMPBED
 
 #if EITHER(PIDTEMP, PIDTEMPBED)
@@ -234,20 +191,13 @@
 
 // @section extruder
 
-/**
- * Prevent extrusion if the temperature is below EXTRUDE_MINTEMP.
- * Add M302 to set the minimum extrusion temperature and/or turn cold extrusion prevention on and off.
- * *** IT IS HIGHLY RECOMMENDED TO LEAVE THIS OPTION ENABLED! ***
- */
+// IT IS HIGHLY RECOMMENDED TO LEAVE THIS OPTION ENABLED! ***
 #define PREVENT_COLD_EXTRUSION
-#define EXTRUDE_MINTEMP 170 // per marlin config example for Ender3, v2 has 180
+// Add M302 to set the minimum extrusion temperature and/or turn cold extrusion prevention on and off.
+#define EXTRUDE_MINTEMP 170
 
-/**
- * Prevent a single extrusion longer than EXTRUDE_MAXLENGTH.
- * Note: For Bowden Extruders make this large enough to allow load/unload.
- */
 #define PREVENT_LENGTHY_EXTRUDE
-#define EXTRUDE_MAXLENGTH 200 // per marlin config example for Ender3, v2 has 1000, skr e3 mini V2 Ender3 has 600
+#define EXTRUDE_MAXLENGTH 200 /** NOTE: For Bowden Extruders make this large enough to allow load/unload. */
 
 //===========================================================================
 //======================== Thermal Runaway Protection =======================
@@ -270,18 +220,14 @@
 #define ENDSTOPPULLUPS
 
 // Mechanical endstop with COM to ground and NC to Signal uses "false" here (most common setup).
-// myconfig: confirmed false for X,Y,Z endstop via M119
-#define X_MIN_ENDSTOP_INVERTING false // Set to true to invert the logic of the endstop.
-#define Y_MIN_ENDSTOP_INVERTING false // Set to true to invert the logic of the endstop.
-#define Z_MIN_ENDSTOP_INVERTING false // Set to true to invert the logic of the endstop.
-#define X_MAX_ENDSTOP_INVERTING false // Set to true to invert the logic of the endstop.
-#define Y_MAX_ENDSTOP_INVERTING false // Set to true to invert the logic of the endstop.
-#define Z_MAX_ENDSTOP_INVERTING false // Set to true to invert the logic of the endstop.
-// myconfig: use false which is what "M43 S" reports and yields succesful test.
-// NOTE: true per https://github.com/talldonkey/Marlin-2.0-Ender-3-SKR-1.3/blob/2.0.x-Ender-3-SKR-1.3/Marlin/Configuration.h
-// per ender3 stock firmware github: false
-// true per https://github.com/MarlinFirmware/Marlin/issues/13345
-#define Z_MIN_PROBE_ENDSTOP_INVERTING false // Set to true to invert the logic of the probe.
+#define X_MIN_ENDSTOP_INVERTING false
+#define Y_MIN_ENDSTOP_INVERTING false
+#define Z_MIN_ENDSTOP_INVERTING false
+#define X_MAX_ENDSTOP_INVERTING false
+#define Y_MAX_ENDSTOP_INVERTING false
+#define Z_MAX_ENDSTOP_INVERTING false
+// myconfig: use false which is what "M43 S" reports and yields succesful test
+#define Z_MIN_PROBE_ENDSTOP_INVERTING false // BLTouch config might be overriding this to false anyway.
 
 #define X_DRIVER_TYPE  TMC2208
 #define Y_DRIVER_TYPE  TMC2208
@@ -289,20 +235,6 @@
 #define E0_DRIVER_TYPE TMC2208
 //#define E1_DRIVER_TYPE TMC2208
 //#define E2_DRIVER_TYPE TMC2208
-
-/**
- * Endstop Noise Threshold
- *
- * Enable if your probe or endstops falsely trigger due to noise.
- *
- * - Higher values may affect repeatability or accuracy of some bed probes.
- * - To fix noise install a 100nF ceramic capacitor in parallel with the switch.
- * - This feature is not required for common micro-switches mounted on PCBs
- *   based on the Makerbot design, which already have the 100nF capacitor.
- *
- * :[2,3,4,5,6,7]
- */
-//#define ENDSTOP_NOISE_THRESHOLD 2
 
 //=============================================================================
 //============================== Movement Settings ============================
@@ -312,11 +244,7 @@
 // Default Axis Steps Per Unit (steps/mm). Override with M92
 //                                      X, Y, Z, E0 [, E1[, E2...]]
 // guide on calculating = https://www.youtube.com/watch?v=eBUYLZ2TODw
-// per stock ender3 firmware (confirmed with M503): also per Ender3 and Ender3 v2 config examples
 #define DEFAULT_AXIS_STEPS_PER_UNIT   { 80, 80, 400, 102.7 }
-
-// per stock ender3 firmware (confirmed with M503): also per Ender3 and Ender3 v2 config examples
-//                                      X, Y, Z, E0 [, E1[, E2...]]
 #define DEFAULT_MAX_FEEDRATE          { 500, 500, 5, 25 } // Override with M203
 
 //#define LIMITED_MAX_FR_EDITING        // Limit edit via M203 or LCD to DEFAULT_MAX_FEEDRATE * 2
@@ -324,10 +252,7 @@
   #define MAX_FEEDRATE_EDIT_VALUES    { 600, 600, 10, 50 } // ...or, set your own edit limits
 #endif
 
-// per stock ender3 firmware (confirmed with M503): also per Ender3 and Ender3 v2 config examples
-//                                       X, Y, Z, E0 [, E1[, E2...]]
 #define DEFAULT_MAX_ACCELERATION      { 500, 500, 100, 1000 } // Override with M201
-
 //#define LIMITED_MAX_ACCEL_EDITING     // Limit edit via M201 or LCD to DEFAULT_MAX_ACCELERATION * 2
 #if ENABLED(LIMITED_MAX_ACCEL_EDITING)
   #define MAX_ACCEL_EDIT_VALUES       { 6000, 6000, 200, 20000 } // ...or, set your own edit limits
@@ -336,47 +261,36 @@
 /**
  * Default Acceleration (change/s) change = mm/s
  * Override with M204
- *
- *   M204 P    Acceleration
+  *   M204 P    Acceleration
  *   M204 R    Retract Acceleration
  *   M204 T    Travel Acceleration
  */
-// #define DEFAULT_ACCELERATION          3000    // X, Y, Z and E acceleration for printing moves
-// #define DEFAULT_RETRACT_ACCELERATION  3000    // E acceleration for retracts
-// #define DEFAULT_TRAVEL_ACCELERATION   3000    // X, Y, Z acceleration for travel (non printing) moves
 // can go as high as 1250 per https://github.com/talldonkey/Marlin-2.0-Ender-3-SKR-1.3/blob/2.0.x-Ender-3-SKR-1.3/Marlin/Configuration.h
-// per stock ender3 github firmware github: defaults to 3000 in marlin
-#define DEFAULT_ACCELERATION          500    // X, Y, Z and E acceleration for printing moves
-// per stock ender3 firmware (confirmed with M503): defaults to 3000 in marlin
-//#define DEFAULT_ACCELERATION          250    // X, Y, Z and E acceleration for printing moves
-#define DEFAULT_RETRACT_ACCELERATION  500    // E acceleration for retracts
-// per marlin config example for Ender3: defaults to 3000 in marlin
-#define DEFAULT_TRAVEL_ACCELERATION   500    // X, Y, Z acceleration for travel (non printing) moves
+// per stock ender3 github firmware = 500, stock ender3 M503 = 250
+#define DEFAULT_ACCELERATION          500    // X, Y, Z and E acceleration for printing moves, default 3000
+#define DEFAULT_RETRACT_ACCELERATION  500    // E acceleration for retracts, default = 3000
+#define DEFAULT_TRAVEL_ACCELERATION   500    // X, Y, Z acceleration for travel (non printing) moves, default = 3000
 
-// per marlin config example for Ender3: comment this
-// #define CLASSIC_JERK  // per marlin config example for Ender3 v2
+// marlin Ender3 example config = disabled, ender3 v2 = enable
+// #define CLASSIC_JERK
 #if ENABLED(CLASSIC_JERK)
-  #define DEFAULT_XJERK 10.0
-  #define DEFAULT_YJERK 10.0
-  #define DEFAULT_ZJERK  0.3
-  // per stock ender3 firmware (confirmed with M503):
-  // #define DEFAULT_XJERK 5.0
-  // #define DEFAULT_YJERK 5.0
-  // #define DEFAULT_ZJERK  0.4
-
+  // stock ender3 firmware (M503): 5.0, 5.0, 0.4 (x,y,z)
+  #define DEFAULT_XJERK 10.0  // default = 10
+  #define DEFAULT_YJERK 10.0  // default = 5
+  #define DEFAULT_ZJERK  0.3  // default = 0.4
   //#define TRAVEL_EXTRA_XYJERK 0.0     // Additional jerk allowance for all travel moves
-
   //#define LIMITED_JERK_EDITING        // Limit edit via M205 or LCD to DEFAULT_aJERK * 2
   #if ENABLED(LIMITED_JERK_EDITING)
     #define MAX_JERK_EDIT_VALUES { 20, 20, 0.6, 10 } // ...or, set your own edit limits
   #endif
 #endif
 
-// per stock ender3 firmware (confirmed with M503):
+// stcok ender3 firmware (M503) = 5.0, default = 5.0
 #define DEFAULT_EJERK    5.0  // May be used by Linear Advance
 
 #if DISABLED(CLASSIC_JERK)
-  #define JUNCTION_DEVIATION_MM 0.013 // (mm) Distance from real junction edge
+  // marlin ender3 btt e3 mini 2.0 config example = 0.08
+  #define JUNCTION_DEVIATION_MM 0.013 // (mm) Distance from real junction edge, default = 0.08
   #define JD_HANDLE_SMALL_SEGMENTS    // Use curvature estimation instead of just the junction angle
                                       // for small segments (< 1mm) with large junction angles (> 135°).
 #endif
@@ -522,27 +436,18 @@
 //#define DISABLE_REDUCED_ACCURACY_WARNING
 
 // @section extruder
-
 #define DISABLE_E false             // Disable the extruder when not stepping, For all extruders
 #define DISABLE_INACTIVE_EXTRUDER   // Keep only the active extruder enabled
 
 // @section machine
-
 // Invert the stepper direction. Change (or reverse the motor connector) if an axis goes the wrong way.
-// per marlin config example for Ender3:
-// per ender3 stock firmware github
 #define INVERT_X_DIR true
 #define INVERT_Y_DIR true
 #define INVERT_Z_DIR false
-// per marlin config example for Ender3 v2:
-// #define INVERT_X_DIR false
-// #define INVERT_Y_DIR false
-// #define INVERT_Z_DIR true
 
 // @section extruder
 // For direct drive extruder v9 set to true, for geared extruder set to false.
-// per ender3 stock firmware github
-#define INVERT_E0_DIR true // per marlin config example for Ender3
+#define INVERT_E0_DIR true
 #define INVERT_E1_DIR false
 #define INVERT_E2_DIR false
 #define INVERT_E3_DIR false
@@ -570,9 +475,6 @@
 // Travel limits (mm) after homing, corresponding to endstop positions.
 // for discussion about endstops off the bed see https://github.com/MarlinFirmware/Marlin/issues/17158
 // can be negative, per https://github.com/talldonkey/Marlin-2.0-Ender-3-SKR-1.3/blob/2.0.x-Ender-3-SKR-1.3/Marlin/Configuration.h
-// myconfig: compensate for endstops off the bed (-5,-15 per stored M206 values reported by M503 from our Ender3 with stock board)
-// #define X_MIN_POS -5
-// #define Y_MIN_POS -15
 #define X_MIN_POS -2
 #define Y_MIN_POS -8
 #define Z_MIN_POS 0
@@ -581,12 +483,8 @@
 #define Z_MAX_POS 250 // per marlin config example for Ender3 v2:
 
 /**
- * Software Endstops
- *
- * - Prevent moves outside the set machine bounds.
- * - Individual axes can be disabled, if desired.
- * - X and Y only apply to Cartesian robots.
- * - Use 'M211' to set software endstops on/off or report current state
+// Software Endstops - Prevent moves outside the set machine bounds.
+// Use 'M211' to set software endstops on/off or report current state
  */
 
 // Min software endstops constrain movement within minimum coordinate bounds
@@ -609,39 +507,6 @@
   // #define SOFT_ENDSTOPS_MENU_ITEM  // Enable/Disable software endstops from the LCD
 #endif
 
-/**
- * Filament Runout Sensors
- * Mechanical or opto endstops are used to check for the presence of filament.
- *
- * RAMPS-based boards use SERVO3_PIN for the first runout sensor.
- * For other boards you may need to define FIL_RUNOUT_PIN, FIL_RUNOUT2_PIN, etc.
- */
-//#define FILAMENT_RUNOUT_SENSOR
-#if ENABLED(FILAMENT_RUNOUT_SENSOR)
-  // // BigTreeTech example has: disable (comment) this FIL_RUNOUT_ENABLED_DEFAULT: true, Marlin uncomments it
-  // #define FIL_RUNOUT_ENABLED_DEFAULT true // Enable the sensor on startup. Override with M412 followed by M500.
-  #define NUM_RUNOUT_SENSORS   1          // Number of sensors, up to one per extruder. Define a FIL_RUNOUT#_PIN for each.
-  #define FIL_RUNOUT_STATE     LOW        // Pin state indicating that filament is NOT present.
-  #define FIL_RUNOUT_PULLUP               // Use internal pullup for filament runout pins.
-  //#define FIL_RUNOUT_PULLDOWN           // Use internal pulldown for filament runout pins.
-
-  // Set one or more commands to execute on filament runout.
-  // (After 'M412 H' Marlin will ask the host to handle the process.)
-  #define FILAMENT_RUNOUT_SCRIPT "M600"
-
-  // After a runout is detected, continue printing this length of filament
-  // before executing the runout script. Useful for a sensor at the end of
-  // a feed tube. Requires 4 bytes SRAM per sensor, plus 4 bytes overhead.
-  //#define FILAMENT_RUNOUT_DISTANCE_MM 25
-
-  #ifdef FILAMENT_RUNOUT_DISTANCE_MM
-    // Enable this option to use an encoder disc that toggles the runout pin
-    // as the filament moves. (Be sure to set FILAMENT_RUNOUT_DISTANCE_MM
-    // large enough to avoid false positives.)
-    //#define FILAMENT_MOTION_SENSOR
-  #endif
-#endif
-
 //===========================================================================
 //=============================== Bed Leveling ==============================
 //===========================================================================
@@ -652,17 +517,6 @@
  * and behavior of G29 will change depending on your selection.
  *
  *  If using a Probe for Z Homing, enable Z_SAFE_HOMING also!
- *
- * - AUTO_BED_LEVELING_3POINT
- *   Probe 3 arbitrary points on the bed (that aren't collinear)
- *   You specify the XY coordinates of all 3 points.
- *   The result is a single tilted plane. Best for a flat bed.
- *
- * - AUTO_BED_LEVELING_LINEAR
- *   Probe several points in a grid.
- *   You specify the rectangle and the density of sample points.
- *   The result is a single tilted plane. Best for a flat bed.
- *
  * - AUTO_BED_LEVELING_BILINEAR
  *   Probe several points in a grid.
  *   You specify the rectangle and the density of sample points.
@@ -672,39 +526,22 @@
  *   A comprehensive bed leveling system combining the features and benefits
  *   of other systems. UBL also includes integrated Mesh Generation, Mesh
  *   Validation and Mesh Editing systems.
- *
- * - MESH_BED_LEVELING
- *   Probe a grid manually
- *   The result is a mesh, suitable for large or uneven beds. (See BILINEAR.)
- *   For machines without a probe, Mesh Bed Leveling provides a method to perform
- *   leveling in steps so you can manually adjust the Z height at each grid-point.
- *   With an LCD controller the process is guided step-by-step.
  */
 // https://marlinfw.org/docs/configuration/configuration.html#bed-leveling
-//#define AUTO_BED_LEVELING_3POINT
-//#define AUTO_BED_LEVELING_LINEAR
 //#define AUTO_BED_LEVELING_BILINEAR
-// myconfig: temporarily disable bed levelling
 #define AUTO_BED_LEVELING_UBL
-//#define MESH_BED_LEVELING
 
-/**
- * Normally G28 leaves leveling disabled on completion. Enable
- * this option to have G28 restore the prior leveling state.
- */
+// "G28 disables bed leveling. Follow with M420 S to turn leveling on,
+// or use RESTORE_LEVELING_AFTER_G28 to automatically keep leveling on after G28."
 // https://marlinfw.org/docs/gcode/G028.html
-  // "G28 disables bed leveling. Follow with M420 S to turn leveling on,
-  // or use RESTORE_LEVELING_AFTER_G28 to automatically keep leveling on after G28."
 #define RESTORE_LEVELING_AFTER_G28
 
 /**
  * Enable detailed logging of G28, G29, M48, etc.
- * Turn on with the command 'M111 S32'.
  * NOTE: Requires a lot of PROGMEM!
+ * Use with i.e. 'M111 S38' -- 32 (levelling) + 4 (errors) + 2 (info) then back off with 'M111 S0'
  */
-// myconfig TEMPORARY for M111 S38 -- 32 (levelling) + 4 (errors) + 2 (info)
-// turn off M111 with S0
-#define DEBUG_LEVELING_FEATURE
+// #define DEBUG_LEVELING_FEATURE
 
 #if ANY(MESH_BED_LEVELING, AUTO_BED_LEVELING_BILINEAR, AUTO_BED_LEVELING_UBL)
   // Gradually reduce leveling correction until a set height is reached,
@@ -713,28 +550,26 @@
   #define ENABLE_LEVELING_FADE_HEIGHT
 
   // For Cartesian machines, instead of dividing moves on mesh boundaries,
-  // split up moves into short segments like a Delta. This follows the
-  // contours of the bed more closely than edge-to-edge straight moves.
+  // split up moves into short segments like a Delta.
+  // This follows the contours of the bed more closely than edge-to-edge straight moves.
   #define SEGMENT_LEVELED_MOVES
   #define LEVELED_SEGMENT_LENGTH 5.0 // (mm) Length of all segments (except the last one)
 
-  /**
-   * Enable the G26 Mesh Validation Pattern tool.
-   */
-  //#define G26_MESH_VALIDATION
+  // Enable the G26 Mesh Validation Pattern tool.
+  #define G26_MESH_VALIDATION
   #if ENABLED(G26_MESH_VALIDATION)
+    // SPLA config:
     #define MESH_TEST_NOZZLE_SIZE    0.4  // (mm) Diameter of primary nozzle.
     #define MESH_TEST_LAYER_HEIGHT   0.2  // (mm) Default layer height for the G26 Mesh Validation Tool.
-    #define MESH_TEST_HOTEND_TEMP  205    // (°C) Default nozzle temperature for the G26 Mesh Validation Tool.
-    #define MESH_TEST_BED_TEMP      60    // (°C) Default bed temperature for the G26 Mesh Validation Tool.
-    #define G26_XY_FEEDRATE         20    // (mm/s) Feedrate for XY Moves for the G26 Mesh Validation Tool.
+    #define MESH_TEST_HOTEND_TEMP    215  // (°C) Default nozzle temperature for the G26 Mesh Validation Tool.
+    #define MESH_TEST_BED_TEMP       80   // (°C) Default bed temperature for the G26 Mesh Validation Tool.
+    #define G26_XY_FEEDRATE          20   // (mm/s) Feedrate for XY Moves for the G26 Mesh Validation Tool.
     #define G26_RETRACT_MULTIPLIER   1.0  // G26 Q (retraction) used by default between mesh test elements.
   #endif
 
 #endif
 
 #if EITHER(AUTO_BED_LEVELING_LINEAR, AUTO_BED_LEVELING_BILINEAR)
-
   // Set the number of grid points per dimension.
   #define GRID_MAX_POINTS_X 3
   #define GRID_MAX_POINTS_Y GRID_MAX_POINTS_X
@@ -743,15 +578,12 @@
   //#define PROBE_Y_FIRST
 
   #if ENABLED(AUTO_BED_LEVELING_BILINEAR)
-
     // Beyond the probed grid, continue the implied tilt?
     // Default is to maintain the height of the nearest edge.
     //#define EXTRAPOLATE_BEYOND_GRID
 
-    //
     // Experimental Subdivision of the grid by Catmull-Rom method.
     // Synthesizes intermediate points to produce a more detailed mesh.
-    //
     //#define ABL_BILINEAR_SUBDIVISION
     #if ENABLED(ABL_BILINEAR_SUBDIVISION)
       // Number of subdivisions between probe points
@@ -761,11 +593,9 @@
   #endif
 
 #elif ENABLED(AUTO_BED_LEVELING_UBL)
-
   //===========================================================================
   //========================= Unified Bed Leveling ============================
   //===========================================================================
-
   #define MESH_EDIT_GFX_OVERLAY   // Display a graphics overlay while editing the mesh
 
   // myconfig: set this to be clip size (10mm) + buffer (5mm) ... if larger than PROBING_MARGIN then G29 shouldn't require manual steps
@@ -779,27 +609,10 @@
 
   //#define UBL_Z_RAISE_WHEN_OFF_MESH 2.5 // When the nozzle is off the mesh, this value is used
                                           // as the Z-Height correction value.
-
-#elif ENABLED(MESH_BED_LEVELING)
-
-  //===========================================================================
-  //=================================== Mesh ==================================
-  //===========================================================================
-
-  #define MESH_INSET 10          // Set Mesh bounds as an inset region of the bed
-  #define GRID_MAX_POINTS_X 3    // Don't use more than 7 points per axis, implementation limited.
-  #define GRID_MAX_POINTS_Y GRID_MAX_POINTS_X
-
-  //#define MESH_G28_REST_ORIGIN // After homing all axes ('G28' or 'G28 XYZ') rest Z at Z_MIN_POS
-
 #endif // BED_LEVELING
 
-/**
- * Add a bed leveling sub-menu for ABL or MBL.
- * Include a guided procedure if manual probing is enabled.
- */
+// Add a bed leveling sub-menu for ABL or MBL. Include a guided procedure if manual probing is enabled.
 //#define LCD_BED_LEVELING
-
 #if ENABLED(LCD_BED_LEVELING)
   #define MESH_EDIT_Z_STEP  0.025 // (mm) Step size while manually probing Z axis.
   #define LCD_PROBE_Z_RANGE 4     // (mm) Z Range centered on Z_MIN_POS for LCD Z adjustment
@@ -823,53 +636,37 @@
  */
 //#define Z_PROBE_END_SCRIPT "G1 Z10 F12000\nG1 X15 Y330\nG1 Z0.5\nG1 Z10"
 
+
 // @section homing
 
 // The center of the bed is at (X=0, Y=0)
 //#define BED_CENTER_AT_0_0
 
-// Manually set the home position. Leave these undefined for automatic settings.
-// For DELTA this is the top-center of the Cartesian print volume.
-// values can be changed with M206
-// better to use X_MIN_POS and Y_MIN_POS per https://github.com/MarlinFirmware/Marlin/issues/17158
-// compile error unless defined
-// #define MANUAL_X_HOME_POS -5.0
-// #define MANUAL_Y_HOME_POS -15.0
+// Manually set the home position. Leave these undefined for automatic settings. Values can be changed with M206
+/** NOTE: compile error unless defined */
+// Better to use X_MIN_POS and Y_MIN_POS per https://github.com/MarlinFirmware/Marlin/issues/17158
+// stock ender3 firmware (M503) = -5.0, -15.0, 0 (x,y,z)
 #define MANUAL_X_HOME_POS 0
 #define MANUAL_Y_HOME_POS 0
 #define MANUAL_Z_HOME_POS 0
-// per stock ender3 firmware (confirmed with M503):
-// myconfig: now setting these via X_MIN_POS and Y_MIN_POS
-//#define MANUAL_X_HOME_POS -5.0
-//#define MANUAL_Y_HOME_POS -15.0
-//#define MANUAL_Z_HOME_POS 0
 
-// Use "Z Safe Homing" to avoid homing with a Z probe outside the bed area.
-//
-// With this feature enabled:
-//
-// - Allow Z homing only after X and Y homing AND stepper drivers still enabled.
-// - If stepper drivers time out, it will need X and Y homing again before Z homing.
-// - Move the Z probe (or nozzle) to a defined XY point before Z Homing.
-// - Prevent Z homing when the Z probe is outside bed area.
-//
+/* Use "Z Safe Homing" to avoid homing with a Z probe outside the bed area.
+ *  - Allow Z homing only after X and Y homing AND stepper drivers still enabled.
+ *  - If stepper drivers time out, it will need X and Y homing again before Z homing.
+ *  - Move the Z probe (or nozzle) to a defined XY point before Z Homing.
+ *  - Prevent Z homing when the Z probe is outside bed area.
+ */
 #define Z_SAFE_HOMING
-
 #if ENABLED(Z_SAFE_HOMING)
-  // #define Z_SAFE_HOMING_X_POINT X_CENTER  // X point for Z homing
-  // #define Z_SAFE_HOMING_Y_POINT Y_CENTER  // Y point for Z homing
-  // myconfig: make sure to home z OFF the bed (near X/Y endstops)
-  //#define Z_SAFE_HOMING_X_POINT (MANUAL_X_HOME_POS+0)  // X point for Z homing
-  //#define Z_SAFE_HOMING_Y_POINT (MANUAL_Y_HOME_POS+1)  // Y point for Z homing
-  #define Z_SAFE_HOMING_X_POINT X_MIN_POS
-  #define Z_SAFE_HOMING_Y_POINT Y_MIN_POS
+  // home Z on X/Y min endstops:
+  #define Z_SAFE_HOMING_X_POINT X_MIN_POS   // X point for Z homing, default = X_CENTER
+  #define Z_SAFE_HOMING_Y_POINT Y_MIN_POS   // Y point for Z homing, default = Y_CENTER
 #endif
 
 // Homing speeds (mm/min)
 #define HOMING_FEEDRATE_XY (50*60)
 #define HOMING_FEEDRATE_Z  (4*60)
 
-// Validate that endstops are triggered on homing moves
 #define VALIDATE_HOMING_ENDSTOPS
 
 // @section calibrate
