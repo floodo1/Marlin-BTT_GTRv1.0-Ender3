@@ -1623,8 +1623,9 @@
   // #define BABYSTEP_MULTIPLICATOR_Z  1       // (steps or mm) Steps or millimeter distance for each Z babystep
   // #define BABYSTEP_MULTIPLICATOR_XY 1       // (steps or mm) Steps or millimeter distance for each XY babystep
   // per marlin stock firmware github: 40
-  #define BABYSTEP_MULTIPLICATOR_Z  40       // (steps or mm) Steps or millimeter distance for each Z babystep
-  #define BABYSTEP_MULTIPLICATOR_XY 40       // (steps or mm) Steps or millimeter distance for each XY babystep
+  // myconfig 
+  #define BABYSTEP_MULTIPLICATOR_Z  4       // (steps or mm) Steps or millimeter distance for each Z babystep
+  #define BABYSTEP_MULTIPLICATOR_XY 4       // (steps or mm) Steps or millimeter distance for each XY babystep
   // per marlin config example for Ender3: uncommented
   #define DOUBLECLICK_FOR_Z_BABYSTEPPING    // Double-click on the Status Screen for Z Babystepping.
   #if ENABLED(DOUBLECLICK_FOR_Z_BABYSTEPPING)
@@ -1711,7 +1712,14 @@
  * probe points will follow. This prevents any change from causing
  * the probe to be unable to reach any points.
  */
+#define MYCONFIG_PROBING_BUFFER 2
 #if PROBE_SELECTED && !IS_KINEMATIC
+  // myconfig: set probe area based on buffer and probe offset (assume X,Y offsets are negative)
+  #define PROBING_MARGIN_LEFT MYCONFIG_PROBING_BUFFER
+  #define PROBING_MARGIN_RIGHT (MYCONFIG_PROBING_BUFFER - MYCONFIG_PROBE_OFFSET_X)
+  #define PROBING_MARGIN_FRONT MYCONFIG_FRONTBACK_CLIP_MARGIN
+  #define PROBING_MARGIN_BACK (MYCONFIG_FRONTBACK_CLIP_MARGIN - MYCONFIG_PROBE_OFFSET_Y)
+  // defaults:
   //#define PROBING_MARGIN_LEFT PROBING_MARGIN
   //#define PROBING_MARGIN_RIGHT PROBING_MARGIN
   //#define PROBING_MARGIN_FRONT PROBING_MARGIN
@@ -1720,6 +1728,13 @@
 
 #if EITHER(MESH_BED_LEVELING, AUTO_BED_LEVELING_UBL)
   // Override the mesh area if the automatic (max) area is too large
+  // myconfig: set mesh inside probe area
+  // myconfig: (3,15) to (185,204) => nozzle max (225,216)
+  #define MESH_MIN_X (PROBING_MARGIN_LEFT + 1)
+  #define MESH_MIN_Y (PROBING_MARGIN_FRONT + 1)
+  #define MESH_MAX_X (X_BED_SIZE - PROBING_MARGIN_RIGHT - 1)
+  #define MESH_MAX_Y (Y_BED_SIZE - PROBING_MARGIN_BACK - 1)
+  // defaults:
   //#define MESH_MIN_X MESH_INSET
   //#define MESH_MIN_Y MESH_INSET
   //#define MESH_MAX_X X_BED_SIZE - (MESH_INSET)

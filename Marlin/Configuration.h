@@ -127,10 +127,15 @@
   //#define PID_PARAMS_PER_HOTEND // Uses separate PID parameters for each extruder (useful for mismatched extruders)
                                   // Set/get with gcode: M301 E[extruder number, 0-2]
 
+  // calibrated "M303 C10 E0 S220 U1"
+  #define DEFAULT_Kp 32.69
+  #define DEFAULT_Ki 3.82
+  #define DEFAULT_Kd 69.96
+  
   // per stock ender3 firmware (confirmed with M503):
-  #define DEFAULT_Kp 23.81
-  #define DEFAULT_Ki 1.93
-  #define DEFAULT_Kd 73.64
+  // #define DEFAULT_Kp 23.81
+  // #define DEFAULT_Ki 1.93
+  // #define DEFAULT_Kd 73.64
 
   // per stock ender3 firmware github
   // Stock CR-10S Hotend fan 100%
@@ -169,7 +174,7 @@
  * the issues involved, don't use bed PID until someone else verifies that your hardware works.
  */
 // per marlin config example for Ender3: comment this
-// #define PIDTEMPBED  // per marlin config example for Ender3 v2
+#define PIDTEMPBED  // per marlin config example for Ender3 v2
 
 //#define BED_LIMIT_SWITCHING
 
@@ -182,8 +187,18 @@
 #define MAX_BED_POWER 255 // limits duty cycle to bed; 255=full current
 
 #if ENABLED(PIDTEMPBED)
-  //#define MIN_BED_POWER 0
+  #define MIN_BED_POWER 0
   //#define PID_BED_DEBUG // Sends debug data to the serial port.
+
+  // recalibrated with "M303 C12 E-1 S80 U1"
+  #define DEFAULT_bedKp 116.48
+  #define DEFAULT_bedKi 17.33
+  #define DEFAULT_bedKd 521.83
+
+  // calibrated with "M303 C10 E-1 S80 U1"
+  // #define DEFAULT_bedKp 138.16
+  // #define DEFAULT_bedKi 24.32
+  // #define DEFAULT_bedKd 523.15
 
   // per marlin config example for Ender3 v2
   // #define DEFAULT_bedKp 462.10
@@ -202,7 +217,10 @@
   //#define DEFAULT_bedKi 1.41
   //#define DEFAULT_bedKd 1675.16
 
-  // FIND YOUR OWN: "M303 E-1 C8 S90" to run autotune on the bed at 90 degreesC for 8 cycles.
+    // FIND YOUR OWN: "M303 E-1 C8 S90" to run autotune on the bed at 90 degreesC for 8 cycles.
+  // #define DEFAULT_bedKp 50.71
+  // #define DEFAULT_bedKi 9.88
+  // #define DEFAULT_bedKd 173.43
 #endif // PIDTEMPBED
 
 #if EITHER(PIDTEMP, PIDTEMPBED)
@@ -259,10 +277,11 @@
 #define X_MAX_ENDSTOP_INVERTING false // Set to true to invert the logic of the endstop.
 #define Y_MAX_ENDSTOP_INVERTING false // Set to true to invert the logic of the endstop.
 #define Z_MAX_ENDSTOP_INVERTING false // Set to true to invert the logic of the endstop.
+// myconfig: use false which is what "M43 S" reports and yields succesful test.
 // NOTE: true per https://github.com/talldonkey/Marlin-2.0-Ender-3-SKR-1.3/blob/2.0.x-Ender-3-SKR-1.3/Marlin/Configuration.h
 // per ender3 stock firmware github: false
 // true per https://github.com/MarlinFirmware/Marlin/issues/13345
-#define Z_MIN_PROBE_ENDSTOP_INVERTING true // Set to true to invert the logic of the probe.
+#define Z_MIN_PROBE_ENDSTOP_INVERTING false // Set to true to invert the logic of the probe.
 
 #define X_DRIVER_TYPE  TMC2208
 #define Y_DRIVER_TYPE  TMC2208
@@ -294,7 +313,7 @@
 //                                      X, Y, Z, E0 [, E1[, E2...]]
 // guide on calculating = https://www.youtube.com/watch?v=eBUYLZ2TODw
 // per stock ender3 firmware (confirmed with M503): also per Ender3 and Ender3 v2 config examples
-#define DEFAULT_AXIS_STEPS_PER_UNIT   { 80, 80, 400, 93 }
+#define DEFAULT_AXIS_STEPS_PER_UNIT   { 80, 80, 400, 102.7 }
 
 // per stock ender3 firmware (confirmed with M503): also per Ender3 and Ender3 v2 config examples
 //                                      X, Y, Z, E0 [, E1[, E2...]]
@@ -403,9 +422,16 @@
  *     |    [-]    |
  *     O-- FRONT --+
  */
-#define NOZZLE_TO_PROBE_OFFSET { 10, 10, 0 }
+// confirmed by homing to z endstop (z=0), zeroing nozzle at x42 y42 then using G30 E X42 Y42 to probe and check z offset.
+#define MYCONFIG_PROBE_OFFSET_X -40
+#define MYCONFIG_PROBE_OFFSET_Y -12
+#define NOZZLE_TO_PROBE_OFFSET { MYCONFIG_PROBE_OFFSET_X, MYCONFIG_PROBE_OFFSET_Y, -1.8 }  // for this BLTouch bracket https://www.thingiverse.com/thing:3584158
 
-#define PROBING_MARGIN 20
+// see this discussion about UBL mesh generation https://github.com/MarlinFirmware/Marlin/issues/15933
+// myyconfig: when this is set too small (i.e. 14) then UBL can attempt to probe a mesh point near the edge which cause nozzle crash into clip!!!
+// myconfig: therefore, set to clip size + probe offset
+#define MYCONFIG_FRONTBACK_CLIP_MARGIN 14
+#define PROBING_MARGIN 25 // 10 for clips + 12 for probe offset + 3 buffer
 
 // X and Y axis travel speed (mm/min) between probes
 // per marlin config example for Ender3, v2 has (50*60)
@@ -424,6 +450,7 @@
  * A total of 2 does fast/slow probes with a weighted average.
  * A total of 3 or more adds more slow probes, taking the average.
  */
+// myconfig
 //#define MULTIPLE_PROBING 2
 //#define EXTRA_PROBING    1
 
@@ -441,17 +468,19 @@
  * Example: `M851 Z-5` with a CLEARANCE of 4  =>  9mm from bed to nozzle.
  *     But: `M851 Z+1` with a CLEARANCE of 2  =>  2mm from bed to nozzle.
  */
+// myconfig: DO NOT SET DEPLOY CLEARANCE <10 and BETWEEN/MULTI <5
 #define Z_CLEARANCE_DEPLOY_PROBE   10 // Z Clearance for Deploy/Stow
 #define Z_CLEARANCE_BETWEEN_PROBES  5 // Z Clearance between probe points
 #define Z_CLEARANCE_MULTI_PROBE     5 // Z Clearance between multiple probes
 //#define Z_AFTER_PROBING           5 // Z position after probing is done
 
-#define Z_PROBE_LOW_POINT          -2 // Farthest distance below the trigger-point to go before stopping
+// myconfig: use 1mm, default -2
+#define Z_PROBE_LOW_POINT          -1 // Farthest distance below the trigger-point to go before stopping
 
 // For M851 give a range for adjusting the Z probe offset
 // per marlin config example for Ender3:  vs has -10 and 10
-#define Z_PROBE_OFFSET_RANGE_MIN -20
-#define Z_PROBE_OFFSET_RANGE_MAX 20
+#define Z_PROBE_OFFSET_RANGE_MIN -10
+#define Z_PROBE_OFFSET_RANGE_MAX 10
 
 // myconfig: enable
 #define Z_MIN_PROBE_REPEATABILITY_TEST  // enable M48
@@ -737,10 +766,12 @@
   //========================= Unified Bed Leveling ============================
   //===========================================================================
 
-  //#define MESH_EDIT_GFX_OVERLAY   // Display a graphics overlay while editing the mesh
+  #define MESH_EDIT_GFX_OVERLAY   // Display a graphics overlay while editing the mesh
 
-  #define MESH_INSET 1              // Set Mesh bounds as an inset region of the bed
-  #define GRID_MAX_POINTS_X 10      // Don't use more than 15 points per axis, implementation limited.
+  // myconfig: set this to be clip size (10mm) + buffer (5mm) ... if larger than PROBING_MARGIN then G29 shouldn't require manual steps
+  #define MESH_INSET 26              // Set Mesh bounds as an inset region of the bed
+  // myconfig: start with 7, up to 10 once UBL is known good
+  #define GRID_MAX_POINTS_X 5      // Don't use more than 15 points per axis, implementation limited.
   #define GRID_MAX_POINTS_Y GRID_MAX_POINTS_X
 
   #define UBL_MESH_EDIT_MOVES_Z     // Sophisticated users prefer no movement of nozzle
