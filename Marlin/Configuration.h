@@ -306,6 +306,9 @@
 // myconfig: temporarily disable bltouch
 #define BLTOUCH
 
+// Force the use of the probe for Z-axis homing
+#define USE_PROBE_FOR_Z_HOMING
+
 /**
  * Nozzle-to-Probe offsets { X, Y, Z }
  *
@@ -349,7 +352,7 @@
 
 // X and Y axis travel speed (mm/min) between probes
 // per marlin config example for Ender3, v2 has (50*60)
-#define XY_PROBE_SPEED (133*60) // 133*60=7980
+#define XY_PROBE_SPEED (133*100) // default: 133*60=7980
 // Feedrate (mm/min) for the first approach when double-probing (MULTIPLE_PROBING == 2)
 #define Z_PROBE_SPEED_FAST HOMING_FEEDRATE_Z
 // Feedrate (mm/min) for the "accurate" probe of each point
@@ -659,8 +662,11 @@
 #define Z_SAFE_HOMING
 #if ENABLED(Z_SAFE_HOMING)
   // home Z on X/Y min endstops:
-  #define Z_SAFE_HOMING_X_POINT X_MIN_POS   // X point for Z homing, default = X_CENTER
-  #define Z_SAFE_HOMING_Y_POINT Y_MIN_POS   // Y point for Z homing, default = Y_CENTER
+  // #define Z_SAFE_HOMING_X_POINT X_MIN_POS   // X point for Z homing, default = X_CENTER
+  // #define Z_SAFE_HOMING_Y_POINT Y_MIN_POS   // Y point for Z homing, default = Y_CENTER
+  // home on bed center (marlin default)
+  #define Z_SAFE_HOMING_X_POINT X_CENTER   // X point for Z homing
+  #define Z_SAFE_HOMING_Y_POINT Y_CENTER   // Y point for Z homing
 #endif
 
 // Homing speeds (mm/min)
