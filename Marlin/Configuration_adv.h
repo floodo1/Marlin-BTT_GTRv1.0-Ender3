@@ -386,7 +386,7 @@
 // myconfig TODO set this up upon installing a physical fan
 #define USE_CONTROLLER_FAN
 #if ENABLED(USE_CONTROLLER_FAN)
-  #define CONTROLLER_FAN_PIN         PC8 // Set a custom pin for the controller fan
+  #define CONTROLLER_FAN_PIN         MYCONFIG_CONTROLLER_FAN_PIN // Set a custom pin for the controller fan
   //#define CONTROLLER_FAN_USE_Z_ONLY    // With this option only the Z axis is considered
   //#define CONTROLLER_FAN_IGNORE_Z      // Ignore Z stepper. Useful when stepper timeout is disabled.
   #define CONTROLLERFAN_SPEED_MIN    128 // (0-255) Minimum speed. (If set below this value the fan is turned off.)
@@ -464,7 +464,7 @@
  * Multiple extruders can be assigned to the same pin in which case
  * the fan will turn on when any selected extruder is above the threshold.
  */
-#define E0_AUTO_FAN_PIN PE5
+#define E0_AUTO_FAN_PIN MYCONFIG_E0_FAN_PIN
 #define E1_AUTO_FAN_PIN -1
 #define E2_AUTO_FAN_PIN -1
 #define E3_AUTO_FAN_PIN -1
@@ -1298,33 +1298,31 @@
  * probe points will follow. This prevents any change from causing
  * the probe to be unable to reach any points.
  */
-#define MYCONFIG_PROBING_BUFFER 2
 #if PROBE_SELECTED && !IS_KINEMATIC
-  // myconfig: set probe area based on buffer and probe offset (assume X,Y offsets are negative)
-  #define PROBING_MARGIN_LEFT MYCONFIG_PROBING_BUFFER
-  #define PROBING_MARGIN_RIGHT (MYCONFIG_PROBING_BUFFER - MYCONFIG_PROBE_OFFSET_X)
-  #define PROBING_MARGIN_FRONT MYCONFIG_FRONTBACK_CLIP_MARGIN
-  #define PROBING_MARGIN_BACK (MYCONFIG_FRONTBACK_CLIP_MARGIN - MYCONFIG_PROBE_OFFSET_Y)
+  // take nozzle to probe offset into account so that nozzle doesn't hit a clip even if probe clears it (i.e. back of bed)
+  // #define PROBING_MARGIN_LEFT PROBING_MARGIN
+  // #define PROBING_MARGIN_RIGHT (PROBING_MARGIN - MYCONFIG_PROBE_OFFSET_X)   // !!! ASSUMES MYCONFIG_PROBE_OFFSET_X is negative!
+  // #define PROBING_MARGIN_FRONT PROBING_MARGIN
+  // #define PROBING_MARGIN_BACK (PROBING_MARGIN - MYCONFIG_PROBE_OFFSET_Y)  // !!! ASSUMES MYCONFIG_PROBE_OFFSET_Y is negative!
   // defaults:
-  //#define PROBING_MARGIN_LEFT PROBING_MARGIN
-  //#define PROBING_MARGIN_RIGHT PROBING_MARGIN
-  //#define PROBING_MARGIN_FRONT PROBING_MARGIN
-  //#define PROBING_MARGIN_BACK PROBING_MARGIN
+  #define PROBING_MARGIN_LEFT PROBING_MARGIN
+  #define PROBING_MARGIN_RIGHT PROBING_MARGIN
+  #define PROBING_MARGIN_FRONT PROBING_MARGIN
+  #define PROBING_MARGIN_BACK PROBING_MARGIN
 #endif
 
 #if EITHER(MESH_BED_LEVELING, AUTO_BED_LEVELING_UBL)
   // Override the mesh area if the automatic (max) area is too large
-  // myconfig: set mesh inside probe area
-  // myconfig: (3,15) to (185,204) => nozzle max (225,216)
-  #define MESH_MIN_X (PROBING_MARGIN_LEFT + 1)
-  #define MESH_MIN_Y (PROBING_MARGIN_FRONT + 1)
-  #define MESH_MAX_X (X_BED_SIZE - PROBING_MARGIN_RIGHT - 1)
-  #define MESH_MAX_Y (Y_BED_SIZE - PROBING_MARGIN_BACK - 1)
+  // myconfig: generate mesh points only inside areas that can be probed ==> may as well use bilinear leveling ...
+  // #define MESH_MIN_X (PROBING_MARGIN_LEFT + 1)
+  // #define MESH_MIN_Y (PROBING_MARGIN_FRONT + 1)
+  // #define MESH_MAX_X (X_BED_SIZE - PROBING_MARGIN_RIGHT - 1)
+  // #define MESH_MAX_Y (Y_BED_SIZE - PROBING_MARGIN_BACK - 1)
   // defaults:
-  //#define MESH_MIN_X MESH_INSET
-  //#define MESH_MIN_Y MESH_INSET
-  //#define MESH_MAX_X X_BED_SIZE - (MESH_INSET)
-  //#define MESH_MAX_Y Y_BED_SIZE - (MESH_INSET)
+  #define MESH_MIN_X MESH_INSET
+  #define MESH_MIN_Y MESH_INSET
+  #define MESH_MAX_X X_BED_SIZE - (MESH_INSET)
+  #define MESH_MAX_Y Y_BED_SIZE - (MESH_INSET)
 #endif
 
 /**

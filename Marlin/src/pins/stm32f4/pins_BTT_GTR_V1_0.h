@@ -276,10 +276,9 @@
 
 // Use physical Fan0 pin for hotend1 fan
 // __see configuration_adv.h   #define E0_AUTO_FAN_PIN PE5  
-// Use physical Fan1 pin for Part Cooling Fan:
-#define FAN_PIN   PE6   // Fan1 port
-// Use physical Fan2 pin for controller fan (drivers)
-// __see configuration_adv.h   #define CONTROLLER_FAN_PIN PC8
+#define MYCONFIG_E0_FAN_PIN         PE5 // use physical Fan0 pin for Extruder0 fan, see E0_AUTO_FAN_PIN in configuration_adv
+#define FAN_PIN                     PE6 // use physical F1n1 pin for Part Cooling fan
+#define MYCONFIG_CONTROLLER_FAN_PIN PC8 // use physical Fan2 pin for Controller fan (drivers), see configuration_adv
 
 // Defaults:
 // #define FAN_PIN                             PE5   // Fan0
