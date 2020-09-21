@@ -342,7 +342,8 @@
 // confirmed by homing to z endstop (z=0), zeroing nozzle at x42 y42 then using G30 E X42 Y42 to probe and check z offset.
 #define MYCONFIG_PROBE_OFFSET_X -40
 #define MYCONFIG_PROBE_OFFSET_Y -12
-#define NOZZLE_TO_PROBE_OFFSET { MYCONFIG_PROBE_OFFSET_X, MYCONFIG_PROBE_OFFSET_Y, -1.8 }  // for this BLTouch bracket https://www.thingiverse.com/thing:3584158
+#define MYCONFIG_PROBE_OFFSET_Z -1.8
+#define NOZZLE_TO_PROBE_OFFSET { MYCONFIG_PROBE_OFFSET_X, MYCONFIG_PROBE_OFFSET_Y, MYCONFIG_PROBE_OFFSET_Z }  // for this BLTouch bracket https://www.thingiverse.com/thing:3584158
 
 // see this discussion about UBL mesh generation https://github.com/MarlinFirmware/Marlin/issues/15933
 // myyconfig: when this is set too small (i.e. 14) then UBL can attempt to probe a mesh point near the edge which cause nozzle crash into clip!!!
@@ -352,7 +353,7 @@
 
 // X and Y axis travel speed (mm/min) between probes
 // per marlin config example for Ender3, v2 has (50*60)
-#define XY_PROBE_SPEED (133*100) // default: 133*60=7980
+#define XY_PROBE_SPEED (133*60) // default: 133*60=7980
 // Feedrate (mm/min) for the first approach when double-probing (MULTIPLE_PROBING == 2)
 #define Z_PROBE_SPEED_FAST HOMING_FEEDRATE_Z
 // Feedrate (mm/min) for the "accurate" probe of each point
@@ -389,7 +390,7 @@
 #define Z_CLEARANCE_DEPLOY_PROBE   10 // Z Clearance for Deploy/Stow
 #define Z_CLEARANCE_BETWEEN_PROBES  5 // Z Clearance between probe points
 #define Z_CLEARANCE_MULTI_PROBE     5 // Z Clearance between multiple probes
-//#define Z_AFTER_PROBING           5 // Z position after probing is done
+#define Z_AFTER_PROBING            10 // Z position after probing is done
 
 // myconfig: use 1mm, default -2
 #define Z_PROBE_LOW_POINT          -1 // Farthest distance below the trigger-point to go before stopping
@@ -464,7 +465,7 @@
 //#define UNKNOWN_Z_NO_RAISE      // Don't raise Z (lower the bed) if Z is "unknown." For beds that fall when Z is powered off.
 //#define Z_HOMING_HEIGHT  4      // (mm) Minimal Z height before homing (G28) for Z clearance above the bed, clamps, ...
                                   // Be sure to have this much clearance over your Z_MAX_POS to prevent grinding.
-//#define Z_AFTER_HOMING  10      // (mm) Height to move to after homing Z
+#define Z_AFTER_HOMING  10      // (mm) Height to move to after homing Z
 
 #define X_HOME_DIR -1 // 1=MAX, -1=MIN
 #define Y_HOME_DIR -1
