@@ -346,7 +346,7 @@
 #define MYCONFIG_PROBE_OFFSET_Z -1.05 // initial calibration using probe for z-homing
 #define NOZZLE_TO_PROBE_OFFSET { MYCONFIG_PROBE_OFFSET_X, MYCONFIG_PROBE_OFFSET_Y, MYCONFIG_PROBE_OFFSET_Z }  // for this BLTouch bracket https://www.thingiverse.com/thing:3584158
 
-#define PROBING_MARGIN 2  // see this discussion about UBL mesh generation https://github.com/MarlinFirmware/Marlin/issues/15933
+#define PROBING_MARGIN 2
 
 #define XY_PROBE_SPEED (133*60) // X and Y axis travel speed (mm/min) between probes, default: 133*60=7980
 #define Z_PROBE_SPEED_FAST HOMING_FEEDRATE_Z  // Feedrate (mm/min) for the first approach when double-probing (MULTIPLE_PROBING == 2)
@@ -466,14 +466,14 @@
 
 // @section machine
 // The size of the print bed
-#define X_BED_SIZE 228  // approx 2mm from right edge of bed, with -2 x_min_pos
-#define Y_BED_SIZE 209  // just inside clip buffer approx, with y_min_pos -28
+#define X_BED_SIZE 228  // approx 2mm from right edge of bed, with -2 x min pos
+#define Y_BED_SIZE 208  // just inside clip buffer approx, with y min pos -21
 
 // Travel limits (mm) after homing, corresponding to endstop positions.
 // for discussion about endstops off the bed see https://github.com/MarlinFirmware/Marlin/issues/17158
 // can be negative, per https://github.com/talldonkey/Marlin-2.0-Ender-3-SKR-1.3/blob/2.0.x-Ender-3-SKR-1.3/Marlin/Configuration.h
 #define X_MIN_POS -2   // x limit is at the edge of the bed, with small 1mm buffer
-#define Y_MIN_POS -28  // y limit is 8mm off bed (-8) and clip buffer approx 20mm (-20)
+#define Y_MIN_POS -21  // y limit is 8mm off bed (-8) and clip buffer approx 20mm (-20)
 #define Z_MIN_POS 0
 #define X_MAX_POS X_BED_SIZE
 #define Y_MAX_POS Y_BED_SIZE
@@ -568,16 +568,16 @@
 
 #if EITHER(AUTO_BED_LEVELING_LINEAR, AUTO_BED_LEVELING_BILINEAR)
   // Set the number of grid points per dimension.
-  #define GRID_MAX_POINTS_X 5
-  #define GRID_MAX_POINTS_Y GRID_MAX_POINTS_X
+  #define GRID_MAX_POINTS_X 7
+  #define GRID_MAX_POINTS_Y GRID_MAX_POINTS_X // default = GRID_MAX_POINTS_X
 
   // Probe along the Y axis, advancing X after each column
-  //#define PROBE_Y_FIRST
+  #define PROBE_Y_FIRST
 
   #if ENABLED(AUTO_BED_LEVELING_BILINEAR)
     // Beyond the probed grid, continue the implied tilt?
     // Default is to maintain the height of the nearest edge.
-    //#define EXTRAPOLATE_BEYOND_GRID
+    #define EXTRAPOLATE_BEYOND_GRID
 
     // Experimental Subdivision of the grid by Catmull-Rom method.
     // Synthesizes intermediate points to produce a more detailed mesh.
@@ -595,6 +595,7 @@
   //===========================================================================
   #define MESH_EDIT_GFX_OVERLAY   // Display a graphics overlay while editing the mesh
 
+  // see this discussion about UBL mesh generation https://github.com/MarlinFirmware/Marlin/issues/15933
   // myconfig: set this to be clip size (10mm) + buffer (5mm) ... if larger than PROBING_MARGIN then G29 shouldn't require manual steps
   //#define MESH_INSET 26              // Set Mesh bounds as an inset region of the bed
   #define MESH_INSET 3             // Set Mesh bounds as an inset region of the bed
