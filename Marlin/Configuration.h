@@ -802,7 +802,7 @@
  *  - Total time printing
  * View the current statistics with M78.
  */
-//#define PRINTCOUNTER
+#define PRINTCOUNTER
 
 
 //=============================================================================
@@ -812,7 +812,7 @@
 // @section lcd
 
 #define LCD_LANGUAGE en
-#define DISPLAY_CHARSET_HD44780 JAPANESE
+#define DISPLAY_CHARSET_HD44780 WESTERN // default = JAPANESE
 #define LCD_INFO_SCREEN_STYLE 0
 
 #define SDSUPPORT

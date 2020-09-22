@@ -705,6 +705,9 @@
 // per marlin config example for Ender3 v2: uncommented
 // #define ADAPTIVE_STEP_SMOOTHING
 
+// Microstep settings (Requires a board with pins named X_MS1, X_MS2, etc.)
+#define MICROSTEP_MODES { 16, 16, 16, 16, 16, 16 } // [1,2,4,8,16]
+
 
 //===========================================================================
 //=============================Additional Features===========================
@@ -1418,6 +1421,20 @@
 // Moves (or segments) with fewer steps than this will be joined with the next move
 #define MIN_STEPS_PER_SEGMENT 6
 
+/**
+ * Minimum stepper driver pulse width (in µs)
+ *   0 : Smallest possible width the MCU can produce, compatible with TMC2xxx drivers
+ *   0 : Minimum 500ns for LV8729, adjusted in stepper.h
+ *   1 : Minimum for A4988 and A5984 stepper drivers
+ *   2 : Minimum for DRV8825 stepper drivers
+ *   3 : Minimum for TB6600 stepper drivers
+ *  30 : Minimum for TB6560 stepper drivers
+ *
+ * Override the default value based on the driver type set in Configuration.h.
+ */
+// enable this (1) OR use Square Wave Stepping per https://github.com/MarlinFirmware/Marlin/issues/15926#issuecomment-555123612
+// #define MINIMUM_STEPPER_PULSE 1 // default = commented out
+
 
 // @section temperature
 
@@ -1866,7 +1883,7 @@
    */
   #define STEALTHCHOP_XY
   #define STEALTHCHOP_Z
-  #define STEALTHCHOP_E
+  // #define STEALTHCHOP_E
 
   /**
    * Optimize spreadCycle chopper parameters by using predefined parameter sets
@@ -1932,6 +1949,15 @@
   #define E7_HYBRID_THRESHOLD     30
 
   /**
+   * Beta feature!
+   * Create a 50/50 square wave step pulse optimal for stepper drivers.
+   */
+  // enable per https://www.reddit.com/r/3Dprinting/comments/e2y6si/does_linear_advance_work_with_tmc2208_uart/
+  // also per https://github.com/MarlinFirmware/Marlin/issues/15926#issuecomment-555123612
+  // also per https://github.com/MarlinFirmware/Marlin/issues/14634#issuecomment-536347665
+  #define SQUARE_WAVE_STEPPING
+
+  /**
    * Enable M122 debugging command for TMC stepper drivers.
    * M122 S0/1 will enable continous reporting.
    */
@@ -1954,10 +1980,11 @@
 
 // Auto-report temperatures with M155 S<seconds>
  #define AUTO_REPORT_TEMPERATURES
+
 // Include capabilities in M115 output
 #define EXTENDED_CAPABILITIES_REPORT
 #if ENABLED(EXTENDED_CAPABILITIES_REPORT)
-  //#define M115_GEOMETRY_REPORT
+  #define M115_GEOMETRY_REPORT
 #endif
 
 /**
@@ -2074,7 +2101,8 @@
  * Host Prompt Support enables Marlin to use the host for user prompts so
  * filament runout and other processes can be managed from the host side.
  */
-//#define HOST_ACTION_COMMANDS
+// enable for octoprint to know if print aborted on LCD, per https://github.com/MarlinFirmware/Marlin/issues/15926#issuecomment-556913459
+#define HOST_ACTION_COMMANDS
 #if ENABLED(HOST_ACTION_COMMANDS)
   //#define HOST_PROMPT_SUPPORT
 #endif
@@ -2088,7 +2116,7 @@
  * Add support for a low-cost 8x8 LED Matrix based on the Max7219 chip as a realtime status display.
  * Requires 3 signal wires. Some useful debug options are included to demonstrate its usage.
  */
-//#define MAX7219z_DEBUG
+//#define MAX7219_DEBUG
 #if ENABLED(MAX7219_DEBUG)
   #define MAX7219_CLK_PIN   64
   #define MAX7219_DIN_PIN   57
