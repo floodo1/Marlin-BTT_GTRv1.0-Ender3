@@ -244,7 +244,8 @@
 // Default Axis Steps Per Unit (steps/mm). Override with M92
 //                                      X, Y, Z, E0 [, E1[, E2...]]
 // guide on calculating = https://www.youtube.com/watch?v=eBUYLZ2TODw
-#define DEFAULT_AXIS_STEPS_PER_UNIT   { 80, 80, 400, 102.7 }
+// myconfig: calibrated extruder at 102.7 steps/mm but maybe there was a jam ...
+#define DEFAULT_AXIS_STEPS_PER_UNIT   { 80, 80, 400, 93 }  // ender3 _SHOULD_ be 80, 80, 400, 93, per examples and many people on github
 #define DEFAULT_MAX_FEEDRATE          { 500, 500, 5, 25 } // Override with M203
 
 //#define LIMITED_MAX_FR_EDITING        // Limit edit via M203 or LCD to DEFAULT_MAX_FEEDRATE * 2
@@ -643,8 +644,8 @@
 /** NOTE: compile error unless defined */
 // Better to use X_MIN_POS and Y_MIN_POS per https://github.com/MarlinFirmware/Marlin/issues/17158
 // stock ender3 firmware (M503) = -5.0, -15.0, 0 (x,y,z)
-#define MANUAL_X_HOME_POS 0
-#define MANUAL_Y_HOME_POS 0
+#define MANUAL_X_HOME_POS X_MIN_POS // default = 0
+#define MANUAL_Y_HOME_POS Y_MIN_POS // default = 0
 #define MANUAL_Z_HOME_POS 0
 
 /* Use "Z Safe Homing" to avoid homing with a Z probe outside the bed area.
