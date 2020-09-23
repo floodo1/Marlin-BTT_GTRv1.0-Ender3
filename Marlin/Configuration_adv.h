@@ -386,7 +386,7 @@
 // myconfig TODO set this up upon installing a physical fan
 #define USE_CONTROLLER_FAN
 #if ENABLED(USE_CONTROLLER_FAN)
-  #define CONTROLLER_FAN_PIN         PC8 // Set a custom pin for the controller fan
+  #define CONTROLLER_FAN_PIN         MYCONFIG_CONTROLLER_FAN_PIN // Set a custom pin for the controller fan
   //#define CONTROLLER_FAN_USE_Z_ONLY    // With this option only the Z axis is considered
   //#define CONTROLLER_FAN_IGNORE_Z      // Ignore Z stepper. Useful when stepper timeout is disabled.
   #define CONTROLLERFAN_SPEED_MIN    128 // (0-255) Minimum speed. (If set below this value the fan is turned off.)
@@ -464,7 +464,7 @@
  * Multiple extruders can be assigned to the same pin in which case
  * the fan will turn on when any selected extruder is above the threshold.
  */
-#define E0_AUTO_FAN_PIN PE5
+#define E0_AUTO_FAN_PIN MYCONFIG_E0_FAN_PIN
 #define E1_AUTO_FAN_PIN -1
 #define E2_AUTO_FAN_PIN -1
 #define E3_AUTO_FAN_PIN -1
@@ -564,7 +564,7 @@
 
 //#define SENSORLESS_BACKOFF_MM  { 2, 2 }     // (mm) Backoff from endstops before sensorless homing
 
-#define HOMING_BUMP_MM      { 5, 5, 2 }       // (mm) Backoff from endstops after first bump
+#define HOMING_BUMP_MM      { 3, 3, 2 }       // (mm) Backoff from endstops after first bump
 #define HOMING_BUMP_DIVISOR { 2, 2, 4 }       // Re-Bump Speed Divisor (Divides the Homing Feedrate)
 #define HOMING_BACKOFF_POST_MM { 1, 1, 0 }    // (mm) Backoff from endstops after homing
 
@@ -704,6 +704,9 @@
  */
 // per marlin config example for Ender3 v2: uncommented
 // #define ADAPTIVE_STEP_SMOOTHING
+
+// Microstep settings (Requires a board with pins named X_MS1, X_MS2, etc.)
+#define MICROSTEP_MODES { 16, 16, 16, 16, 16, 16 } // [1,2,4,8,16]
 
 
 //===========================================================================
@@ -1298,33 +1301,27 @@
  * probe points will follow. This prevents any change from causing
  * the probe to be unable to reach any points.
  */
-#define MYCONFIG_PROBING_BUFFER 2
 #if PROBE_SELECTED && !IS_KINEMATIC
-  // myconfig: set probe area based on buffer and probe offset (assume X,Y offsets are negative)
-  #define PROBING_MARGIN_LEFT MYCONFIG_PROBING_BUFFER
-  #define PROBING_MARGIN_RIGHT (MYCONFIG_PROBING_BUFFER - MYCONFIG_PROBE_OFFSET_X)
-  #define PROBING_MARGIN_FRONT MYCONFIG_FRONTBACK_CLIP_MARGIN
-  #define PROBING_MARGIN_BACK (MYCONFIG_FRONTBACK_CLIP_MARGIN - MYCONFIG_PROBE_OFFSET_Y)
-  // defaults:
-  //#define PROBING_MARGIN_LEFT PROBING_MARGIN
-  //#define PROBING_MARGIN_RIGHT PROBING_MARGIN
-  //#define PROBING_MARGIN_FRONT PROBING_MARGIN
-  //#define PROBING_MARGIN_BACK PROBING_MARGIN
+  // default = set all to PROBING_MARGIN
+  #define PROBING_MARGIN_LEFT PROBING_MARGIN
+  #define PROBING_MARGIN_RIGHT 0
+  #define PROBING_MARGIN_FRONT PROBING_MARGIN
+  // prevent nozzle crashing into clips in back by accounting for probe offset! :
+  #define PROBING_MARGIN_BACK (PROBING_MARGIN - MYCONFIG_PROBE_OFFSET_Y)  // !!! ASSUMES MYCONFIG_PROBE_OFFSET_Y is negative!
 #endif
 
 #if EITHER(MESH_BED_LEVELING, AUTO_BED_LEVELING_UBL)
   // Override the mesh area if the automatic (max) area is too large
-  // myconfig: set mesh inside probe area
-  // myconfig: (3,15) to (185,204) => nozzle max (225,216)
-  #define MESH_MIN_X (PROBING_MARGIN_LEFT + 1)
-  #define MESH_MIN_Y (PROBING_MARGIN_FRONT + 1)
-  #define MESH_MAX_X (X_BED_SIZE - PROBING_MARGIN_RIGHT - 1)
-  #define MESH_MAX_Y (Y_BED_SIZE - PROBING_MARGIN_BACK - 1)
+  // myconfig: generate mesh points only inside areas that can be probed ==> may as well use bilinear leveling ...
+  // #define MESH_MIN_X (PROBING_MARGIN_LEFT + 1)
+  // #define MESH_MIN_Y (PROBING_MARGIN_FRONT + 1)
+  // #define MESH_MAX_X (X_BED_SIZE - PROBING_MARGIN_RIGHT - 1)
+  // #define MESH_MAX_Y (Y_BED_SIZE - PROBING_MARGIN_BACK - 1)
   // defaults:
-  //#define MESH_MIN_X MESH_INSET
-  //#define MESH_MIN_Y MESH_INSET
-  //#define MESH_MAX_X X_BED_SIZE - (MESH_INSET)
-  //#define MESH_MAX_Y Y_BED_SIZE - (MESH_INSET)
+  #define MESH_MIN_X MESH_INSET
+  #define MESH_MIN_Y MESH_INSET
+  #define MESH_MAX_X X_BED_SIZE - (MESH_INSET)
+  #define MESH_MAX_Y Y_BED_SIZE - (MESH_INSET)
 #endif
 
 /**
@@ -1419,6 +1416,20 @@
 
 // Moves (or segments) with fewer steps than this will be joined with the next move
 #define MIN_STEPS_PER_SEGMENT 6
+
+/**
+ * Minimum stepper driver pulse width (in µs)
+ *   0 : Smallest possible width the MCU can produce, compatible with TMC2xxx drivers
+ *   0 : Minimum 500ns for LV8729, adjusted in stepper.h
+ *   1 : Minimum for A4988 and A5984 stepper drivers
+ *   2 : Minimum for DRV8825 stepper drivers
+ *   3 : Minimum for TB6600 stepper drivers
+ *  30 : Minimum for TB6560 stepper drivers
+ *
+ * Override the default value based on the driver type set in Configuration.h.
+ */
+// enable this (1) OR use Square Wave Stepping per https://github.com/MarlinFirmware/Marlin/issues/15926#issuecomment-555123612
+// #define MINIMUM_STEPPER_PULSE 1 // default = commented out
 
 
 // @section temperature
@@ -1685,14 +1696,12 @@
 #endif
 
 // @section tmc
-
 // @section tmc_smart
-
-/**
+/** TMC SPI: 
  * To use TMC2130, TMC2160, TMC2660, TMC5130, TMC5160 stepper drivers in SPI mode
  * connect your SPI pins to the hardware SPI interface on your board and define
- * the required CS pins in your `pins_MYBOARD.h` file. (e.g., RAMPS 1.4 uses AUX3
- * pins `X_CS_PIN 53`, `Y_CS_PIN 49`, etc.).
+ * the required CS pins in your `pins_MYBOARD.h` file. 
+ * (e.g., RAMPS 1.4 uses AUX3 pins `X_CS_PIN 53`, `Y_CS_PIN 49`, etc.).
  * You may also use software SPI if you wish to use general purpose IO pins.
  *
  * To use TMC2208 stepper UART-configurable stepper drivers connect #_SERIAL_TX_PIN
@@ -1832,17 +1841,15 @@
     #define E7_CHAIN_POS     -1
   #endif
 
-  /**
-   * Four TMC2209 drivers can use the same HW/SW serial port with hardware configured addresses.
+  /** Four TMC2209 drivers can use the same HW/SW serial port with hardware configured addresses.
    * Set the address using jumpers on pins MS1 and MS2.
    * Address | MS1  | MS2
    *       0 | LOW  | LOW
    *       1 | HIGH | LOW
    *       2 | LOW  | HIGH
    *       3 | HIGH | HIGH
-   *
-   * Set *_SERIAL_TX_PIN and *_SERIAL_RX_PIN to match for all drivers
-   * on the same serial port, either here or in your board's pins file.
+   * Set *_SERIAL_TX_PIN and *_SERIAL_RX_PIN to match for all drivers on the same serial port, 
+   * either here or in your board's pins file.
    */
   #define  X_SLAVE_ADDRESS 0
   #define  Y_SLAVE_ADDRESS 0
@@ -1861,35 +1868,22 @@
   #define E6_SLAVE_ADDRESS 0
   #define E7_SLAVE_ADDRESS 0
 
-  /**
+  /** StealthChop
    * TMC2130, TMC2160, TMC2208, TMC2209, TMC5130 and TMC5160 only
-   * Use Trinamic's ultra quiet stepping mode.
-   * When disabled, Marlin will use spreadCycle stepping mode.
+   * NOTE: When disabled, Marlin will use spreadCycle stepping mode.
    */
   #define STEALTHCHOP_XY
   #define STEALTHCHOP_Z
-  #define STEALTHCHOP_E
+  //#define STEALTHCHOP_E  // see MINIMUM STEPPER PULSE for other TMC2208 settings, incl why to avoid stealthchop for extruder and linear advance.
 
-  /**
-   * Optimize spreadCycle chopper parameters by using predefined parameter sets
-   * or with the help of an example included in the library.
-   * Provided parameter sets are
-   * CHOPPER_DEFAULT_12V
-   * CHOPPER_DEFAULT_19V
-   * CHOPPER_DEFAULT_24V
-   * CHOPPER_DEFAULT_36V
-   * CHOPPER_09STEP_24V   // 0.9 degree steppers (24V)
-   * CHOPPER_PRUSAMK3_24V // Imported parameters from the official Průša firmware for MK3 (24V)
-   * CHOPPER_MARLIN_119   // Old defaults from Marlin v1.1.9
-   * Define you own with
-   * { <off_time[1..15]>, <hysteresis_end[-3..12]>, hysteresis_start[1..8] }
+  /** Optimize spreadCycle chopper parameters by using predefined parameter sets or with the help of an example included in the library. For example:
+   *    CHOPPER_DEFAULT_24V
+   *    CHOPPER_DEFAULT_36V
+   *    CHOPPER_09STEP_24V   // 0.9 degree steppers (24V)
    */
-  // per marlin config example for Ender3:
   #define CHOPPER_TIMING CHOPPER_DEFAULT_24V
 
-  /**
-   * Monitor Trinamic drivers
-   * for error conditions like overtemperature and short to ground.
+  /** Monitor Trinamic drivers for error conditions like overtemperature and short to ground.
    * To manage over-temp Marlin can decrease the driver current until the error condition clears.
    * Other detected conditions can be used to stop the current print.
    * Relevant G-codes:
@@ -1907,15 +1901,15 @@
     #define STOP_ON_ERROR
   #endif
 
-  /**
+  /** StealthChop to SpreadCyle
    * TMC2130, TMC2160, TMC2208, TMC2209, TMC5130 and TMC5160 only
    * The driver will switch to spreadCycle when stepper speed is over HYBRID_THRESHOLD.
    * This mode allows for faster movements at the expense of higher noise levels.
    * STEALTHCHOP_(XY|Z|E) must be enabled to use HYBRID_THRESHOLD.
-   * M913 X/Y/Z/E to live tune the setting
+   * Use M913 X/Y/Z/E to live tune the setting
    */
+  // myconfig TODO: enable and tune this
   //#define HYBRID_THRESHOLD
-
   #define X_HYBRID_THRESHOLD     100  // [mm/s]
   #define X2_HYBRID_THRESHOLD    100
   #define Y_HYBRID_THRESHOLD     100
@@ -1933,20 +1927,27 @@
   #define E6_HYBRID_THRESHOLD     30
   #define E7_HYBRID_THRESHOLD     30
 
-  /**
-   * Enable M122 debugging command for TMC stepper drivers.
-   * M122 S0/1 will enable continous reporting.
+  /** Create a 50/50 square wave step pulse optimal for stepper drivers.
+   * NOTE: Beta feature!
+   */
+  // enable per https://www.reddit.com/r/3Dprinting/comments/e2y6si/does_linear_advance_work_with_tmc2208_uart/
+  // also per https://github.com/MarlinFirmware/Marlin/issues/15926#issuecomment-555123612
+  // also per https://github.com/MarlinFirmware/Marlin/issues/14634#issuecomment-536347665
+  #define SQUARE_WAVE_STEPPING
+
+  /** Enable M122 debugging command for TMC stepper drivers.
+   *  M122 S0/1 will enable continous reporting.
    */
   #define TMC_DEBUG
 
   /** You can set your own advanced settings by filling in predefined functions.
    *  A list of available functions can be found on the library github page
    *  https://github.com/teemuatlut/TMCStepper
-   * Example:
-   * #define TMC_ADV() { \
-   *   stepperX.diag0_otpw(1); \
-   *   stepperY.intpol(0); \
-   * }
+   *  Example:
+   *  #define TMC_ADV() { \
+   *    stepperX.diag0_otpw(1); \
+   *    stepperY.intpol(0); \
+   *  }
    */
   #define TMC_ADV() {  }
 
@@ -1956,10 +1957,11 @@
 
 // Auto-report temperatures with M155 S<seconds>
  #define AUTO_REPORT_TEMPERATURES
+
 // Include capabilities in M115 output
 #define EXTENDED_CAPABILITIES_REPORT
 #if ENABLED(EXTENDED_CAPABILITIES_REPORT)
-  //#define M115_GEOMETRY_REPORT
+  #define M115_GEOMETRY_REPORT
 #endif
 
 /**
@@ -2076,7 +2078,8 @@
  * Host Prompt Support enables Marlin to use the host for user prompts so
  * filament runout and other processes can be managed from the host side.
  */
-//#define HOST_ACTION_COMMANDS
+// enable for octoprint to know if print aborted on LCD, per https://github.com/MarlinFirmware/Marlin/issues/15926#issuecomment-556913459
+#define HOST_ACTION_COMMANDS
 #if ENABLED(HOST_ACTION_COMMANDS)
   //#define HOST_PROMPT_SUPPORT
 #endif
@@ -2090,7 +2093,7 @@
  * Add support for a low-cost 8x8 LED Matrix based on the Max7219 chip as a realtime status display.
  * Requires 3 signal wires. Some useful debug options are included to demonstrate its usage.
  */
-//#define MAX7219z_DEBUG
+//#define MAX7219_DEBUG
 #if ENABLED(MAX7219_DEBUG)
   #define MAX7219_CLK_PIN   64
   #define MAX7219_DIN_PIN   57

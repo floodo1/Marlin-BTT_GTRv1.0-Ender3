@@ -46,7 +46,7 @@
 
 #define SERIAL_PORT -1
 #define SERIAL_PORT_2 3
-#define BAUDRATE 115200 // :[2400, 9600, 19200, 38400, 57600, 115200, 250000, 500000, 1000000]
+#define BAUDRATE 250000 // 115200 known good on BTT GTR :[2400, 9600, 19200, 38400, 57600, 115200, 250000, 500000, 1000000]
 
 
 // @section extruder
@@ -215,7 +215,7 @@
 
 #define USE_XMIN_PLUG
 #define USE_YMIN_PLUG
-#define USE_ZMIN_PLUG
+//#define USE_ZMIN_PLUG   // physically disconnected this in favor of probing z for homing = One less offset (end stop to nozzle) to deal with.
 
 #define ENDSTOPPULLUPS
 
@@ -244,7 +244,8 @@
 // Default Axis Steps Per Unit (steps/mm). Override with M92
 //                                      X, Y, Z, E0 [, E1[, E2...]]
 // guide on calculating = https://www.youtube.com/watch?v=eBUYLZ2TODw
-#define DEFAULT_AXIS_STEPS_PER_UNIT   { 80, 80, 400, 102.7 }
+// myconfig: calibrated extruder at 102.7 steps/mm but maybe there was a jam ...
+#define DEFAULT_AXIS_STEPS_PER_UNIT   { 80, 80, 400, 93 }  // ender3 _SHOULD_ be 80, 80, 400, 93, per examples and many people on github
 #define DEFAULT_MAX_FEEDRATE          { 500, 500, 5, 25 } // Override with M203
 
 //#define LIMITED_MAX_FR_EDITING        // Limit edit via M203 or LCD to DEFAULT_MAX_FEEDRATE * 2
@@ -306,6 +307,9 @@
 // myconfig: temporarily disable bltouch
 #define BLTOUCH
 
+// Force the use of the probe for Z-axis homing
+#define USE_PROBE_FOR_Z_HOMING
+
 /**
  * Nozzle-to-Probe offsets { X, Y, Z }
  *
@@ -336,24 +340,17 @@
  *     |    [-]    |
  *     O-- FRONT --+
  */
-// confirmed by homing to z endstop (z=0), zeroing nozzle at x42 y42 then using G30 E X42 Y42 to probe and check z offset.
-#define MYCONFIG_PROBE_OFFSET_X -40
-#define MYCONFIG_PROBE_OFFSET_Y -12
-#define NOZZLE_TO_PROBE_OFFSET { MYCONFIG_PROBE_OFFSET_X, MYCONFIG_PROBE_OFFSET_Y, -1.8 }  // for this BLTouch bracket https://www.thingiverse.com/thing:3584158
+// for this BLTouch bracket https://www.thingiverse.com/thing:3584158 :
+#define MYCONFIG_PROBE_OFFSET_X -40 // calibrated ... did this calibrate at -42???
+#define MYCONFIG_PROBE_OFFSET_Y -12 // calibrated
+#define MYCONFIG_PROBE_OFFSET_Z -1.05 // initial calibration using probe for z-homing
+#define NOZZLE_TO_PROBE_OFFSET { MYCONFIG_PROBE_OFFSET_X, MYCONFIG_PROBE_OFFSET_Y, MYCONFIG_PROBE_OFFSET_Z }
 
-// see this discussion about UBL mesh generation https://github.com/MarlinFirmware/Marlin/issues/15933
-// myyconfig: when this is set too small (i.e. 14) then UBL can attempt to probe a mesh point near the edge which cause nozzle crash into clip!!!
-// myconfig: therefore, set to clip size + probe offset
-#define MYCONFIG_FRONTBACK_CLIP_MARGIN 14
-#define PROBING_MARGIN 25 // 10 for clips + 12 for probe offset + 3 buffer
+#define PROBING_MARGIN 2
 
-// X and Y axis travel speed (mm/min) between probes
-// per marlin config example for Ender3, v2 has (50*60)
-#define XY_PROBE_SPEED (133*60) // 133*60=7980
-// Feedrate (mm/min) for the first approach when double-probing (MULTIPLE_PROBING == 2)
-#define Z_PROBE_SPEED_FAST HOMING_FEEDRATE_Z
-// Feedrate (mm/min) for the "accurate" probe of each point
-#define Z_PROBE_SPEED_SLOW (Z_PROBE_SPEED_FAST / 2)
+#define XY_PROBE_SPEED (133*60) // X and Y axis travel speed (mm/min) between probes, default: 133*60=7980
+#define Z_PROBE_SPEED_FAST HOMING_FEEDRATE_Z  // Feedrate (mm/min) for the first approach when double-probing (MULTIPLE_PROBING == 2)
+#define Z_PROBE_SPEED_SLOW (Z_PROBE_SPEED_FAST / 2) // Feedrate (mm/min) for the "accurate" probe of each point
 
 /**
  * Multiple Probing
@@ -383,10 +380,10 @@
  *     But: `M851 Z+1` with a CLEARANCE of 2  =>  2mm from bed to nozzle.
  */
 // myconfig: DO NOT SET DEPLOY CLEARANCE <10 and BETWEEN/MULTI <5
-#define Z_CLEARANCE_DEPLOY_PROBE   10 // Z Clearance for Deploy/Stow
+#define Z_CLEARANCE_DEPLOY_PROBE    8 // Z Clearance for Deploy/Stow
 #define Z_CLEARANCE_BETWEEN_PROBES  5 // Z Clearance between probe points
 #define Z_CLEARANCE_MULTI_PROBE     5 // Z Clearance between multiple probes
-//#define Z_AFTER_PROBING           5 // Z position after probing is done
+#define Z_AFTER_PROBING             8 // Z position after probing is done
 
 // myconfig: use 1mm, default -2
 #define Z_PROBE_LOW_POINT          -1 // Farthest distance below the trigger-point to go before stopping
@@ -396,8 +393,8 @@
 #define Z_PROBE_OFFSET_RANGE_MIN -10
 #define Z_PROBE_OFFSET_RANGE_MAX 10
 
-// myconfig: enable
-#define Z_MIN_PROBE_REPEATABILITY_TEST  // enable M48
+// Enable M48
+#define Z_MIN_PROBE_REPEATABILITY_TEST
 
 // Before deploy/stow pause for user confirmation
 //#define PAUSE_BEFORE_DEPLOY_STOW
@@ -459,9 +456,9 @@
 // @section homing
 //#define NO_MOTION_BEFORE_HOMING // Inhibit movement until all axes have been homed
 //#define UNKNOWN_Z_NO_RAISE      // Don't raise Z (lower the bed) if Z is "unknown." For beds that fall when Z is powered off.
-//#define Z_HOMING_HEIGHT  4      // (mm) Minimal Z height before homing (G28) for Z clearance above the bed, clamps, ...
+#define Z_HOMING_HEIGHT  6      // (mm) Minimal Z height before homing (G28) for Z clearance above the bed, clamps, ...
                                   // Be sure to have this much clearance over your Z_MAX_POS to prevent grinding.
-//#define Z_AFTER_HOMING  10      // (mm) Height to move to after homing Z
+#define Z_AFTER_HOMING  8      // (mm) Height to move to after homing Z
 
 #define X_HOME_DIR -1 // 1=MAX, -1=MIN
 #define Y_HOME_DIR -1
@@ -469,18 +466,18 @@
 
 // @section machine
 // The size of the print bed
-#define X_BED_SIZE 228
-#define Y_BED_SIZE 231
+#define X_BED_SIZE 228  // approx 2mm from right edge of bed, with -2 x min pos
+#define Y_BED_SIZE 208  // just inside clip buffer approx, with y min pos -21
 
 // Travel limits (mm) after homing, corresponding to endstop positions.
 // for discussion about endstops off the bed see https://github.com/MarlinFirmware/Marlin/issues/17158
 // can be negative, per https://github.com/talldonkey/Marlin-2.0-Ender-3-SKR-1.3/blob/2.0.x-Ender-3-SKR-1.3/Marlin/Configuration.h
-#define X_MIN_POS -2
-#define Y_MIN_POS -8
+#define X_MIN_POS -2   // x limit is at the edge of the bed, with small 1mm buffer
+#define Y_MIN_POS -21  // y limit is 8mm off bed (-8) and clip buffer approx 20mm (-20)
 #define Z_MIN_POS 0
 #define X_MAX_POS X_BED_SIZE
 #define Y_MAX_POS Y_BED_SIZE
-#define Z_MAX_POS 250 // per marlin config example for Ender3 v2:
+#define Z_MAX_POS 210 // bowden tube is already sloped downwards, and at 220mm cables are hitting upper cross bar ... use 210 with room for Z_HOMING_HEIGHT
 
 // Software Endstops - Prevent moves outside the set machine bounds.
 // Use 'M211' to set software endstops on/off or report current state
@@ -497,7 +494,7 @@
   #define MAX_SOFTWARE_ENDSTOP_Z
 #endif
 #if EITHER(MIN_SOFTWARE_ENDSTOPS, MAX_SOFTWARE_ENDSTOPS)
-  // #define SOFT_ENDSTOPS_MENU_ITEM  // Enable/Disable software endstops from the LCD
+  #define SOFT_ENDSTOPS_MENU_ITEM  // Enable/Disable software endstops from the LCD
 #endif
 
 //===========================================================================
@@ -521,8 +518,8 @@
  *   Validation and Mesh Editing systems.
  */
 // https://marlinfw.org/docs/configuration/configuration.html#bed-leveling
-//#define AUTO_BED_LEVELING_BILINEAR
-#define AUTO_BED_LEVELING_UBL
+#define AUTO_BED_LEVELING_BILINEAR
+//#define AUTO_BED_LEVELING_UBL
 
 // "G28 disables bed leveling. Follow with M420 S to turn leveling on,
 // or use RESTORE_LEVELING_AFTER_G28 to automatically keep leveling on after G28."
@@ -534,7 +531,7 @@
  * NOTE: Requires a lot of PROGMEM!
  * Use with i.e. 'M111 S38' -- 32 (levelling) + 4 (errors) + 2 (info) then back off with 'M111 S0'
  */
-// #define DEBUG_LEVELING_FEATURE
+#define DEBUG_LEVELING_FEATURE
 
 #if ANY(MESH_BED_LEVELING, AUTO_BED_LEVELING_BILINEAR, AUTO_BED_LEVELING_UBL)
   // Gradually reduce leveling correction until a set height is reached,
@@ -564,16 +561,16 @@
 
 #if EITHER(AUTO_BED_LEVELING_LINEAR, AUTO_BED_LEVELING_BILINEAR)
   // Set the number of grid points per dimension.
-  #define GRID_MAX_POINTS_X 3
-  #define GRID_MAX_POINTS_Y GRID_MAX_POINTS_X
+  #define GRID_MAX_POINTS_X 7
+  #define GRID_MAX_POINTS_Y GRID_MAX_POINTS_X // default = GRID_MAX_POINTS_X
 
   // Probe along the Y axis, advancing X after each column
-  //#define PROBE_Y_FIRST
+  #define PROBE_Y_FIRST
 
   #if ENABLED(AUTO_BED_LEVELING_BILINEAR)
     // Beyond the probed grid, continue the implied tilt?
     // Default is to maintain the height of the nearest edge.
-    //#define EXTRAPOLATE_BEYOND_GRID
+    #define EXTRAPOLATE_BEYOND_GRID
 
     // Experimental Subdivision of the grid by Catmull-Rom method.
     // Synthesizes intermediate points to produce a more detailed mesh.
@@ -591,8 +588,10 @@
   //===========================================================================
   #define MESH_EDIT_GFX_OVERLAY   // Display a graphics overlay while editing the mesh
 
+  // see this discussion about UBL mesh generation https://github.com/MarlinFirmware/Marlin/issues/15933
   // myconfig: set this to be clip size (10mm) + buffer (5mm) ... if larger than PROBING_MARGIN then G29 shouldn't require manual steps
-  #define MESH_INSET 26              // Set Mesh bounds as an inset region of the bed
+  //#define MESH_INSET 26              // Set Mesh bounds as an inset region of the bed
+  #define MESH_INSET 3             // Set Mesh bounds as an inset region of the bed
   // myconfig: start with 7, up to 10 once UBL is known good
   #define GRID_MAX_POINTS_X 5      // Don't use more than 15 points per axis, implementation limited.
   #define GRID_MAX_POINTS_Y GRID_MAX_POINTS_X
@@ -639,8 +638,8 @@
 /** NOTE: compile error unless defined */
 // Better to use X_MIN_POS and Y_MIN_POS per https://github.com/MarlinFirmware/Marlin/issues/17158
 // stock ender3 firmware (M503) = -5.0, -15.0, 0 (x,y,z)
-#define MANUAL_X_HOME_POS 0
-#define MANUAL_Y_HOME_POS 0
+#define MANUAL_X_HOME_POS X_MIN_POS // default = 0
+#define MANUAL_Y_HOME_POS Y_MIN_POS // default = 0
 #define MANUAL_Z_HOME_POS 0
 
 /* Use "Z Safe Homing" to avoid homing with a Z probe outside the bed area.
@@ -652,8 +651,11 @@
 #define Z_SAFE_HOMING
 #if ENABLED(Z_SAFE_HOMING)
   // home Z on X/Y min endstops:
-  #define Z_SAFE_HOMING_X_POINT X_MIN_POS   // X point for Z homing, default = X_CENTER
-  #define Z_SAFE_HOMING_Y_POINT Y_MIN_POS   // Y point for Z homing, default = Y_CENTER
+  // #define Z_SAFE_HOMING_X_POINT X_MIN_POS
+  // #define Z_SAFE_HOMING_Y_POINT Y_MIN_POS
+  // home on bed center (marlin default):
+  #define Z_SAFE_HOMING_X_POINT X_CENTER
+  #define Z_SAFE_HOMING_Y_POINT Y_CENTER
 #endif
 
 // Homing speeds (mm/min)
@@ -795,7 +797,7 @@
  *  - Total time printing
  * View the current statistics with M78.
  */
-//#define PRINTCOUNTER
+#define PRINTCOUNTER
 
 
 //=============================================================================
@@ -805,7 +807,7 @@
 // @section lcd
 
 #define LCD_LANGUAGE en
-#define DISPLAY_CHARSET_HD44780 JAPANESE
+#define DISPLAY_CHARSET_HD44780 WESTERN // default = JAPANESE
 #define LCD_INFO_SCREEN_STYLE 0
 
 #define SDSUPPORT
