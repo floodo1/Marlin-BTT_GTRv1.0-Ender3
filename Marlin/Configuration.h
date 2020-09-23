@@ -340,11 +340,11 @@
  *     |    [-]    |
  *     O-- FRONT --+
  */
-
-#define MYCONFIG_PROBE_OFFSET_X -40 // calibrated
+// for this BLTouch bracket https://www.thingiverse.com/thing:3584158 :
+#define MYCONFIG_PROBE_OFFSET_X -40 // calibrated ... did this calibrate at -42???
 #define MYCONFIG_PROBE_OFFSET_Y -12 // calibrated
 #define MYCONFIG_PROBE_OFFSET_Z -1.05 // initial calibration using probe for z-homing
-#define NOZZLE_TO_PROBE_OFFSET { MYCONFIG_PROBE_OFFSET_X, MYCONFIG_PROBE_OFFSET_Y, MYCONFIG_PROBE_OFFSET_Z }  // for this BLTouch bracket https://www.thingiverse.com/thing:3584158
+#define NOZZLE_TO_PROBE_OFFSET { MYCONFIG_PROBE_OFFSET_X, MYCONFIG_PROBE_OFFSET_Y, MYCONFIG_PROBE_OFFSET_Z }
 
 #define PROBING_MARGIN 2
 
@@ -380,10 +380,10 @@
  *     But: `M851 Z+1` with a CLEARANCE of 2  =>  2mm from bed to nozzle.
  */
 // myconfig: DO NOT SET DEPLOY CLEARANCE <10 and BETWEEN/MULTI <5
-#define Z_CLEARANCE_DEPLOY_PROBE   8 // Z Clearance for Deploy/Stow
+#define Z_CLEARANCE_DEPLOY_PROBE    8 // Z Clearance for Deploy/Stow
 #define Z_CLEARANCE_BETWEEN_PROBES  5 // Z Clearance between probe points
 #define Z_CLEARANCE_MULTI_PROBE     5 // Z Clearance between multiple probes
-#define Z_AFTER_PROBING            8 // Z position after probing is done
+#define Z_AFTER_PROBING             8 // Z position after probing is done
 
 // myconfig: use 1mm, default -2
 #define Z_PROBE_LOW_POINT          -1 // Farthest distance below the trigger-point to go before stopping
@@ -393,8 +393,8 @@
 #define Z_PROBE_OFFSET_RANGE_MIN -10
 #define Z_PROBE_OFFSET_RANGE_MAX 10
 
-// myconfig: enable
-#define Z_MIN_PROBE_REPEATABILITY_TEST  // enable M48
+// Enable M48
+#define Z_MIN_PROBE_REPEATABILITY_TEST
 
 // Before deploy/stow pause for user confirmation
 //#define PAUSE_BEFORE_DEPLOY_STOW
@@ -651,11 +651,11 @@
 #define Z_SAFE_HOMING
 #if ENABLED(Z_SAFE_HOMING)
   // home Z on X/Y min endstops:
-  // #define Z_SAFE_HOMING_X_POINT X_MIN_POS   // X point for Z homing, default = X_CENTER
-  // #define Z_SAFE_HOMING_Y_POINT Y_MIN_POS   // Y point for Z homing, default = Y_CENTER
-  // home on bed center (marlin default)
-  #define Z_SAFE_HOMING_X_POINT X_CENTER   // X point for Z homing
-  #define Z_SAFE_HOMING_Y_POINT Y_CENTER   // Y point for Z homing
+  // #define Z_SAFE_HOMING_X_POINT X_MIN_POS
+  // #define Z_SAFE_HOMING_Y_POINT Y_MIN_POS
+  // home on bed center (marlin default):
+  #define Z_SAFE_HOMING_X_POINT X_CENTER
+  #define Z_SAFE_HOMING_Y_POINT Y_CENTER
 #endif
 
 // Homing speeds (mm/min)

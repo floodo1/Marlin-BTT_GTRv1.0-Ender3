@@ -1302,16 +1302,11 @@
  * the probe to be unable to reach any points.
  */
 #if PROBE_SELECTED && !IS_KINEMATIC
-  // take nozzle to probe offset into account so that nozzle doesn't hit a clip even if probe clears it (i.e. back of bed)
-  // #define PROBING_MARGIN_LEFT PROBING_MARGIN
-  // #define PROBING_MARGIN_RIGHT (PROBING_MARGIN - MYCONFIG_PROBE_OFFSET_X)   // !!! ASSUMES MYCONFIG_PROBE_OFFSET_X is negative!
-  // #define PROBING_MARGIN_FRONT PROBING_MARGIN
-  // #define PROBING_MARGIN_BACK (PROBING_MARGIN - MYCONFIG_PROBE_OFFSET_Y)  // !!! ASSUMES MYCONFIG_PROBE_OFFSET_Y is negative!
-  // defaults:
+  // default = set all to PROBING_MARGIN
   #define PROBING_MARGIN_LEFT PROBING_MARGIN
-  #define PROBING_MARGIN_RIGHT 0  // DEFAULT = PROBING_MARGIN
+  #define PROBING_MARGIN_RIGHT 0
   #define PROBING_MARGIN_FRONT PROBING_MARGIN
-  // prevent nozzle crashing into clips by accounting for probe offset!
+  // prevent nozzle crashing into clips in back by accounting for probe offset! :
   #define PROBING_MARGIN_BACK (PROBING_MARGIN - MYCONFIG_PROBE_OFFSET_Y)  // !!! ASSUMES MYCONFIG_PROBE_OFFSET_Y is negative!
 #endif
 
@@ -1701,14 +1696,12 @@
 #endif
 
 // @section tmc
-
 // @section tmc_smart
-
-/**
+/** TMC SPI: 
  * To use TMC2130, TMC2160, TMC2660, TMC5130, TMC5160 stepper drivers in SPI mode
  * connect your SPI pins to the hardware SPI interface on your board and define
- * the required CS pins in your `pins_MYBOARD.h` file. (e.g., RAMPS 1.4 uses AUX3
- * pins `X_CS_PIN 53`, `Y_CS_PIN 49`, etc.).
+ * the required CS pins in your `pins_MYBOARD.h` file. 
+ * (e.g., RAMPS 1.4 uses AUX3 pins `X_CS_PIN 53`, `Y_CS_PIN 49`, etc.).
  * You may also use software SPI if you wish to use general purpose IO pins.
  *
  * To use TMC2208 stepper UART-configurable stepper drivers connect #_SERIAL_TX_PIN
@@ -1848,17 +1841,15 @@
     #define E7_CHAIN_POS     -1
   #endif
 
-  /**
-   * Four TMC2209 drivers can use the same HW/SW serial port with hardware configured addresses.
+  /** Four TMC2209 drivers can use the same HW/SW serial port with hardware configured addresses.
    * Set the address using jumpers on pins MS1 and MS2.
    * Address | MS1  | MS2
    *       0 | LOW  | LOW
    *       1 | HIGH | LOW
    *       2 | LOW  | HIGH
    *       3 | HIGH | HIGH
-   *
-   * Set *_SERIAL_TX_PIN and *_SERIAL_RX_PIN to match for all drivers
-   * on the same serial port, either here or in your board's pins file.
+   * Set *_SERIAL_TX_PIN and *_SERIAL_RX_PIN to match for all drivers on the same serial port, 
+   * either here or in your board's pins file.
    */
   #define  X_SLAVE_ADDRESS 0
   #define  Y_SLAVE_ADDRESS 0
@@ -1877,35 +1868,22 @@
   #define E6_SLAVE_ADDRESS 0
   #define E7_SLAVE_ADDRESS 0
 
-  /**
+  /** StealthChop
    * TMC2130, TMC2160, TMC2208, TMC2209, TMC5130 and TMC5160 only
-   * Use Trinamic's ultra quiet stepping mode.
-   * When disabled, Marlin will use spreadCycle stepping mode.
+   * NOTE: When disabled, Marlin will use spreadCycle stepping mode.
    */
   #define STEALTHCHOP_XY
   #define STEALTHCHOP_Z
-  // #define STEALTHCHOP_E
+  //#define STEALTHCHOP_E  // see MINIMUM STEPPER PULSE for other TMC2208 settings, incl why to avoid stealthchop for extruder and linear advance.
 
-  /**
-   * Optimize spreadCycle chopper parameters by using predefined parameter sets
-   * or with the help of an example included in the library.
-   * Provided parameter sets are
-   * CHOPPER_DEFAULT_12V
-   * CHOPPER_DEFAULT_19V
-   * CHOPPER_DEFAULT_24V
-   * CHOPPER_DEFAULT_36V
-   * CHOPPER_09STEP_24V   // 0.9 degree steppers (24V)
-   * CHOPPER_PRUSAMK3_24V // Imported parameters from the official Průša firmware for MK3 (24V)
-   * CHOPPER_MARLIN_119   // Old defaults from Marlin v1.1.9
-   * Define you own with
-   * { <off_time[1..15]>, <hysteresis_end[-3..12]>, hysteresis_start[1..8] }
+  /** Optimize spreadCycle chopper parameters by using predefined parameter sets or with the help of an example included in the library. For example:
+   *    CHOPPER_DEFAULT_24V
+   *    CHOPPER_DEFAULT_36V
+   *    CHOPPER_09STEP_24V   // 0.9 degree steppers (24V)
    */
-  // per marlin config example for Ender3:
   #define CHOPPER_TIMING CHOPPER_DEFAULT_24V
 
-  /**
-   * Monitor Trinamic drivers
-   * for error conditions like overtemperature and short to ground.
+  /** Monitor Trinamic drivers for error conditions like overtemperature and short to ground.
    * To manage over-temp Marlin can decrease the driver current until the error condition clears.
    * Other detected conditions can be used to stop the current print.
    * Relevant G-codes:
@@ -1923,15 +1901,15 @@
     #define STOP_ON_ERROR
   #endif
 
-  /**
+  /** StealthChop to SpreadCyle
    * TMC2130, TMC2160, TMC2208, TMC2209, TMC5130 and TMC5160 only
    * The driver will switch to spreadCycle when stepper speed is over HYBRID_THRESHOLD.
    * This mode allows for faster movements at the expense of higher noise levels.
    * STEALTHCHOP_(XY|Z|E) must be enabled to use HYBRID_THRESHOLD.
-   * M913 X/Y/Z/E to live tune the setting
+   * Use M913 X/Y/Z/E to live tune the setting
    */
+  // myconfig TODO: enable and tune this
   //#define HYBRID_THRESHOLD
-
   #define X_HYBRID_THRESHOLD     100  // [mm/s]
   #define X2_HYBRID_THRESHOLD    100
   #define Y_HYBRID_THRESHOLD     100
@@ -1949,29 +1927,27 @@
   #define E6_HYBRID_THRESHOLD     30
   #define E7_HYBRID_THRESHOLD     30
 
-  /**
-   * Beta feature!
-   * Create a 50/50 square wave step pulse optimal for stepper drivers.
+  /** Create a 50/50 square wave step pulse optimal for stepper drivers.
+   * NOTE: Beta feature!
    */
   // enable per https://www.reddit.com/r/3Dprinting/comments/e2y6si/does_linear_advance_work_with_tmc2208_uart/
   // also per https://github.com/MarlinFirmware/Marlin/issues/15926#issuecomment-555123612
   // also per https://github.com/MarlinFirmware/Marlin/issues/14634#issuecomment-536347665
   #define SQUARE_WAVE_STEPPING
 
-  /**
-   * Enable M122 debugging command for TMC stepper drivers.
-   * M122 S0/1 will enable continous reporting.
+  /** Enable M122 debugging command for TMC stepper drivers.
+   *  M122 S0/1 will enable continous reporting.
    */
   #define TMC_DEBUG
 
   /** You can set your own advanced settings by filling in predefined functions.
    *  A list of available functions can be found on the library github page
    *  https://github.com/teemuatlut/TMCStepper
-   * Example:
-   * #define TMC_ADV() { \
-   *   stepperX.diag0_otpw(1); \
-   *   stepperY.intpol(0); \
-   * }
+   *  Example:
+   *  #define TMC_ADV() { \
+   *    stepperX.diag0_otpw(1); \
+   *    stepperY.intpol(0); \
+   *  }
    */
   #define TMC_ADV() {  }
 

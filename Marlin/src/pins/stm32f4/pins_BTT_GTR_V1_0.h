@@ -58,7 +58,7 @@
 
 
 //
-// Pins on the extender
+// Pins on the extender (M5?)
 //
 //#define X_MIN_PIN                         PI4
 //#define X2_MIN_PIN                        PF12
@@ -234,7 +234,6 @@
 #define TEMP_0_PIN                          PC1   // T1 <-> E0
 #define TEMP_1_PIN                          PC2   // T2 <-> E1
 #define TEMP_2_PIN                          PC3   // T3 <-> E2
-
 // myconfig: disable temp sensors on M5 board
 // #define TEMP_3_PIN                          PA3   // T4 <-> E3
 // #define TEMP_4_PIN                          PF9   // T5 <-> E4
@@ -264,7 +263,6 @@
 #define HEATER_0_PIN                        PB1   // Heater0
 #define HEATER_1_PIN                        PA1   // Heater1
 #define HEATER_2_PIN                        PB0   // Heater2
-
 // myconfig: disable heaters on M5 board
 // #define HEATER_3_PIN                        PD15  // Heater3
 // #define HEATER_4_PIN                        PD13  // Heater4
@@ -274,18 +272,14 @@
 
 #define HEATER_BED_PIN                      PA2   // Hotbed
 
-// Use physical Fan0 pin for hotend1 fan
-// __see configuration_adv.h   #define E0_AUTO_FAN_PIN PE5  
-#define MYCONFIG_E0_FAN_PIN         PE5 // use physical Fan0 pin for Extruder0 fan, see E0_AUTO_FAN_PIN in configuration_adv
-#define FAN_PIN                     PE6 // use physical F1n1 pin for Part Cooling fan
+#define MYCONFIG_E0_FAN_PIN         PE5 // use physical Fan0 pin for Hotend fan, see E0_AUTO_FAN_PIN in configuration_adv
+#define FAN_PIN                     PE6 // use physical Fan1 pin for Part Cooling fan
 #define MYCONFIG_CONTROLLER_FAN_PIN PC8 // use physical Fan2 pin for Controller fan (drivers), see configuration_adv
-
 // Defaults:
 // #define FAN_PIN                             PE5   // Fan0
 // #define FAN1_PIN                            PE6   // Fan1
 // #define FAN2_PIN                            PC8   // Fan2
-
-// myconfig: disable fans on M5 board
+// myconfig: disable fans on M5 board to prevent them from showing up in any menus
 //#define FAN3_PIN                            PI5   // Fan3
 //#define FAN4_PIN                            PE9   // Fan4
 //#define FAN5_PIN                            PE11  // Fan5
