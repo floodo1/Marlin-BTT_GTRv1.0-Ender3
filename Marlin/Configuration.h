@@ -262,7 +262,7 @@
 /**
  * Default Acceleration (change/s) change = mm/s
  * Override with M204
-  *   M204 P    Acceleration
+ *   M204 P    Acceleration
  *   M204 R    Retract Acceleration
  *   M204 T    Travel Acceleration
  */
@@ -479,27 +479,20 @@
 #define Y_MAX_POS Y_BED_SIZE
 #define Z_MAX_POS 210 // bowden tube is already sloped downwards, and at 220mm cables are hitting upper cross bar ... use 210 with room for Z_HOMING_HEIGHT
 
-/**
 // Software Endstops - Prevent moves outside the set machine bounds.
 // Use 'M211' to set software endstops on/off or report current state
- */
-
-// Min software endstops constrain movement within minimum coordinate bounds
 #define MIN_SOFTWARE_ENDSTOPS
 #if ENABLED(MIN_SOFTWARE_ENDSTOPS)
   #define MIN_SOFTWARE_ENDSTOP_X
   #define MIN_SOFTWARE_ENDSTOP_Y
   #define MIN_SOFTWARE_ENDSTOP_Z
 #endif
-
-// Max software endstops constrain movement within maximum coordinate bounds
 #define MAX_SOFTWARE_ENDSTOPS
 #if ENABLED(MAX_SOFTWARE_ENDSTOPS)
   #define MAX_SOFTWARE_ENDSTOP_X
   #define MAX_SOFTWARE_ENDSTOP_Y
   #define MAX_SOFTWARE_ENDSTOP_Z
 #endif
-
 #if EITHER(MIN_SOFTWARE_ENDSTOPS, MAX_SOFTWARE_ENDSTOPS)
   #define SOFT_ENDSTOPS_MENU_ITEM  // Enable/Disable software endstops from the LCD
 #endif
@@ -838,9 +831,7 @@
 //  If CLOCKWISE normally moves RIGHT this makes it go LEFT.
 //#define REVERSE_SELECT_DIRECTION
 
-
 #define INDIVIDUAL_AXIS_HOMING_MENU
-
 
 //=============================================================================
 //=======================   LCD / Controller Selection  =======================
@@ -852,7 +843,6 @@
 // This is RAMPS-compatible using a single 10-pin connector.
 // (For CR-10 owners who want to replace the Melzi Creality board but retain the display)
 #define CR10_STOCKDISPLAY
-
 
 //=============================================================================
 //=============================== Extra Features ==============================
