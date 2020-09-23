@@ -37,7 +37,7 @@
 
 
 // @section machine
-#define CUSTOM_MACHINE_NAME "Ender3 GTR Adv"  // Name displayed in the LCD "Ready" message and Info menu
+#define CUSTOM_MACHINE_NAME "Ender3 GTR"  // Name displayed in the LCD "Ready" message and Info menu
 #define MACHINE_UUID "2f38eea3-4d29-44f3-9fac-517f905974e6"
 
 #ifndef MOTHERBOARD
@@ -117,9 +117,8 @@
 #define PID_K1 0.95      // Smoothing factor within any PID loop
 
 #if ENABLED(PIDTEMP)
-  #define PID_AUTOTUNE_MENU     // Add PID auto-tuning to the "Advanced Settings" menu. (~250 bytes of PROGMEM)
-
-  // calibrated "M303 C10 E0 S220 U1"
+  // Add PID auto-tuning to the "Advanced Settings" menu. (~250 bytes of PROGMEM). Or use gcode like "M303 C10 E0 S200 U1"
+  //#define PID_AUTOTUNE_MENU
   #define DEFAULT_Kp 32.69
   #define DEFAULT_Ki 3.82
   #define DEFAULT_Kd 69.96
@@ -164,12 +163,9 @@
 #if ENABLED(PIDTEMPBED)
   #define MIN_BED_POWER 0
   //#define PID_BED_DEBUG // Sends debug data to the serial port.
-
-  // recalibrated with "M303 C12 E-1 S80 U1"
   #define DEFAULT_bedKp 116.48
   #define DEFAULT_bedKi 17.33
   #define DEFAULT_bedKd 521.83
-
   /*  Source                            Kp      Ki      Kd
    *  -------------------------------   ------  -----   ------
    *  calibrated "M303 C12 E-1 S80 U1"  116.48  17.33   521.83  // 20200917
@@ -190,7 +186,6 @@
 
 
 // @section extruder
-
 // IT IS HIGHLY RECOMMENDED TO LEAVE THIS OPTION ENABLED! ***
 #define PREVENT_COLD_EXTRUSION
 // Add M302 to set the minimum extrusion temperature and/or turn cold extrusion prevention on and off.
@@ -212,7 +207,6 @@
 //===========================================================================
 
 // @section homing
-
 #define USE_XMIN_PLUG
 #define USE_YMIN_PLUG
 //#define USE_ZMIN_PLUG   // physically disconnected this in favor of probing z for homing = One less offset (end stop to nozzle) to deal with.
@@ -494,7 +488,7 @@
   #define MAX_SOFTWARE_ENDSTOP_Z
 #endif
 #if EITHER(MIN_SOFTWARE_ENDSTOPS, MAX_SOFTWARE_ENDSTOPS)
-  #define SOFT_ENDSTOPS_MENU_ITEM  // Enable/Disable software endstops from the LCD
+  //#define SOFT_ENDSTOPS_MENU_ITEM  // Enable/Disable software endstops from the LCD
 #endif
 
 //===========================================================================
@@ -613,8 +607,8 @@
 
 // Add a menu item to move between bed corners for manual bed adjustment
 // per https://blog.gruby.com/2020/01/05/installing-a-bltouch-on-an-ender-3-pro/
+// myconfig TODO: calibrate these insets
 #define LEVEL_BED_CORNERS
-
 #if ENABLED(LEVEL_BED_CORNERS)
   #define LEVEL_CORNERS_INSET_LFRB { 30, 30, 30, 30 } // (mm) Left, Front, Right, Back insets
   #define LEVEL_CORNERS_HEIGHT      0.0   // (mm) Z height of nozzle at leveling points
