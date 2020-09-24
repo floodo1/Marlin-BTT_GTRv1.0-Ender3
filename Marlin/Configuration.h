@@ -29,7 +29,7 @@
 
 
 // @section info
-#define STRING_CONFIG_H_AUTHOR "(Ender3 GTR Marlin bugfix-advanced config)" // Who made the changes. printed to the host during boot and M115
+#define STRING_CONFIG_H_AUTHOR "(Ender3 GTR Marlin bugfix)" // Who made the changes. printed to the host during boot and M115
 
 #define SHOW_CUSTOM_BOOTSCREEN  // on startup
 #define SHOW_BOOTSCREEN // marlin boot screen
@@ -334,10 +334,10 @@
  *     |    [-]    |
  *     O-- FRONT --+
  */
-// for this BLTouch bracket https://www.thingiverse.com/thing:3584158 :
+// for this BLTouch bracket https://www.thingiverse.com/thing:3584158 (suggested offset -1.55)
 #define MYCONFIG_PROBE_OFFSET_X -40 // calibrated ... did this calibrate at -42???
 #define MYCONFIG_PROBE_OFFSET_Y -12 // calibrated
-#define MYCONFIG_PROBE_OFFSET_Z -1.05 // initial calibration using probe for z-homing
+#define MYCONFIG_PROBE_OFFSET_Z -1.6 // updated value from "Level Corners" routine = -1.6, initial calibration using probe for z-homing = -1.05
 #define NOZZLE_TO_PROBE_OFFSET { MYCONFIG_PROBE_OFFSET_X, MYCONFIG_PROBE_OFFSET_Y, MYCONFIG_PROBE_OFFSET_Z }
 
 #define PROBING_MARGIN 2
@@ -571,7 +571,7 @@
     //#define ABL_BILINEAR_SUBDIVISION
     #if ENABLED(ABL_BILINEAR_SUBDIVISION)
       // Number of subdivisions between probe points
-      #define BILINEAR_SUBDIVISIONS 3
+      #define BILINEAR_SUBDIVISIONS 3 // default 3
     #endif
 
   #endif
@@ -610,8 +610,8 @@
 // myconfig TODO: calibrate these insets
 #define LEVEL_BED_CORNERS
 #if ENABLED(LEVEL_BED_CORNERS)
-  #define LEVEL_CORNERS_INSET_LFRB { 30, 30, 30, 30 } // (mm) Left, Front, Right, Back insets
-  #define LEVEL_CORNERS_HEIGHT      0.0   // (mm) Z height of nozzle at leveling points
+  #define LEVEL_CORNERS_INSET_LFRB { 28, 19, 30, 19 } // (mm) Left, Front, Right, Back insets
+  #define LEVEL_CORNERS_HEIGHT      0.0   // (mm) Z height of nozzle at leveling points, default 0.0
   #define LEVEL_CORNERS_Z_HOP       4.0   // (mm) Z height of nozzle between leveling points
   //#define LEVEL_CENTER_TOO              // Move to the center after the last corner
 #endif
