@@ -2,7 +2,10 @@
 This repo was forked from official [Marlin on GitHub](https://img.shields.io/github/license/marlinfirmware/marlin.svg). Information about which can be found at the [Marlin Home Page](https://marlinfw.org/).
 <img align="right" width=175 src="buildroot/share/pixmaps/logo/marlin-250.png" />
 
-**The configuration/code here may not work for you!**
+```diff
+- The configuration/code here may not work for you! -
+```
+
 
 ### Supported Platforms
   [BigTreeTech GTR v1.0](https://www.biqu.equipment/products/bigtreetech-gtr-v1-0-bigtreetech-m5-v1-0-11-axis-3d-printer-motherboard) and [Creality Ender 3](https://www.creality3dofficial.com/products/official-creality-ender-3-3d-printer) with the following components:
