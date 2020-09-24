@@ -334,7 +334,7 @@
  *     |    [-]    |
  *     O-- FRONT --+
  */
-// for this BLTouch bracket https://www.thingiverse.com/thing:3584158 :
+// for this BLTouch bracket https://www.thingiverse.com/thing:3733792 :
 #define MYCONFIG_PROBE_OFFSET_X -40 // calibrated ... did this calibrate at -42???
 #define MYCONFIG_PROBE_OFFSET_Y -12 // calibrated
 #define MYCONFIG_PROBE_OFFSET_Z -1.05 // initial calibration using probe for z-homing
