@@ -342,9 +342,9 @@
 
 #define PROBING_MARGIN 2
 
-#define XY_PROBE_SPEED (133*60) // X and Y axis travel speed (mm/min) between probes, default: 133*60=7980
+#define XY_PROBE_SPEED (133*90) // X and Y axis travel speed (mm/min) between probes, default: 133*60=7980
 #define Z_PROBE_SPEED_FAST HOMING_FEEDRATE_Z  // Feedrate (mm/min) for the first approach when double-probing (MULTIPLE_PROBING == 2)
-#define Z_PROBE_SPEED_SLOW (Z_PROBE_SPEED_FAST / 2) // Feedrate (mm/min) for the "accurate" probe of each point
+#define Z_PROBE_SPEED_SLOW (Z_PROBE_SPEED_FAST / 3) // Feedrate (mm/min) for the "accurate" probe of each point
 
 /**
  * Multiple Probing
@@ -375,17 +375,17 @@
  */
 // myconfig: DO NOT SET DEPLOY CLEARANCE <10 and BETWEEN/MULTI <5
 #define Z_CLEARANCE_DEPLOY_PROBE    8 // Z Clearance for Deploy/Stow
-#define Z_CLEARANCE_BETWEEN_PROBES  5 // Z Clearance between probe points
-#define Z_CLEARANCE_MULTI_PROBE     5 // Z Clearance between multiple probes
+#define Z_CLEARANCE_BETWEEN_PROBES  4 // Z Clearance between probe points
+#define Z_CLEARANCE_MULTI_PROBE     4 // Z Clearance between multiple probes
 #define Z_AFTER_PROBING             8 // Z position after probing is done
 
 // myconfig: use 1mm, default -2
 #define Z_PROBE_LOW_POINT          -1 // Farthest distance below the trigger-point to go before stopping
 
-// For M851 give a range for adjusting the Z probe offset
+// For M851 give a range for adjus2ting the Z probe offset
 // per marlin config example for Ender3:  vs has -10 and 10
-#define Z_PROBE_OFFSET_RANGE_MIN -10
-#define Z_PROBE_OFFSET_RANGE_MAX 10
+#define Z_PROBE_OFFSET_RANGE_MIN -2 // default -10
+#define Z_PROBE_OFFSET_RANGE_MAX 1 / default 10
 
 // Enable M48
 #define Z_MIN_PROBE_REPEATABILITY_TEST
@@ -533,13 +533,12 @@
   // The height can be set with M420 Z<height>
   #define ENABLE_LEVELING_FADE_HEIGHT
 
-  // For Cartesian machines, instead of dividing moves on mesh boundaries,
-  // split up moves into short segments like a Delta.
+  // For Cartesian machines, instead of dividing moves on mesh boundaries, split up moves into short segments like a Delta.
   // This follows the contours of the bed more closely than edge-to-edge straight moves.
   #define SEGMENT_LEVELED_MOVES
   #define LEVELED_SEGMENT_LENGTH 5.0 // (mm) Length of all segments (except the last one)
 
-  // Enable the G26 Mesh Validation Pattern tool.
+  // Enable the G26 Mesh Validation Pattern tool. Photo of good print: https://github.com/MarlinFirmware/Marlin/issues/7021#issuecomment-315636600
   #define G26_MESH_VALIDATION
   #if ENABLED(G26_MESH_VALIDATION)
     // SPLA config:
@@ -548,7 +547,7 @@
     #define MESH_TEST_HOTEND_TEMP    215  // (°C) Default nozzle temperature for the G26 Mesh Validation Tool.
     #define MESH_TEST_BED_TEMP       80   // (°C) Default bed temperature for the G26 Mesh Validation Tool.
     #define G26_XY_FEEDRATE          20   // (mm/s) Feedrate for XY Moves for the G26 Mesh Validation Tool.
-    #define G26_RETRACT_MULTIPLIER   1.0  // G26 Q (retraction) used by default between mesh test elements.
+    #define G26_RETRACT_MULTIPLIER   6.0  // G26 Q (retraction) used by default between mesh test elements.
   #endif
 
 #endif
