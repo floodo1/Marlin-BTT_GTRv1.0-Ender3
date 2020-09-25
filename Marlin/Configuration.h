@@ -342,9 +342,9 @@
 
 #define PROBING_MARGIN 2
 
-#define XY_PROBE_SPEED (133*90) // X and Y axis travel speed (mm/min) between probes, default: 133*60=7980
+#define XY_PROBE_SPEED (133*60) // X and Y axis travel speed (mm/min) between probes, default: 133*60=7980
 #define Z_PROBE_SPEED_FAST HOMING_FEEDRATE_Z  // Feedrate (mm/min) for the first approach when double-probing (MULTIPLE_PROBING == 2)
-#define Z_PROBE_SPEED_SLOW (Z_PROBE_SPEED_FAST / 3) // Feedrate (mm/min) for the "accurate" probe of each point
+#define Z_PROBE_SPEED_SLOW (Z_PROBE_SPEED_FAST / 2) // Feedrate (mm/min) for the "accurate" probe of each point
 
 /**
  * Multiple Probing
@@ -385,7 +385,7 @@
 // For M851 give a range for adjus2ting the Z probe offset
 // per marlin config example for Ender3:  vs has -10 and 10
 #define Z_PROBE_OFFSET_RANGE_MIN -2 // default -10
-#define Z_PROBE_OFFSET_RANGE_MAX 1 / default 10
+#define Z_PROBE_OFFSET_RANGE_MAX 1  // default 10
 
 // Enable M48
 #define Z_MIN_PROBE_REPEATABILITY_TEST
@@ -449,10 +449,11 @@
 
 // @section homing
 //#define NO_MOTION_BEFORE_HOMING // Inhibit movement until all axes have been homed
-//#define UNKNOWN_Z_NO_RAISE      // Don't raise Z (lower the bed) if Z is "unknown." For beds that fall when Z is powered off.
-#define Z_HOMING_HEIGHT  6      // (mm) Minimal Z height before homing (G28) for Z clearance above the bed, clamps, ...
-                                  // Be sure to have this much clearance over your Z_MAX_POS to prevent grinding.
-#define Z_AFTER_HOMING  8      // (mm) Height to move to after homing Z
+//#define UNKNOWN_Z_NO_RAISE    // Don't raise Z (lower the bed) if Z is "unknown." For beds that fall when Z is powered off.
+/** (mm) Minimal Z height before homing (G28) for Z clearance above the bed, clamps, ...
+ *  NOTE: Be sure to have this much clearance over your Z_MAX_POS to prevent grinding. */
+#define Z_HOMING_HEIGHT  6      // myconfig: confirmed this clears the clamps
+#define Z_AFTER_HOMING  8       // (mm) Height to move to after homing Z
 
 #define X_HOME_DIR -1 // 1=MAX, -1=MIN
 #define Y_HOME_DIR -1
@@ -606,7 +607,6 @@
 
 // Add a menu item to move between bed corners for manual bed adjustment
 // per https://blog.gruby.com/2020/01/05/installing-a-bltouch-on-an-ender-3-pro/
-// myconfig TODO: calibrate these insets
 #define LEVEL_BED_CORNERS
 #if ENABLED(LEVEL_BED_CORNERS)
   #define LEVEL_CORNERS_INSET_LFRB { 28, 19, 30, 19 } // (mm) Left, Front, Right, Back insets
@@ -652,8 +652,8 @@
 #endif
 
 // Homing speeds (mm/min)
-#define HOMING_FEEDRATE_XY (50*60)
-#define HOMING_FEEDRATE_Z  (4*60)
+#define HOMING_FEEDRATE_XY (50*60)  // mm/min
+#define HOMING_FEEDRATE_Z  (4*60)   // mm/min
 
 #define VALIDATE_HOMING_ENDSTOPS
 
