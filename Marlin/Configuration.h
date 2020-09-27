@@ -568,9 +568,11 @@
 
     // Experimental Subdivision of the grid by Catmull-Rom method.
     // Synthesizes intermediate points to produce a more detailed mesh.
+    // myconfig: TODO test this out:
     //#define ABL_BILINEAR_SUBDIVISION
     #if ENABLED(ABL_BILINEAR_SUBDIVISION)
       // Number of subdivisions between probe points
+      
       #define BILINEAR_SUBDIVISIONS 3 // default 3
     #endif
 
