@@ -1,7 +1,12 @@
 # Configurations
-Pre-tested Configurations for Marlin Firmware bugfix-2.0.x
+These pre-tested Configurations were most likely taken from https://github.com/MarlinFirmware/Configurations/archive/release-2.0.6.zip
 
-Most likely taken from https://github.com/MarlinFirmware/Configurations/archive/release-2.0.6.zip
+## Upstream
+Marlin configurations for specific machines are now maintained in their own repository at:
+- https://github.com/MarlinFirmware/Configurations
+
+Or the latest configs can be downloaded from:
+- https://github.com/MarlinFirmware/Configurations/archive/bugfix-2.0.x.zip
 
 # Marlin Firmware is configured using two files:
 
