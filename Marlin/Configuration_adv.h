@@ -580,7 +580,10 @@
   // Safety: The probe needs time to recognize the command.
   //         Minimum command delay (ms). Enable and increase if needed.
   // #define BLTOUCH_DELAY 500
-  #define BLTOUCH_DELAY 200 // per https://danielstanton.co.uk/357/configuring-marlin-2-0-for-an-ender-3-pro-and-bltouch/
+  // 200 per https://danielstanton.co.uk/357/configuring-marlin-2-0-for-an-ender-3-pro-and-bltouch/
+  // 100 per TeachingTech https://www.youtube.com/watch?v=BV11-VOQjMc
+  // don't go below 200 per https://3dprinting.stackexchange.com/questions/11684/how-do-i-speed-up-the-bltouch-auto-bed-leveling-in-th3ds-unified-firmware
+  #define BLTOUCH_DELAY 200
 
   /**
    * Use "HIGH SPEED" mode for probing.
@@ -723,6 +726,7 @@
 
 #if HAS_LCD_MENU
   // Add Probe Z Offset calibration to the Bed Leveling menu
+  // see https://github.com/MarlinFirmware/Marlin/pull/18866#issuecomment-674464630
   #if HAS_BED_PROBE
     #define PROBE_OFFSET_WIZARD
     #if ENABLED(PROBE_OFFSET_WIZARD)
