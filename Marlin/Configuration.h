@@ -375,17 +375,17 @@
  */
 // myconfig: DO NOT SET DEPLOY CLEARANCE <10 and BETWEEN/MULTI <5
 #define Z_CLEARANCE_DEPLOY_PROBE    8 // Z Clearance for Deploy/Stow
-#define Z_CLEARANCE_BETWEEN_PROBES  5 // Z Clearance between probe points
-#define Z_CLEARANCE_MULTI_PROBE     5 // Z Clearance between multiple probes
+#define Z_CLEARANCE_BETWEEN_PROBES  4 // Z Clearance between probe points
+#define Z_CLEARANCE_MULTI_PROBE     4 // Z Clearance between multiple probes
 #define Z_AFTER_PROBING             8 // Z position after probing is done
 
 // myconfig: use 1mm, default -2
 #define Z_PROBE_LOW_POINT          -1 // Farthest distance below the trigger-point to go before stopping
 
-// For M851 give a range for adjusting the Z probe offset
+// For M851 give a range for adjus2ting the Z probe offset
 // per marlin config example for Ender3:  vs has -10 and 10
-#define Z_PROBE_OFFSET_RANGE_MIN -10
-#define Z_PROBE_OFFSET_RANGE_MAX 10
+#define Z_PROBE_OFFSET_RANGE_MIN -2 // default -10
+#define Z_PROBE_OFFSET_RANGE_MAX 1  // default 10
 
 // Enable M48
 #define Z_MIN_PROBE_REPEATABILITY_TEST
@@ -449,10 +449,11 @@
 
 // @section homing
 //#define NO_MOTION_BEFORE_HOMING // Inhibit movement until all axes have been homed
-//#define UNKNOWN_Z_NO_RAISE      // Don't raise Z (lower the bed) if Z is "unknown." For beds that fall when Z is powered off.
-#define Z_HOMING_HEIGHT  6      // (mm) Minimal Z height before homing (G28) for Z clearance above the bed, clamps, ...
-                                  // Be sure to have this much clearance over your Z_MAX_POS to prevent grinding.
-#define Z_AFTER_HOMING  8      // (mm) Height to move to after homing Z
+//#define UNKNOWN_Z_NO_RAISE    // Don't raise Z (lower the bed) if Z is "unknown." For beds that fall when Z is powered off.
+/** (mm) Minimal Z height before homing (G28) for Z clearance above the bed, clamps, ...
+ *  NOTE: Be sure to have this much clearance over your Z_MAX_POS to prevent grinding. */
+#define Z_HOMING_HEIGHT  6      // myconfig: confirmed this clears the clamps
+#define Z_AFTER_HOMING  8       // (mm) Height to move to after homing Z
 
 #define X_HOME_DIR -1 // 1=MAX, -1=MIN
 #define Y_HOME_DIR -1
@@ -533,13 +534,12 @@
   // The height can be set with M420 Z<height>
   #define ENABLE_LEVELING_FADE_HEIGHT
 
-  // For Cartesian machines, instead of dividing moves on mesh boundaries,
-  // split up moves into short segments like a Delta.
+  // For Cartesian machines, instead of dividing moves on mesh boundaries, split up moves into short segments like a Delta.
   // This follows the contours of the bed more closely than edge-to-edge straight moves.
   #define SEGMENT_LEVELED_MOVES
   #define LEVELED_SEGMENT_LENGTH 5.0 // (mm) Length of all segments (except the last one)
 
-  // Enable the G26 Mesh Validation Pattern tool.
+  // Enable the G26 Mesh Validation Pattern tool. Photo of good print: https://github.com/MarlinFirmware/Marlin/issues/7021#issuecomment-315636600
   #define G26_MESH_VALIDATION
   #if ENABLED(G26_MESH_VALIDATION)
     // SPLA config:
@@ -548,7 +548,7 @@
     #define MESH_TEST_HOTEND_TEMP    215  // (°C) Default nozzle temperature for the G26 Mesh Validation Tool.
     #define MESH_TEST_BED_TEMP       80   // (°C) Default bed temperature for the G26 Mesh Validation Tool.
     #define G26_XY_FEEDRATE          20   // (mm/s) Feedrate for XY Moves for the G26 Mesh Validation Tool.
-    #define G26_RETRACT_MULTIPLIER   1.0  // G26 Q (retraction) used by default between mesh test elements.
+    #define G26_RETRACT_MULTIPLIER   6.0  // G26 Q (retraction) used by default between mesh test elements.
   #endif
 
 #endif
@@ -568,9 +568,11 @@
 
     // Experimental Subdivision of the grid by Catmull-Rom method.
     // Synthesizes intermediate points to produce a more detailed mesh.
+    // myconfig: TODO test this out:
     //#define ABL_BILINEAR_SUBDIVISION
     #if ENABLED(ABL_BILINEAR_SUBDIVISION)
       // Number of subdivisions between probe points
+      
       #define BILINEAR_SUBDIVISIONS 3 // default 3
     #endif
 
@@ -607,7 +609,6 @@
 
 // Add a menu item to move between bed corners for manual bed adjustment
 // per https://blog.gruby.com/2020/01/05/installing-a-bltouch-on-an-ender-3-pro/
-// myconfig TODO: calibrate these insets
 #define LEVEL_BED_CORNERS
 #if ENABLED(LEVEL_BED_CORNERS)
   #define LEVEL_CORNERS_INSET_LFRB { 28, 19, 30, 19 } // (mm) Left, Front, Right, Back insets
@@ -653,8 +654,8 @@
 #endif
 
 // Homing speeds (mm/min)
-#define HOMING_FEEDRATE_XY (50*60)
-#define HOMING_FEEDRATE_Z  (4*60)
+#define HOMING_FEEDRATE_XY (50*60)  // mm/min
+#define HOMING_FEEDRATE_Z  (4*60)   // mm/min
 
 #define VALIDATE_HOMING_ENDSTOPS
 
