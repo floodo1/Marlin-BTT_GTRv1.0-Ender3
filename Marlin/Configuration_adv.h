@@ -726,7 +726,7 @@
 
 #if HAS_LCD_MENU
   // Add Probe Z Offset calibration to the Bed Leveling menu
-  // see https://github.com/MarlinFirmware/Marlin/pull/18866
+  // see https://github.com/MarlinFirmware/Marlin/pull/18866#issuecomment-674464630
   #if HAS_BED_PROBE
     #define PROBE_OFFSET_WIZARD
     #if ENABLED(PROBE_OFFSET_WIZARD)

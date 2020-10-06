@@ -582,14 +582,11 @@
     // Default is to maintain the height of the nearest edge.
     #define EXTRAPOLATE_BEYOND_GRID
 
-    // Experimental Subdivision of the grid by Catmull-Rom method.
+    // Experimental Subdivision of the grid by Catmull-Rom method,
     // Synthesizes intermediate points to produce a more detailed mesh.
-    // myconfig: TODO test this out:
     #define ABL_BILINEAR_SUBDIVISION
     #if ENABLED(ABL_BILINEAR_SUBDIVISION)
-      // Number of subdivisions between probe points
-
-      #define BILINEAR_SUBDIVISIONS 3 // default 3
+      #define BILINEAR_SUBDIVISIONS 3 // // Number of subdivisions between probe points, default = 3
     #endif
 
   #endif
