@@ -1,7 +1,9 @@
 # Configurations
 Pre-tested Configurations for Marlin Firmware bugfix-2.0.x
 
-Marlin Firmware is configured using two files:
+Most likely taken from https://github.com/MarlinFirmware/Configurations/archive/release-2.0.6.zip
+
+# Marlin Firmware is configured using two files:
 
 - `Configuration.h` contains core configuration options like machine geometry.
 - `Configuration_adv.h` contains optional settings for advanced and low level features.
