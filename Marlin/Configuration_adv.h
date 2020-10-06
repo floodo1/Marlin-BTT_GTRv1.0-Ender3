@@ -593,31 +593,33 @@
 #endif // BLTOUCH
 
 // @section extras
-
 // Add the G35 command to read bed corners to help adjust screws. Requires a bed probe.
-//#define ASSISTED_TRAMMING
+#define ASSISTED_TRAMMING
 #if ENABLED(ASSISTED_TRAMMING)
-  // Define positions for probing points, use the hotend as reference not the sensor.
-  #define TRAMMING_POINT_XY { {  20, 20 }, { 200,  20 }, { 200, 200 }, { 20, 200 } }
+  #define RESTORE_LEVELING_AFTER_G35  // Enable to restore leveling setup after operation
+  #define ASSISTED_TRAMMING_MENU_ITEM // Add a menu item for Assisted Tramming
   // Define positions names for probing points.
-  #define TRAMMING_POINT_NAME_1 "Front-Left"
-  #define TRAMMING_POINT_NAME_2 "Front-Right"
-  #define TRAMMING_POINT_NAME_3 "Back-Right"
-  #define TRAMMING_POINT_NAME_4 "Back-Left"
-
-  // Enable to restore leveling setup after operation
-  #define RESTORE_LEVELING_AFTER_G35
-
-  // Add a menu item for Assisted Tramming
-  //#define ASSISTED_TRAMMING_MENU_ITEM
-
-  /**
-   * Screw thread:
-   *   M3: 30 = Clockwise, 31 = Counter-Clockwise
-   *   M4: 40 = Clockwise, 41 = Counter-Clockwise
-   *   M5: 50 = Clockwise, 51 = Counter-Clockwise
+  #define TRAMMING_POINT_NAME_1 "Left-Front"
+  #define TRAMMING_POINT_NAME_2 "Right-Front"
+  #define TRAMMING_POINT_NAME_3 "Right-Back"
+  #define TRAMMING_POINT_NAME_4 "Left-Back"
+  // Define positions for probing points, use the hotend as reference not the sensor.
+    #define MYCONFIG_CSCREW_F_Y MYCONFIG_CSCREW_F_INSET
+    #define MYCONFIG_CSCREW_L_X MYCONFIG_CSCREW_L_INSET
+    #define MYCONFIG_CSCREW_R_X (X_MAX_POS - MYCONFIG_CSCREW_R_INSET)
+    #define MYCONFIG_CSCREW_B_Y (Y_MAX_POS - MYCONFIG_CSCREW_B_INSET)
+  #define TRAMMING_POINT_XY { \
+    { MYCONFIG_CSCREW_L_X , MYCONFIG_CSCREW_F_Y }, \
+    { MYCONFIG_CSCREW_R_X , MYCONFIG_CSCREW_F_Y }, \
+    { MYCONFIG_CSCREW_R_X , MYCONFIG_CSCREW_B_Y }, \
+    { MYCONFIG_CSCREW_L_X , MYCONFIG_CSCREW_B_Y }  \
+  }
+  /** Screw thread:
+   *    M3: 30 = Clockwise, 31 = Counter-Clockwise
+   *    M4: 40 = Clockwise, 41 = Counter-Clockwise
+   *    M5: 50 = Clockwise, 51 = Counter-Clockwise
    */
-  #define TRAMMING_SCREW_THREAD 30
+  #define TRAMMING_SCREW_THREAD 40
 #endif
 
 // @section motion

@@ -620,11 +620,24 @@
   //#define MESH_EDIT_MENU        // Add a menu to edit mesh points
 #endif
 
+// Myconfig: define bed corners for use with manual leveling from menu and G35 assisted (probe) tramming
+// (mm) Left, Front, Right, Back insets
+#define MYCONFIG_CSCREW_L_INSET 28
+#define MYCONFIG_CSCREW_F_INSET 19
+#define MYCONFIG_CSCREW_R_INSET 30
+#define MYCONFIG_CSCREW_B_INSET 19
+
 // Add a menu item to move between bed corners for manual bed adjustment
 // per https://blog.gruby.com/2020/01/05/installing-a-bltouch-on-an-ender-3-pro/
 #define LEVEL_BED_CORNERS
 #if ENABLED(LEVEL_BED_CORNERS)
-  #define LEVEL_CORNERS_INSET_LFRB { 28, 19, 30, 19 } // (mm) Left, Front, Right, Back insets
+  // (mm) Left, Front, Right, Back insets
+  #define LEVEL_CORNERS_INSET_LFRB { \
+    MYCONFIG_CSCREW_L_INSET, \
+    MYCONFIG_CSCREW_F_INSET, \
+    MYCONFIG_CSCREW_R_INSET, \
+    MYCONFIG_CSCREW_B_INSET \
+  }
   #define LEVEL_CORNERS_HEIGHT      0.0   // (mm) Z height of nozzle at leveling points, default 0.0
   #define LEVEL_CORNERS_Z_HOP       4.0   // (mm) Z height of nozzle between leveling points
   //#define LEVEL_CENTER_TOO              // Move to the center after the last corner
