@@ -353,11 +353,13 @@
 #define MYCONFIG_PROBE_OFFSET_Z -1.6 // updated value from "Level Corners" routine = -1.6, initial calibration using probe for z-homing = -1.05
 #define NOZZLE_TO_PROBE_OFFSET { MYCONFIG_PROBE_OFFSET_X, MYCONFIG_PROBE_OFFSET_Y, MYCONFIG_PROBE_OFFSET_Z }
 
-#define PROBING_MARGIN 2
+#define PROBING_MARGIN 2  // myconfig: will be adjusted for each edge of the build surface in configuration_adv
 
-#define XY_PROBE_SPEED (133*60) // X and Y axis travel speed (mm/min) between probes, default: 133*60=7980
+// XY Speed 10000 (166.6*60) and 1/2 speed for slow per TeachingTech https://www.youtube.com/watch?v=BV11-VOQjMc
+#define XY_PROBE_SPEED (166*60) // X and Y axis travel speed (mm/min) between probes, default: 133*60=7980
 #define Z_PROBE_SPEED_FAST HOMING_FEEDRATE_Z  // Feedrate (mm/min) for the first approach when double-probing (MULTIPLE_PROBING == 2)
-#define Z_PROBE_SPEED_SLOW (Z_PROBE_SPEED_FAST / 2) // Feedrate (mm/min) for the "accurate" probe of each point
+// stick with our known working super slow speed (1/2 of fast when fast is 4*60)
+#define Z_PROBE_SPEED_SLOW (2*60) // Feedrate (mm/min) for the "accurate" probe of each point, default = 1/2 fast speed
 
 /**
  * Multiple Probing
@@ -387,8 +389,9 @@
  *     But: `M851 Z+1` with a CLEARANCE of 2  =>  2mm from bed to nozzle.
  */
 // myconfig: DO NOT SET DEPLOY CLEARANCE <10 and BETWEEN/MULTI <5
-#define Z_CLEARANCE_DEPLOY_PROBE    8 // Z Clearance for Deploy/Stow
-#define Z_CLEARANCE_BETWEEN_PROBES  4 // Z Clearance between probe points
+// Deply=5 Between=4 per TeachingTech https://www.youtube.com/watch?v=BV11-VOQjMc
+#define Z_CLEARANCE_DEPLOY_PROBE    6 // Z Clearance for Deploy/Stow, Antclabs recommends at least 10
+#define Z_CLEARANCE_BETWEEN_PROBES  4 // Z Clearance between probe points, Antclabs recommends at least 5
 #define Z_CLEARANCE_MULTI_PROBE     4 // Z Clearance between multiple probes
 #define Z_AFTER_PROBING             8 // Z position after probing is done
 
@@ -582,7 +585,7 @@
     // Experimental Subdivision of the grid by Catmull-Rom method.
     // Synthesizes intermediate points to produce a more detailed mesh.
     // myconfig: TODO test this out:
-    //#define ABL_BILINEAR_SUBDIVISION
+    #define ABL_BILINEAR_SUBDIVISION
     #if ENABLED(ABL_BILINEAR_SUBDIVISION)
       // Number of subdivisions between probe points
 
@@ -680,8 +683,11 @@
 #endif
 
 // Homing speeds (mm/min)
-#define HOMING_FEEDRATE_XY (50*60)  // mm/min
-#define HOMING_FEEDRATE_Z  (4*60)   // mm/min
+#define HOMING_FEEDRATE_XY (50*60)  // mm/min 50*60=3000
+// could go as high as 1000! per https://forum.duet3d.com/topic/13351/faster-z-homing-with-dual-endstop-switch-probe?_=1602015491157
+// 12*60=720 per https://jgaurorawiki.com/a5/modifications/bltouch
+// 20*60=1200 per TeachingTech https://www.youtube.com/watch?v=BV11-VOQjMc
+#define HOMING_FEEDRATE_Z  (10*60)   // mm/min  confirmed slow probing = 4*60=240  ... not crucial as second probe speed is what matters
 
 #define VALIDATE_HOMING_ENDSTOPS
 
