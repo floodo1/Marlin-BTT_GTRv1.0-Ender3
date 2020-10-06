@@ -23,7 +23,7 @@ This repo was forked from official [Marlin on GitHub](https://img.shields.io/git
   - Arc Support ([for OctoPrint Arc Welder](https://github.com/FormerLurker/ArcWelderPlugin))
   - Bed size set small to avoid clips
   - Print timer and counter
-  
+
 ### Work-arounds
   - Physical X min endstop is using Z max endstop pins on board because X min endstop pins were buggy (randomly ignored)
 

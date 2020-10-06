@@ -21,7 +21,7 @@
  */
 #pragma once
 
-#define CONFIGURATION_H_VERSION 020006
+#define CONFIGURATION_H_VERSION 020007
 
 /**
  * Ender3 stock firmware github: https://github.com/Creality3DPrinting/Ender-3/tree/master/Ender-3%20Firmware%20(Marlin)/Ender-3%20(includes%20power%20failure%20resume-%20English)/Marlin
@@ -119,9 +119,7 @@
 #if ENABLED(PIDTEMP)
   // Add PID auto-tuning to the "Advanced Settings" menu. (~250 bytes of PROGMEM). Or use gcode like "M303 C10 E0 S200 U1"
   //#define PID_AUTOTUNE_MENU
-  #define DEFAULT_Kp 32.69
-  #define DEFAULT_Ki 3.82
-  #define DEFAULT_Kd 69.96
+
   /*  Source                            Kp      Ki      Kd
    *  -------------------------------   -----   ----    -----
    *  calibrated "M303 C10 E0 S220 U1"  32.69   3.82    69.96   // 20200917
@@ -130,6 +128,21 @@
    *  Marlin ender3 config example      21.73   1.54    76.55
    *  Marlin ender3 v2 config example   28.72   2.62    78.81
    */
+  // #define PID_PARAMS_PER_HOTEND  // or Set/get with gcode: "M301 E[extruder number, 0-2]"
+  #if ENABLED(PID_PARAMS_PER_HOTEND)
+    // Specify between 1 and HOTENDS values per array, i.e. "{ 32.69, 20.84 }"
+    // If fewer than EXTRUDER values are provided, the last element will be repeated.
+    #define DEFAULT_Kp_LIST {  32.69,  20.84 }
+    #define DEFAULT_Ki_LIST {   3.82,   1.96 }
+    #define DEFAULT_Kd_LIST {  69.96   55.47 }
+  #else
+    #define DEFAULT_Kp 32.69
+    #define DEFAULT_Ki 3.82
+    #define DEFAULT_Kd 69.96
+  #endif
+
+
+
 #endif // PIDTEMP
 
 //===========================================================================
@@ -572,7 +585,7 @@
     //#define ABL_BILINEAR_SUBDIVISION
     #if ENABLED(ABL_BILINEAR_SUBDIVISION)
       // Number of subdivisions between probe points
-      
+
       #define BILINEAR_SUBDIVISIONS 3 // default 3
     #endif
 
@@ -827,6 +840,14 @@
 
 #define INDIVIDUAL_AXIS_HOMING_MENU
 
+//
+// TFT GLCD Panel with Marlin UI
+// Panel connected to main board by SPI or I2C interface.
+// See https://github.com/Serhiy-K/TFTGLCDAdapter
+//
+//#define TFTGLCD_PANEL_SPI
+//#define TFTGLCD_PANEL_I2C
+
 //=============================================================================
 //=======================   LCD / Controller Selection  =======================
 //=========================      (Graphical LCDs)      ========================
@@ -903,7 +924,6 @@
  * *** CAUTION ***
  *
  * LED Type. Enable only one of the following two options.
- *
  */
 
 //#define RGB_LED
