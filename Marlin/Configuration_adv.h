@@ -625,9 +625,6 @@
 // @section motion
 #define AXIS_RELATIVE_MODES { false, false, false, false }
 
-// Add a Duplicate option for well-separated conjoined nozzles
-//#define MULTI_NOZZLE_DUPLICATION
-
 // By default pololu step drivers require an active high signal. However, some high power drivers require an active low signal as step.
 #define INVERT_X_STEP_PIN false
 #define INVERT_Y_STEP_PIN false
@@ -725,8 +722,15 @@
 #endif
 
 #if HAS_LCD_MENU
+  // Add Probe Z Offset calibration to the Bed Leveling menu
+  #if HAS_BED_PROBE
+    #define PROBE_OFFSET_WIZARD
+    #if ENABLED(PROBE_OFFSET_WIZARD)
+      #define PROBE_OFFSET_START (MYCONFIG_PROBE_OFFSET_Z - 1)   // Estimated nozzle-to-probe Z offset, plus a little extra, default = -4.0
+    #endif
+  #endif
+
   // Include a page of printer information in the LCD Main Menu
-  // per marlin config example for Ender3:
   #define LCD_INFO_MENU
   #if ENABLED(LCD_INFO_MENU)
     //#define LCD_PRINTER_INFO_IS_BOOTSCREEN // Show bootscreen(s) instead of Printer Info pages
@@ -735,9 +739,7 @@
   // BACK menu items keep the highlight at the top
   //#define TURBO_BACK_MENU_ITEM
 
-  /**
-   * LED Control Menu
-   * Add LED Control to the LCD menu
+  /** LED Control Menu - Add LED Control to the LCD menu
    */
   //#define LED_CONTROL_MENU
   #if ENABLED(LED_CONTROL_MENU)
@@ -1313,6 +1315,7 @@
   #define N_ARC_CORRECTION       25 // Number of interpolated segments between corrections
   #define ARC_P_CIRCLES           // Enable the 'P' parameter to specify complete circles
   //#define CNC_WORKSPACE_PLANES    // Allow G2/G3 to operate in XY, ZX, or YZ planes
+  //#define SF_ARC_FIX              // Enable only if using SkeinForge with "Arc Point" fillet procedure
 #endif
 
 /** Support for G5 with XYZE destination and IJPQ offsets. Requires ~2666 bytes.
