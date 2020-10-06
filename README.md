@@ -14,10 +14,15 @@ This repo was forked from official [Marlin on GitHub](https://img.shields.io/git
 ### Features
   - BLTouch
   - Z-homing with probe (disabled Z min endstop)
-  - Auto bed leveling
+  - Auto bed leveling (with debug logging enabled)
   - Corner leveling
+  - G26 Leveling test pattern
+  - PID tuned bed (and hotend)
   - Controller Fan
   - Babystepping
+  - Arc Support ([for OctoPrint Arc Welder](https://github.com/FormerLurker/ArcWelderPlugin))
+  - Bed size set small to avoid clips
+  - Print timer and counter
   
 ### Work-arounds
   - Physical X min endstop is using Z max endstop pins on board because X min endstop pins were buggy (randomly ignored)
