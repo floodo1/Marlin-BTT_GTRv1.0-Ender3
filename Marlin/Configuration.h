@@ -350,7 +350,7 @@
 // for this BLTouch bracket https://www.thingiverse.com/thing:3733792 :
 #define MYCONFIG_PROBE_OFFSET_X -40 // calibrated ... did this calibrate at -42???
 #define MYCONFIG_PROBE_OFFSET_Y -12 // calibrated
-#define MYCONFIG_PROBE_OFFSET_Z -1.6 // updated value from "Level Corners" routine = -1.6, initial calibration using probe for z-homing = -1.05
+#define MYCONFIG_PROBE_OFFSET_Z -1.82 // new value from new PROBE_OFFSET_WIZARD
 #define NOZZLE_TO_PROBE_OFFSET { MYCONFIG_PROBE_OFFSET_X, MYCONFIG_PROBE_OFFSET_Y, MYCONFIG_PROBE_OFFSET_Z }
 
 #define PROBING_MARGIN 2  // myconfig: will be adjusted for each edge of the build surface in configuration_adv
@@ -575,18 +575,18 @@
   #define GRID_MAX_POINTS_Y GRID_MAX_POINTS_X // default = GRID_MAX_POINTS_X
 
   // Probe along the Y axis, advancing X after each column
-  #define PROBE_Y_FIRST
+  //#define PROBE_Y_FIRST
 
   #if ENABLED(AUTO_BED_LEVELING_BILINEAR)
     // Beyond the probed grid, continue the implied tilt?
     // Default is to maintain the height of the nearest edge.
-    #define EXTRAPOLATE_BEYOND_GRID
+    //#define EXTRAPOLATE_BEYOND_GRID
 
     // Experimental Subdivision of the grid by Catmull-Rom method,
     // Synthesizes intermediate points to produce a more detailed mesh.
     #define ABL_BILINEAR_SUBDIVISION
     #if ENABLED(ABL_BILINEAR_SUBDIVISION)
-      #define BILINEAR_SUBDIVISIONS 3 // // Number of subdivisions between probe points, default = 3
+      #define BILINEAR_SUBDIVISIONS 3 // Number of subdivisions between probe points, default = 3
     #endif
 
   #endif
@@ -759,7 +759,6 @@
  *   M502 - Revert settings to "factory" defaults. (Follow with M500 to init the EEPROM.)
  */
 #define EEPROM_SETTINGS       // Persistent storage with M500 and M501
-//#define DISABLE_M503        // Saves ~2700 bytes of PROGMEM. Disable for release!
 #define EEPROM_CHITCHAT       // Give feedback on EEPROM commands. Disable to save PROGMEM.
 #define EEPROM_BOOT_SILENT    // Keep M503 quiet and only give errors during first load
 #if ENABLED(EEPROM_SETTINGS)
@@ -776,15 +775,15 @@
 
 // @section temperature
 // Preheat Constants
-#define PREHEAT_1_LABEL       "SPLA"
-#define PREHEAT_1_TEMP_HOTEND 200
-#define PREHEAT_1_TEMP_BED     80
-#define PREHEAT_1_FAN_SPEED   128 // Value from 0 to 255
+#define PREHEAT_1_LABEL        "PLA"
+#define PREHEAT_1_TEMP_HOTEND  180
+#define PREHEAT_1_TEMP_BED      60
+#define PREHEAT_1_FAN_SPEED    128 // Value from 0 to 255
 
-#define PREHEAT_2_LABEL       "ABS"
-#define PREHEAT_2_TEMP_HOTEND 240
-#define PREHEAT_2_TEMP_BED     70
-#define PREHEAT_2_FAN_SPEED   255 // Value from 0 to 255
+#define PREHEAT_2_LABEL        "SPLA"
+#define PREHEAT_2_TEMP_HOTEND  200
+#define PREHEAT_2_TEMP_BED      80
+#define PREHEAT_2_FAN_SPEED    128 // Value from 0 to 255
 
 /** Nozzle Park - Park the nozzle at the given XYZ position on idle or G27.
  * The "P" parameter controls the action applied to the Z axis:
@@ -859,14 +858,6 @@
 
 #define INDIVIDUAL_AXIS_HOMING_MENU
 
-//
-// TFT GLCD Panel with Marlin UI
-// Panel connected to main board by SPI or I2C interface.
-// See https://github.com/Serhiy-K/TFTGLCDAdapter
-//
-//#define TFTGLCD_PANEL_SPI
-//#define TFTGLCD_PANEL_I2C
-
 //=============================================================================
 //=======================   LCD / Controller Selection  =======================
 //=========================      (Graphical LCDs)      ========================
@@ -923,57 +914,30 @@
 // Support for PCA9533 PWM LED driver
 //#define PCA9533
 
-/**
- * RGB LED / LED Strip Control
- *
- * Enable support for an RGB LED connected to 5V digital pins, or
- * an RGB Strip connected to MOSFETs controlled by digital pins.
- *
- * Adds the M150 command to set the LED (or LED strip) color.
- * If pins are PWM capable (e.g., 4, 5, 6, 11) then a range of
- * luminance values can be set from 0 to 255.
- * For NeoPixel LED an overall brightness parameter is also available.
- *
- * *** CAUTION ***
- *  LED Strips require a MOSFET Chip between PWM lines and LEDs,
- *  as the Arduino cannot handle the current the LEDs will require.
- *  Failure to follow this precaution can destroy your Arduino!
- *  NOTE: A separate 5V power supply is required! The NeoPixel LED needs
- *  more current than the Arduino 5V linear regulator can produce.
- * *** CAUTION ***
- *
- * LED Type. Enable only one of the following two options.
+/** RGB LED / LED Strip Control - Adds the M150 command to set the LED (or LED strip) color.
+ *  If pins are PWM capable (e.g., 4, 5, 6, 11) then a range of luminance values can be set from 0 to 255.
+ *  For NeoPixel LED an overall brightness parameter is also available.
  */
-
-//#define RGB_LED
-//#define RGBW_LED
-#if EITHER(RGB_LED, RGBW_LED)
-  //#define RGB_LED_R_PIN 34
-  //#define RGB_LED_G_PIN 43
-  //#define RGB_LED_B_PIN 35
-  //#define RGB_LED_W_PIN -1
-#endif
-
-// Support for Adafruit NeoPixel LED driver
-//#define NEOPIXEL_LED
+#define NEOPIXEL_LED
 #if ENABLED(NEOPIXEL_LED)
-  #define NEOPIXEL_TYPE   NEO_GRBW // NEO_GRBW / NEO_GRB - four/three channel driver type (defined in Adafruit_NeoPixel.h)
-  #define NEOPIXEL_PIN     4       // LED driving pin
-  //#define NEOPIXEL2_TYPE NEOPIXEL_TYPE
+  #define NEOPIXEL_TYPE   NEO_GRB     // NEO_GRBW / NEO_GRB - four/three channel driver type (defined in Adafruit_NeoPixel.h)
+  #define NEOPIXEL_PIN    MYCONFIG_NEOPIXEL_PIN // LED driving pin
+  //#define NEOPIXEL2_TYPE  NEOPIXEL_TYPE
   //#define NEOPIXEL2_PIN    5
-  #define NEOPIXEL_PIXELS 30       // Number of LEDs in the strip. (Longest strip when NEOPIXEL2_SEPARATE is disabled.)
-  #define NEOPIXEL_IS_SEQUENTIAL   // Sequential display for temperature change - LED by LED. Disable to change all LEDs at once.
-  #define NEOPIXEL_BRIGHTNESS 127  // Initial brightness (0-255)
-  //#define NEOPIXEL_STARTUP_TEST  // Cycle through colors at startup
+  #define NEOPIXEL_PIXELS               1  // Number of LEDs in the strip. (Longest strip when NEOPIXEL2_SEPARATE is disabled.)
+
+  #define NEOPIXEL_IS_SEQUENTIAL           // Sequential display for temperature change - LED by LED. Disable to change all LEDs at once.
+  #define NEOPIXEL_BRIGHTNESS          64  // Initial brightness (0-255)
+  #define NEOPIXEL_STARTUP_TEST            // Cycle through colors at startup
 
   // Support for second Adafruit NeoPixel LED driver controlled with M150 S1 ...
   //#define NEOPIXEL2_SEPARATE
   #if ENABLED(NEOPIXEL2_SEPARATE)
-    #define NEOPIXEL2_PIXELS      15  // Number of LEDs in the second strip
-    #define NEOPIXEL2_BRIGHTNESS 127  // Initial brightness (0-255)
-    #define NEOPIXEL2_STARTUP_TEST    // Cycle through colors at startup
+    #define NEOPIXEL2_PIXELS           15  // Number of LEDs in the second strip
+    #define NEOPIXEL2_BRIGHTNESS      127  // Initial brightness (0-255)
+    #define NEOPIXEL2_STARTUP_TEST         // Cycle through colors at startup
   #else
-    //#define NEOPIXEL2_INSERIES      // Default behavior is NeoPixel 2 in parallel
+    //#define NEOPIXEL2_INSERIES             // Default behavior is NeoPixel 2 in parallel
   #endif
 
   // Use a single NeoPixel LED for static (background) lighting

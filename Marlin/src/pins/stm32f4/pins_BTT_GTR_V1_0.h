@@ -414,4 +414,8 @@
 
 #endif // HAS_WIRED_LCD
 
+
+#define MYCONFIG_NEOPIXEL_PIN               PF13  // this is the middle pin on NeoPixel header
+
+
 #undef TP
