@@ -376,8 +376,8 @@
 #define TEMP_SENSOR_AD8495_GAIN   1.0
 
 /** Controller Fan - To cool down the stepper drivers and MOSFETs.
- * The fan turns on automatically whenever any driver is enabled and turns
- * off (or reduces to idle speed) shortly after drivers are turned off.
+ * The fan turns on automatically whenever any driver is enabled and
+ * turns off (or reduces to idle speed) shortly after drivers are turned off.
  */
 #define USE_CONTROLLER_FAN
 #if ENABLED(USE_CONTROLLER_FAN)
