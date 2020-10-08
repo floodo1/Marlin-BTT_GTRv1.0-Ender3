@@ -602,16 +602,19 @@
   #define RESTORE_LEVELING_AFTER_G35  // Enable to restore leveling setup after operation
   #define ASSISTED_TRAMMING_MENU_ITEM // Add a menu item for Assisted Tramming
   // Define positions names for probing points.
-  #define TRAMMING_POINT_NAME_1 "Left-Front"
-  #define TRAMMING_POINT_NAME_2 "Right-Front"
-  #define TRAMMING_POINT_NAME_3 "Right-Back"
-  #define TRAMMING_POINT_NAME_4 "Left-Back"
+  #define TRAMMING_POINT_NAME_1 "Bed-Center"
+  #define TRAMMING_POINT_NAME_2 "Left-Front"
+  #define TRAMMING_POINT_NAME_3 "Right-Front"
+  #define TRAMMING_POINT_NAME_4 "Right-Back"
+  #define TRAMMING_POINT_NAME_5 "Left-Back"
   // Define positions for probing points, use the hotend as reference not the sensor.
-    #define MYCONFIG_CSCREW_F_Y MYCONFIG_CSCREW_F_INSET
-    #define MYCONFIG_CSCREW_L_X MYCONFIG_CSCREW_L_INSET
-    #define MYCONFIG_CSCREW_R_X (X_BED_SIZE - MYCONFIG_CSCREW_R_INSET)
-    #define MYCONFIG_CSCREW_B_Y (Y_BED_SIZE - MYCONFIG_CSCREW_B_INSET)
+    #define MYCONFIG_CSCREW_EXTRAINSET 12  // myconfig: because of large probe offset the probe can't reach the screws on the right side => use additional inset
+    #define MYCONFIG_CSCREW_F_Y (MYCONFIG_CSCREW_F_INSET + MYCONFIG_CSCREW_EXTRAINSET)
+    #define MYCONFIG_CSCREW_L_X (MYCONFIG_CSCREW_L_INSET + MYCONFIG_CSCREW_EXTRAINSET)
+    #define MYCONFIG_CSCREW_R_X (X_BED_SIZE - MYCONFIG_CSCREW_R_INSET - MYCONFIG_CSCREW_EXTRAINSET)
+    #define MYCONFIG_CSCREW_B_Y (Y_BED_SIZE - MYCONFIG_CSCREW_B_INSET - MYCONFIG_CSCREW_EXTRAINSET)
   #define TRAMMING_POINT_XY { \
+    { X_BED_SIZE / 2 , Y_BED_SIZE / 2 }, \
     { MYCONFIG_CSCREW_L_X , MYCONFIG_CSCREW_F_Y }, \
     { MYCONFIG_CSCREW_R_X , MYCONFIG_CSCREW_F_Y }, \
     { MYCONFIG_CSCREW_R_X , MYCONFIG_CSCREW_B_Y }, \
@@ -725,8 +728,10 @@
 #endif
 
 #if HAS_LCD_MENU
-  // Add Probe Z Offset calibration to the Bed Leveling menu
-  // see https://github.com/MarlinFirmware/Marlin/pull/18866#issuecomment-674464630
+
+  /** Add Probe Z Offset calibration to the Bed Leveling menu - https://github.com/MarlinFirmware/Marlin/pull/18866#issuecomment-674464630
+   *  NOTE: Requires LCD_BED_LEVELING
+   */
   #if HAS_BED_PROBE
     #define PROBE_OFFSET_WIZARD
     #if ENABLED(PROBE_OFFSET_WIZARD)

@@ -120,7 +120,7 @@
   // Add PID auto-tuning to the "Advanced Settings" menu. (~250 bytes of PROGMEM). Or use gcode like "M303 C10 E0 S200 U1"
   //#define PID_AUTOTUNE_MENU
 
-  /*  Source                            Kp      Ki      Kd
+  /** Source                            Kp      Ki      Kd
    *  -------------------------------   -----   ----    -----
    *  calibrated "M303 C10 E0 S220 U1"  32.69   3.82    69.96   // 20200917
    *  Stock ender3 firmware (M503)      23.81   1.93    73.64
@@ -179,7 +179,7 @@
   #define DEFAULT_bedKp 116.48
   #define DEFAULT_bedKi 17.33
   #define DEFAULT_bedKd 521.83
-  /*  Source                            Kp      Ki      Kd
+  /** Source                            Kp      Ki      Kd
    *  -------------------------------   ------  -----   ------
    *  calibrated "M303 C12 E-1 S80 U1"  116.48  17.33   521.83  // 20200917
    *  calibrated "M303 C10 E-1 S80 U1"  138.16  24.32   523.15   // 20200917
@@ -612,8 +612,11 @@
                                           // as the Z-Height correction value.
 #endif // BED_LEVELING
 
-// Add a bed leveling sub-menu for ABL or MBL. Include a guided procedure if manual probing is enabled.
-//#define LCD_BED_LEVELING
+/** Add a bed leveling sub-menu for ABL or MBL. Include a guided procedure if manual probing is enabled.
+ *  NOTE: With this enabled all levelling functions are consolidated in "Motion"->"Bed Leveling" menu,
+ *        otherwise functions will be clutter "Motion" menu.
+ */
+#define LCD_BED_LEVELING    // myconfig: necessary for PROBE_OFFSET_WIZARD in configuration_adv
 #if ENABLED(LCD_BED_LEVELING)
   #define MESH_EDIT_Z_STEP  0.025 // (mm) Step size while manually probing Z axis.
   #define LCD_PROBE_Z_RANGE 4     // (mm) Z Range centered on Z_MIN_POS for LCD Z adjustment
