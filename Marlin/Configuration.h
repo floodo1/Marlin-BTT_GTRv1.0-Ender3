@@ -924,7 +924,7 @@
   #define NEOPIXEL_PIN    MYCONFIG_NEOPIXEL_PIN // LED driving pin
   //#define NEOPIXEL2_TYPE  NEOPIXEL_TYPE
   //#define NEOPIXEL2_PIN    5
-  #define NEOPIXEL_PIXELS               1  // Number of LEDs in the strip. (Longest strip when NEOPIXEL2_SEPARATE is disabled.)
+  #define NEOPIXEL_PIXELS               8  // Number of LEDs in the strip. (Longest strip when NEOPIXEL2_SEPARATE is disabled.)
 
   #define NEOPIXEL_IS_SEQUENTIAL           // Sequential display for temperature change - LED by LED. Disable to change all LEDs at once.
   #define NEOPIXEL_BRIGHTNESS          64  // Initial brightness (0-255)
