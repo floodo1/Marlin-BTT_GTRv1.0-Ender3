@@ -251,8 +251,9 @@
 // Default Axis Steps Per Unit (steps/mm). Override with M92
 //                                      X, Y, Z, E0 [, E1[, E2...]]
 // guide on calculating = https://www.youtube.com/watch?v=eBUYLZ2TODw
-// myconfig: calibrated extruder at 102.7 steps/mm but maybe there was a jam ...
-#define DEFAULT_AXIS_STEPS_PER_UNIT   { 80, 80, 400, 93 }  // ender3 _SHOULD_ be 80, 80, 400, 93, per examples and many people on github
+// myconfig: originally calibrated extruder at 102.7 steps/mm but maybe there was a jam or issue with stepper driver config ...
+// myconfig: 20201008 had gone back to 93 esteps then used that to calibrate at 96.17
+#define DEFAULT_AXIS_STEPS_PER_UNIT   { 80, 80, 400, 96.17 }  // ender3 _SHOULD_ be 80, 80, 400, 93, per examples and many people on github
 #define DEFAULT_MAX_FEEDRATE          { 500, 500, 5, 25 } // Override with M203
 
 //#define LIMITED_MAX_FR_EDITING        // Limit edit via M203 or LCD to DEFAULT_MAX_FEEDRATE * 2
@@ -927,7 +928,7 @@
   #define NEOPIXEL_PIXELS               8  // Number of LEDs in the strip. (Longest strip when NEOPIXEL2_SEPARATE is disabled.)
 
   #define NEOPIXEL_IS_SEQUENTIAL           // Sequential display for temperature change - LED by LED. Disable to change all LEDs at once.
-  #define NEOPIXEL_BRIGHTNESS          64  // Initial brightness (0-255)
+  #define NEOPIXEL_BRIGHTNESS          20  // Initial brightness (0-255)
   #define NEOPIXEL_STARTUP_TEST            // Cycle through colors at startup
 
   // Support for second Adafruit NeoPixel LED driver controlled with M150 S1 ...
