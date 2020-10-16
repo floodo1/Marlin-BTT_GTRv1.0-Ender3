@@ -487,7 +487,7 @@
 #define X_MIN_POS -2   // x limit is at the edge of the bed, with small 1mm buffer
 #define Y_MIN_POS -21  // y limit is 8mm off bed (-8) and clip buffer approx 20mm (-20)
 #define Z_MIN_POS 0
-#define X_MAX_POS X_BED_SIZE
+#define X_MAX_POS X_BED_SIZE  // myconfig TODO: take advantage of addtl physical travel, with nozzle off bed, for probing
 #define Y_MAX_POS Y_BED_SIZE
 #define Z_MAX_POS 210 // bowden tube is already sloped downwards, and at 220mm cables are hitting upper cross bar ... use 210 with room for Z_HOMING_HEIGHT
 
