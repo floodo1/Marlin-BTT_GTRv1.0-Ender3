@@ -411,9 +411,9 @@
   //#define CONTROLLER_FAN_IGNORE_Z      // Ignore Z stepper. Useful when stepper timeout is disabled.
   #define CONTROLLERFAN_SPEED_MIN    128 // (0-255) Minimum speed. (If set below this value the fan is turned off.)
   #define CONTROLLERFAN_SPEED_ACTIVE 255 // (0-255) Active speed, used when any motor is enabled
-  #define CONTROLLERFAN_SPEED_IDLE   128 // (0-255) Idle speed, used when motors are disabled
-  #define CONTROLLERFAN_IDLE_TIME     60 // (seconds) Extra time to keep the fan running after disabling motors
-  //#define CONTROLLER_FAN_EDITABLE        // Enable M710 configurable settings
+  #define CONTROLLERFAN_SPEED_IDLE    80 // (0-255) Idle speed, used when motors are disabled
+  #define CONTROLLERFAN_IDLE_TIME     30 // (seconds) Extra time to keep the fan running after disabling motors
+  #define CONTROLLER_FAN_EDITABLE        // Enable M710 configurable settings
   #if ENABLED(CONTROLLER_FAN_EDITABLE)
     //#define CONTROLLER_FAN_MENU          // Enable the Controller Fan submenu
   #endif
@@ -438,7 +438,7 @@
  *
  * Define one or both of these to override the default 0-255 range.
  */
-// myconfig: TODO check actual min pwm speed
+// myconfig: TODO: check actual min pwm speed
 //#define FAN_MIN_PWM 50
 //#define FAN_MAX_PWM 128
 
@@ -1040,7 +1040,6 @@
   #define STATUS_FAN_FRAMES 3       // :[0,1,2,3,4] Number of fan animation frames
   //#define STATUS_HEAT_PERCENT       // Show heating in a progress bar
   //#define BOOT_MARLIN_LOGO_SMALL    // Show a smaller Marlin logo on the Boot Screen (saving 399 bytes of flash)
-  // myconfig
   #define BOOT_MARLIN_LOGO_ANIMATED // Animated Marlin logo. Costs ~‭3260 (or ~940) bytes of PROGMEM.
 
   // Frivolous Game Options
@@ -1142,11 +1141,7 @@
   //#define BABYSTEP_XY                     // Also enable X/Y Babystepping. Not supported on DELTA!
   #define BABYSTEP_INVERT_Z false           // Change if Z babysteps should go the other way
   //#define BABYSTEP_MILLIMETER_UNITS       // Specify BABYSTEP_MULTIPLICATOR_(XY|Z) in mm instead of micro-steps
-  // per marlin config example for Ender3 v2: 40, marlin/Ender3 = 1
-  // #define BABYSTEP_MULTIPLICATOR_Z  1       // (steps or mm) Steps or millimeter distance for each Z babystep
-  // #define BABYSTEP_MULTIPLICATOR_XY 1       // (steps or mm) Steps or millimeter distance for each XY babystep
-  // per marlin stock firmware github: 40
-  // myconfig
+  // myconfig: use 4 per someone online. Default=40, Ender3 v2=40, marlin/Ender3 = 1
   #define BABYSTEP_MULTIPLICATOR_Z  4       // (steps or mm) Steps or millimeter distance for each Z babystep
   #define BABYSTEP_MULTIPLICATOR_XY 4       // (steps or mm) Steps or millimeter distance for each XY babystep
   // per marlin config example for Ender3: uncommented
@@ -1155,7 +1150,6 @@
     #define DOUBLECLICK_MAX_INTERVAL 1250   // Maximum interval between clicks, in milliseconds.
                                             // Note: Extra time may be added to mitigate controller latency.
     //#define BABYSTEP_ALWAYS_AVAILABLE     // Allow babystepping at all times (not just during movement).
-    // myconfig TODO: investigate using this
     //#define MOVE_Z_WHEN_IDLE              // Jump to the move Z menu on doubleclick when printer is idle.
     #if ENABLED(MOVE_Z_WHEN_IDLE)
       #define MOVE_Z_IDLE_MULTIPLICATOR 1   // Multiply 1mm by this factor for the move step size.
@@ -1217,19 +1211,12 @@
   //#define PROBE_PT_3_Y 20
 #endif
 
-/**
- * Probing Margins
- *
+/** Probing Margins
  * Override PROBING_MARGIN for each side of the build plate
  * Useful to get probe points to exact positions on targets or
  * to allow leveling to avoid plate clamps on only specific
  * sides of the bed. With NOZZLE_AS_PROBE negative values are
  * allowed, to permit probing outside the bed.
- *
- * If you are replacing the prior *_PROBE_BED_POSITION options,
- * LEFT and FRONT values in most cases will map directly over
- * RIGHT and REAR would be the inverse such as
- * (X/Y_BED_SIZE - RIGHT/BACK_PROBE_BED_POSITION)
  *
  * This will allow all positions to match at compilation, however
  * should the probe position be modified with M851XY then the
@@ -1239,10 +1226,10 @@
 #if PROBE_SELECTED && !IS_KINEMATIC
   // default = set all to PROBING_MARGIN
   #define PROBING_MARGIN_LEFT PROBING_MARGIN
-  #define PROBING_MARGIN_RIGHT 0
+  #define PROBING_MARGIN_RIGHT 0    // x travel and probe offset amount to a margin of their own so use 0 to avoid adding any
   #define PROBING_MARGIN_FRONT PROBING_MARGIN
   // prevent nozzle crashing into clips in back by accounting for probe offset! :
-  #define PROBING_MARGIN_BACK (PROBING_MARGIN - MYCONFIG_PROBE_OFFSET_Y)  // !!! ASSUMES MYCONFIG_PROBE_OFFSET_Y is negative!
+#define PROBING_MARGIN_BACK (PROBING_MARGIN - MYCONFIG_PROBE_OFFSET_Y)  // !!! With positive offset this could cause issues!
 #endif
 
 #if EITHER(MESH_BED_LEVELING, AUTO_BED_LEVELING_UBL)
@@ -1859,7 +1846,7 @@
    * STEALTHCHOP_(XY|Z|E) must be enabled to use HYBRID_THRESHOLD.
    * Use M913 X/Y/Z/E to live tune the setting
    */
-  // myconfig TODO: enable and tune this
+  // myconfig: TODO: enable and tune this
   //#define HYBRID_THRESHOLD
   #define X_HYBRID_THRESHOLD     100  // [mm/s]
   #define X2_HYBRID_THRESHOLD    100

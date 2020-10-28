@@ -9,7 +9,7 @@ This repo was forked from official [Marlin on GitHub](https://img.shields.io/git
 
 ### Supported Platforms
   [BigTreeTech GTR v1.0](https://www.biqu.equipment/products/bigtreetech-gtr-v1-0-bigtreetech-m5-v1-0-11-axis-3d-printer-motherboard) and [Creality Ender 3](https://www.creality3dofficial.com/products/official-creality-ender-3-3d-printer) with the following components:
-  - BLTouch Mount (by gercole on [thingiverse](https://www.thingiverse.com/thing:3733792))
+  - Part cooling duct with BLTouch Mount (by ThijsOudeVrielink on [thingiverse](https://www.thingiverse.com/thing:3432489))
 
 ### Features
   - BLTouch
@@ -21,8 +21,11 @@ This repo was forked from official [Marlin on GitHub](https://img.shields.io/git
   - Controller Fan
   - Babystepping
   - Arc Support ([for OctoPrint Arc Welder](https://github.com/FormerLurker/ArcWelderPlugin))
-  - Bed size set small to avoid clips
   - Print timer and counter
+
+### Adjustments
+  - Bed size (y-axis) set small to avoid clips
+  - Bed size (x-axis) set to max allowed by upgraded part cooling duct
 
 ### Work-arounds
   - Physical X min endstop is using Z max endstop pins on board because X min endstop pins were buggy (randomly ignored)

@@ -351,10 +351,14 @@
  *     |    [-]    |
  *     O-- FRONT --+
  */
+// for this part with BLTouch mounting https://www.thingiverse.com/thing:3432489
+#define MYCONFIG_PROBE_OFFSET_X -30 //  calibrated at -30.6
+#define MYCONFIG_PROBE_OFFSET_Y -1 // calibrated within +/0 0.1
+#define MYCONFIG_PROBE_OFFSET_Z -2.68 // 1st calibration at -2.68, -2.43 per comments
 // for this BLTouch bracket https://www.thingiverse.com/thing:3733792 :
-#define MYCONFIG_PROBE_OFFSET_X -40 // calibrated ... did this calibrate at -42???
-#define MYCONFIG_PROBE_OFFSET_Y -12 // calibrated
-#define MYCONFIG_PROBE_OFFSET_Z -1.82 // new value from new PROBE_OFFSET_WIZARD
+// #define MYCONFIG_PROBE_OFFSET_X -40 // calibrated ... did this calibrate at -42???
+// #define MYCONFIG_PROBE_OFFSET_Y -12 // calibrated
+// #define MYCONFIG_PROBE_OFFSET_Z -1.82 // new value from new PROBE_OFFSET_WIZARD
 #define NOZZLE_TO_PROBE_OFFSET { MYCONFIG_PROBE_OFFSET_X, MYCONFIG_PROBE_OFFSET_Y, MYCONFIG_PROBE_OFFSET_Z }
 
 #define PROBING_MARGIN 2  // myconfig: will be adjusted for each edge of the build surface in configuration_adv
@@ -374,7 +378,6 @@
  * A total of 2 does fast/slow probes with a weighted average.
  * A total of 3 or more adds more slow probes, taking the average.
  */
-// myconfig
 //#define MULTIPLE_PROBING 2
 //#define EXTRA_PROBING    1
 
@@ -392,7 +395,7 @@
  * Example: `M851 Z-5` with a CLEARANCE of 4  =>  9mm from bed to nozzle.
  *     But: `M851 Z+1` with a CLEARANCE of 2  =>  2mm from bed to nozzle.
  */
-// myconfig: DO NOT SET DEPLOY CLEARANCE <10 and BETWEEN/MULTI <5
+// myconfig: faster probing using 6 for deploy and 4 for clearance, confirmed working
 // Deply=5 Between=4 per TeachingTech https://www.youtube.com/watch?v=BV11-VOQjMc
 #define Z_CLEARANCE_DEPLOY_PROBE    6 // Z Clearance for Deploy/Stow, Antclabs recommends at least 10
 #define Z_CLEARANCE_BETWEEN_PROBES  4 // Z Clearance between probe points, Antclabs recommends at least 5
@@ -402,7 +405,7 @@
 // myconfig: use 1mm, default -2
 #define Z_PROBE_LOW_POINT          -1 // Farthest distance below the trigger-point to go before stopping
 
-// For M851 give a range for adjus2ting the Z probe offset
+// For M851 give a range for adjusting the Z probe offset
 // per marlin config example for Ender3:  vs has -10 and 10
 #define Z_PROBE_OFFSET_RANGE_MIN -2 // default -10
 #define Z_PROBE_OFFSET_RANGE_MAX 1  // default 10
@@ -487,10 +490,10 @@
 // Travel limits (mm) after homing, corresponding to endstop positions.
 // for discussion about endstops off the bed see https://github.com/MarlinFirmware/Marlin/issues/17158
 // can be negative, per https://github.com/talldonkey/Marlin-2.0-Ender-3-SKR-1.3/blob/2.0.x-Ender-3-SKR-1.3/Marlin/Configuration.h
-#define X_MIN_POS -2   // x limit is at the edge of the bed, with small 1mm buffer
+#define X_MIN_POS -2  // x limit is at the edge of the bed, with small 1mm buffer
 #define Y_MIN_POS -21  // y limit is 8mm off bed (-8) and clip buffer approx 20mm (-20)
 #define Z_MIN_POS 0
-#define X_MAX_POS X_BED_SIZE  // myconfig TODO: take advantage of addtl physical travel, with nozzle off bed, for probing
+#define X_MAX_POS 247 // myconfig: with X_MIN_POS=-2 (249mm total) and with more clearance using https://www.thingiverse.com/thing:3432489
 #define Y_MAX_POS Y_BED_SIZE
 #define Z_MAX_POS 210 // bowden tube is already sloped downwards, and at 220mm cables are hitting upper cross bar ... use 210 with room for Z_HOMING_HEIGHT
 
@@ -509,7 +512,8 @@
   #define MAX_SOFTWARE_ENDSTOP_Z
 #endif
 #if EITHER(MIN_SOFTWARE_ENDSTOPS, MAX_SOFTWARE_ENDSTOPS)
-  //#define SOFT_ENDSTOPS_MENU_ITEM  // Enable/Disable software endstops from the LCD
+  // myconfig: just use M211, reduce menu clutter bc this would be used rarely
+  // #define SOFT_ENDSTOPS_MENU_ITEM  // Enable/Disable software endstops from the LCD
 #endif
 
 //===========================================================================
