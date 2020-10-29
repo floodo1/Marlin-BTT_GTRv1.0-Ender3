@@ -353,7 +353,7 @@
  */
 // for this part with BLTouch mounting https://www.thingiverse.com/thing:3432489
 #define MYCONFIG_PROBE_OFFSET_X -30 //  calibrated at -30.6
-#define MYCONFIG_PROBE_OFFSET_Y -1 // calibrated within +/0 0.1
+#define MYCONFIG_PROBE_OFFSET_Y -1 // calibrated within +/- 0.1
 #define MYCONFIG_PROBE_OFFSET_Z -2.68 // 1st calibration at -2.68, -2.43 per comments
 // for this BLTouch bracket https://www.thingiverse.com/thing:3733792 :
 // #define MYCONFIG_PROBE_OFFSET_X -40 // calibrated ... did this calibrate at -42???
