@@ -406,9 +406,8 @@
 #define Z_PROBE_LOW_POINT          -1 // Farthest distance below the trigger-point to go before stopping
 
 // For M851 give a range for adjusting the Z probe offset
-// per marlin config example for Ender3:  vs has -10 and 10
-#define Z_PROBE_OFFSET_RANGE_MIN -2 // default -10
-#define Z_PROBE_OFFSET_RANGE_MAX 1  // default 10
+#define Z_PROBE_OFFSET_RANGE_MIN -3 // default -10
+#define Z_PROBE_OFFSET_RANGE_MAX 0  // default 10
 
 // Enable M48
 #define Z_MIN_PROBE_REPEATABILITY_TEST
@@ -579,11 +578,11 @@
 
 #if EITHER(AUTO_BED_LEVELING_LINEAR, AUTO_BED_LEVELING_BILINEAR)
   // Set the number of grid points per dimension.
-  #define GRID_MAX_POINTS_X 7
+  #define GRID_MAX_POINTS_X 6
   #define GRID_MAX_POINTS_Y GRID_MAX_POINTS_X // default = GRID_MAX_POINTS_X
 
   // Probe along the Y axis, advancing X after each column
-  #define PROBE_Y_FIRST
+  //#define PROBE_Y_FIRST
 
   #if ENABLED(AUTO_BED_LEVELING_BILINEAR)
     // Beyond the probed grid, continue the implied tilt?
