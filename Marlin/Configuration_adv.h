@@ -608,7 +608,7 @@
   #define TRAMMING_POINT_NAME_4 "Right-Back"
   #define TRAMMING_POINT_NAME_5 "Left-Back"
   // Define positions for probing points, use the hotend as reference not the sensor.
-    #define MYCONFIG_CSCREW_EXTRAINSET 12  // myconfig: because of large probe offset the probe can't reach the screws on the right side => use additional inset
+    #define MYCONFIG_CSCREW_EXTRAINSET 0  // myconfig: probe can reach using 0, no longer need 12 == because of large probe offset the probe can't reach the screws on the right side => use additional inset
     #define MYCONFIG_CSCREW_F_Y (MYCONFIG_CSCREW_F_INSET + MYCONFIG_CSCREW_EXTRAINSET)
     #define MYCONFIG_CSCREW_L_X (MYCONFIG_CSCREW_L_INSET + MYCONFIG_CSCREW_EXTRAINSET)
     #define MYCONFIG_CSCREW_R_X (X_BED_SIZE - MYCONFIG_CSCREW_R_INSET - MYCONFIG_CSCREW_EXTRAINSET)
