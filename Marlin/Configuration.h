@@ -354,7 +354,7 @@
 // for this part with BLTouch mounting https://www.thingiverse.com/thing:3432489
 #define MYCONFIG_PROBE_OFFSET_X -30 //  calibrated at -30.6
 #define MYCONFIG_PROBE_OFFSET_Y -1 // calibrated within +/- 0.1
-#define MYCONFIG_PROBE_OFFSET_Z -2.68 // 1st calibration at -2.68, -2.43 per comments
+#define MYCONFIG_PROBE_OFFSET_Z -2.43 // 1st calibration at -2.68, -2.43 per comments
 // for this BLTouch bracket https://www.thingiverse.com/thing:3733792 :
 // #define MYCONFIG_PROBE_OFFSET_X -40 // calibrated ... did this calibrate at -42???
 // #define MYCONFIG_PROBE_OFFSET_Y -12 // calibrated
@@ -363,11 +363,12 @@
 
 #define PROBING_MARGIN 2  // myconfig: will be adjusted for each edge of the build surface in configuration_adv
 
-// XY Speed 10000 (166.6*60) and 1/2 speed for slow per TeachingTech https://www.youtube.com/watch?v=BV11-VOQjMc
+// XY Speed 10000 (166.6*60) and 1/2 speed Z for slow per TeachingTech https://www.youtube.com/watch?v=BV11-VOQjMc
 #define XY_PROBE_SPEED (166*60) // X and Y axis travel speed (mm/min) between probes, default: 133*60=7980
 #define Z_PROBE_SPEED_FAST HOMING_FEEDRATE_Z  // Feedrate (mm/min) for the first approach when double-probing (MULTIPLE_PROBING == 2)
-// stick with our known working super slow speed (1/2 of fast when fast is 4*60)
-#define Z_PROBE_SPEED_SLOW (2*60) // Feedrate (mm/min) for the "accurate" probe of each point, default = 1/2 fast speed
+// myconfig: confirmed super slow probing of "(2*60)" (1/2 of fast when fast is 4*60)
+// teaching tech has fast at (20*60) and slow at 1/2 = (10*60)
+#define Z_PROBE_SPEED_SLOW (6*60) // Feedrate (mm/min) for the "accurate" probe of each point, default = 1/2 fast speed
 
 /**
  * Multiple Probing
@@ -578,9 +579,9 @@
 
 #if EITHER(AUTO_BED_LEVELING_LINEAR, AUTO_BED_LEVELING_BILINEAR)
   // Set the number of grid points per dimension.
-  #define GRID_MAX_POINTS_X 6
+  #define GRID_MAX_POINTS_X 9
   //#define GRID_MAX_POINTS_Y GRID_MAX_POINTS_X // default = GRID_MAX_POINTS_X
-  #define GRID_MAX_POINTS_Y 8 // default = GRID_MAX_POINTS_X
+  #define GRID_MAX_POINTS_Y 13 // default = GRID_MAX_POINTS_X
 
   // Probe along the Y axis, advancing X after each column
   #define PROBE_Y_FIRST
@@ -592,7 +593,7 @@
 
     // Experimental Subdivision of the grid by Catmull-Rom method,
     // Synthesizes intermediate points to produce a more detailed mesh.
-    //#define ABL_BILINEAR_SUBDIVISION
+    #define ABL_BILINEAR_SUBDIVISION
     #if ENABLED(ABL_BILINEAR_SUBDIVISION)
       #define BILINEAR_SUBDIVISIONS 3 // Number of subdivisions between probe points, default = 3
     #endif
@@ -695,7 +696,11 @@
 // could go as high as 1000! per https://forum.duet3d.com/topic/13351/faster-z-homing-with-dual-endstop-switch-probe?_=1602015491157
 // 12*60=720 per https://jgaurorawiki.com/a5/modifications/bltouch
 // 20*60=1200 per TeachingTech https://www.youtube.com/watch?v=BV11-VOQjMc
-#define HOMING_FEEDRATE_Z  (10*60)   // mm/min  confirmed slow probing = 4*60=240  ... not crucial as second probe speed is what matters
+// myconfig: (10*60) confirmed
+// myconfig: (12*60) confirmed with these repeatability stats:
+//   Mean: 0.005000 Min: 0.002 Max: 0.007 Range: 0.005
+//   Standard Deviation: 0.001890
+#define HOMING_FEEDRATE_Z  (12*60)   // mm/min
 
 #define VALIDATE_HOMING_ENDSTOPS
 
